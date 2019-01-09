@@ -176,9 +176,16 @@
         // renderMathJax();
     });
 
+    let trim = function(text){
+        text = text.replace('<span class="math-tex">', "");
+        text = text.replace('</span>', "");
+
+        return text;
+    }
+
     $("#btn-edit").click(function(){
-        let de_bai = qeditor.getData();
-        let dap_an = aeditor.getData();
+        let de_bai = trim(qeditor.getData());
+        let dap_an = trim(aeditor.getData());
         if($("#post-id").val() != prev_id || $("#post-itemid").val() != prev_itemid) 
         {
             toastr.error("Giữ nguyên ID và ItemID để thay đổi");
