@@ -81,9 +81,14 @@ class WebController extends Controller
 
         $text = str_replace('media/', 'http://dev.data.giaingay.io/TestProject/public/media/', $text);
 
-        $text = str_replace("\(", '<span class="math-tex">\(', $text);
-        $text = str_replace("\)", '\)</span>', $text);
         $text = $this->brToEndlLatex($text);
+        if(preg_match_all('/\s{2,}/', $text, $matches)){
+            foreach ($matches[0] as $space_text){
+                $replace = str_repeat('&nbsp;', strlen($space_text));
+
+                $text = str_ireplace($space_text, $replace, $text);
+            }
+        }
         return $text;
     }
 
@@ -114,7 +119,7 @@ class WebController extends Controller
             return $history;
         });
         $data['histories_json'] = json_encode($data['histories']);
-        return view('welcome', $data);
+        return view('welcome', ['post' => $post, 'histories' => $data['histories']]);
     }
 
     public function rawHistory($postId, Request $request) {
