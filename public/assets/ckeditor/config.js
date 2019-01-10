@@ -47,4 +47,7 @@ CKEDITOR.editorConfig = function( config ) {
 	config.basicEntities = false;
 
 	config.mathJaxLib = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_HTML';
+
+    config.extraPlugins = 'uploadimage';
+    config.uploadUrl = '/ek-form-edit/upload_file.php';
 };

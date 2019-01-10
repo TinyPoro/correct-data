@@ -15,6 +15,7 @@
         <div class="card-body">
                 <div class="col-md-8"><h3>Sửa câu hỏi đáp</h3></div>
         </div>
+        <input type="hidden" id="post-hoi-dap-id" value="{{$post->hoi_dap_id}}">
         <div class="card-body" style="padding-bottom: 0px">
             <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px 20px">
                 <div class="form-group" style="width: 100%;">
@@ -101,6 +102,21 @@
     let qeditor = CKEDITOR.instances.postquestion;
     let aeditor = CKEDITOR.instances.postanswer;
 
+    qeditor.on( 'fileUploadRequest', function( evt ) {
+        let post_id = $("#post-hoi-dap-id").val();
+
+        evt.data.requestData.id = post_id;
+        evt.data.requestData.type = 'Problems';
+
+    } );
+
+    aeditor.on( 'fileUploadRequest', function( evt ) {
+        let post_id = $("#post-hoi-dap-id").val();
+
+        evt.data.requestData.id = post_id;
+        evt.data.requestData.type = 'Solutions';
+    } );
+
     function renderMathJax()
     {
         window.MathJax = {};
@@ -179,6 +195,8 @@
     let trim = function(text){
         text = text.replace('<span class="math-tex">', "");
         text = text.replace('</span>', "");
+
+        text = text.replace('http://dev.data.giaingay.io/TestProject/public/media/', "media/");
 
         return text;
     }
