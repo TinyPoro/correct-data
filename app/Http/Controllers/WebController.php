@@ -12,29 +12,31 @@ class WebController extends Controller
 {
     public function reverse($text)
     {
+        $text = str_replace("\r", ' ', $text);
+        $text = str_replace("\t", ' ', $text);
+        $text = str_replace(' ', ' ', $text);
+        $text = str_replace('
+', ' ', $text);
+        $text = str_replace("\xc2\xa0", ' ', $text);
+        $text = str_replace("&#13;", ' ', $text);
+
         $text = str_replace('<br />', '\n', $text);
         $text = str_replace('<br />', '\n', $text);
 
-        // $end_block_tags = [
-        //     '</p>',
-        // ];
-
-        // if(preg_match_all('/<[^>]*>/', $text, $matches)){
-        //     foreach ($matches[0] as $tag_html){
-        //         if(!preg_match('/<\s*img/', $tag_html)
-        //             && !preg_match('/<\s*table/', $tag_html)
-        //             && !preg_match('/<\/\s*table/', $tag_html)){
-
-        //             if(in_array($tag_html, $end_block_tags)) $text = str_replace($tag_html, '\n', $text);
-        //             else $text = str_replace($tag_html, '', $text);
-        //         }
-        //     }
-        // }
+        if (preg_match_all('/<table>(.|\||\s)*?<\/table>/', $text, $matches)) {
+            foreach ($matches[0] as $table_html) {
+                $table_markdown = $this->htmlTableToMarkdown($table_html);
+                $text = str_replace($table_html, $table_markdown, $text);
+            }
+        }
 
         $text = str_replace('< class="math-tex">\(', "\(", $text);
         $text = str_replace('\)span</span>', "\)", $text);
 
-        $text = str_replace('&nbsp;\n', '\n', $text);
+        $text = htmlspecialchars_decode($text);
+        $text = preg_replace('/(\s*\\\n\s*){2,}/', ' \n ', $text);
+        $text = preg_replace("/\s{2,}/", ' ', $text);
+        $text = str_ireplace("&nbsp;", ' ', $text);
 
         $text = str_replace('http://dev.data.giaingay.io/TestProject/public/media/', 'media/', $text);
         return $text;
@@ -80,6 +82,30 @@ class WebController extends Controller
         
 
         $text = str_replace('media/', 'http://dev.data.giaingay.io/TestProject/public/media/', $text);
+
+        // parse markdown table to html
+        $parser = new \cebe\markdown\MarkdownExtra();
+        if (preg_match_all('/<table>(.|\||\s)*?<\/table>/', $text, $matches)) {
+            foreach ($matches[0] as $table_html) {
+                $html = $table_html;
+                $html = str_replace(['<table>', '</table>'], '', $html);
+                // preserve latex form after parse
+                $html = $this->escapeSlash($html);
+                $html = $parser->parse($html);
+
+                if (preg_match_all('/(\[\d+\]):\s*([^\[\<]+)/', $html, $matches)) {
+                    foreach ($matches[0] as $j => $markdown_link) {
+                        $number = '![]' . $matches[1][$j];
+                        $image_html = '<img src="' . $matches[2][$j] . '"/>';
+
+                        $html = str_replace($markdown_link, '', $html);
+                        $html = str_replace($number, $image_html, $html);
+                    }
+                }
+                $html = str_replace("&lt;br/&gt;", "<br/>", $html);
+                $text = str_replace($table_html, $html, $text);
+            }
+        }
 
         $text = $this->brToEndlLatex($text);
         if(preg_match_all('/\s{2,}/', $text, $matches)){
@@ -172,30 +198,64 @@ class WebController extends Controller
         return ['message' => 'success'];
     }
 
-    public function test()
+    public function escapeSlash($text)
     {
-        $post = DB::table('all_posts')->where('id', 96)->first();
-        $text = $this->endlToBr($post->dap_an);
-        $ok = 0;
-        $ntext = '';
-        for($i=0; $i<strlen($text); $i++){
-            if($ok == 1 && $text[$i] == '<' && $text[$i+1] == 'b' && $text[$i+2] == 'r' && $text[$i+3] == '/' && $text[$i+4] == '>'){
-                $ntext = $ntext . '\\\\';
-                $i+=4;
-                continue;
-            }
-            if($text[$i] == '\\' && $text[$i+1] == '(')
-                $ok = 1;
-            if($text[$i] == '\\' && $text[$i+1] == ')')
-                $ok = 0;
-            $ntext .= $text[$i];
+        $next = '';
+        for ($i = 0; $i < strlen($text); ++$i) {
+            if ($text[$i] == '\\' && ($text[$i + 1] == '(' || $text[$i + 1] == ')')) {
+                $next .= '\\\\' . $text[$i + 1];
+                $i += 1;
+            } else $next .= $text[$i];
         }
-        
-                // echo $i . ' ' . $text[$i+1] . '<br/>';
-        
-        
-            // echo $text[$i];
-        dd($ntext);
-
+        return $next;
+    }
+    public function htmlTableToMarkdown($text) {
+        if (preg_match_all('/<tr>(.|\||\s)*?<\/tr>/', $text, $matches)) {
+            $array = [];
+            foreach ($matches[0] as $trtag) {
+                if (preg_match_all('/(<th>|<td>)(.|\||\s)*?(<\/th>|<\/td>)/', $trtag, $item_matches)) {
+                    $item_matches[0] = array_map(function ($item) {
+                        $item = str_replace('<th>', '', $item);
+                        $item = str_replace('</th>', '', $item);
+                        $item = str_replace('<td>', '', $item);
+                        $item = str_replace('</td>', '', $item);
+                        $item .= '\n';
+                        return $item;
+                    }, $item_matches[0]);
+                    array_push($array, $item_matches[0]);
+                }
+            }
+            $th = true;
+            $col_width = [];
+            for ($i = 0; $i < count($array[0]); ++$i) {
+                $max = 1;
+                for ($j = 0; $j < count($array); ++$j)
+                    $max = max($max, strlen($array[$j][$i]));
+                array_push($col_width, $max);
+            }
+            $table = '<table>';
+            for ($i = 0; $i < count($array); ++$i) {
+                $table .= '| ';
+                $separator = '| ';
+                for ($j = 0; $j < count($array[0]); ++$j) {
+                    $table .= $array[$i][$j];
+                    $separator .= str_repeat('-', $col_width[$j]);
+                    if ($j == count($array[0]) - 1) {
+                        $table .= ' |';
+                        $separator .= ' |';
+                    } else {
+                        $table .= ' | ';
+                        $separator .= ' | ';
+                    }
+                }
+                if ($i != count($array) - 1) {
+                    $table .= PHP_EOL;
+                    $table .= $separator . PHP_EOL;
+                }
+            }
+            $table .= '</table>';
+            return $table;
+        }
+        return '';
     }
 }

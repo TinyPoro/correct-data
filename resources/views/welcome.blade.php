@@ -1,6 +1,12 @@
 @extends('layouts.master')
 
 @section('content')
+    <style>
+        table th, table td{
+            border: 1px solid black;
+        }
+    </style>
+
     <?php
         function standardCkeditor($text){
             $text = str_replace("\(", '<span class="math-tex">\(', $text);
