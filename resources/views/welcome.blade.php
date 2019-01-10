@@ -220,16 +220,24 @@
             de_bai: de_bai,
             dap_an: dap_an
         }
-        axios.post("{{route('edit.post', ["postId"=>$post->id])}}", data)
-            .then(function(response){
+
+        let post_id = $("#post-id").val();
+
+        $.ajax({
+            method: 'POST',
+            url: "/api/post/"+post_id,
+            data: data,
+            success: function(result){
                 toastr.success("Sửa Thành công");
                 setTimeout(function() {
                     window.location.reload();
                 }, 500);
-            }).catch(function(error){
+            },
+            error: function (jqXHR, exception) {
                 console.log(error);
                 toastr.error("Có lỗi xảy ra. Vui lòng thử lại sau");
-            })
+            }
+        });
     });
 
     function rependl(str){
