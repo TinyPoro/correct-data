@@ -125,11 +125,7 @@
 
     function renderMathJax()
     {
-        window.MathJax = {};
-        var head= document.getElementsByTagName('head')[0];
-        var script= document.createElement('script');
-        script.src= 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML&cachebuster='+ new Date().getTime();
-        head.appendChild(script);
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
     }
 
     (function($) {
@@ -182,10 +178,12 @@
 
     qeditor.on('change', function(){
         $("#postquestion-display")[0].innerHTML = qeditor.getData();
+        renderMathJax();
     });
 
     aeditor.on('change', function(){
         $("#postanswer-display")[0].innerHTML = aeditor.getData();
+        renderMathJax();
     });
 
     $('#postquestion').bind('input propertychange', function() {
