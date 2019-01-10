@@ -225,7 +225,7 @@
 
         $.ajax({
             method: 'POST',
-            url: "/api/post/"+post_id,
+            url: "api/post/"+post_id,
             data: data,
             success: function(result){
                 toastr.success("Sửa Thành công");
