@@ -5,6 +5,9 @@
         table th, table td{
             border: 1px solid black;
         }
+        #btn-edit{
+            margin-left: 21rem!important;
+        }
     </style>
 
     <?php
@@ -39,6 +42,13 @@
                     <button class="btn btn-success" style="display: inline-block;" id="btn-change-itemid">Tìm kiếm</button>
                 </div>
                 <hr width="100%">
+                <div class="form-group" style="width: 100%;">
+                    <label style="vertical-align: top; width: 15%"><b>Tiêu đề:</b></label>
+                    <div style="display:inline-block; width:80%">
+
+                    <input class="form-control" type="text" name="tieu_de" value="{{$post->tieu_de}}">
+                </div>
+                    <hr width="100%">
                 <div class="form-group" style="width: 100%;">
                     <label style="vertical-align: top; width: 15%"><b>Đề bài:</b></label>
                     <div style="display:inline-block; width:80%">
@@ -154,6 +164,20 @@
         }
     });
 
+    $("#post-id").bind("keypress", function(e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            let post_id = $("#post-id").val();
+            if(prev_id != post_id) {
+                if(post_id == "" || isNaN(post_id) || Number(post_id) <= 0 || Number.isInteger(Number(post_id)) == false){
+                    toastr.error("Tìm kiếm bằng ID: ID không được để trống và phải là số nguyên dương");
+                    return;
+                }
+                window.location = "{{url('/post')}}/" + post_id + "/edit";
+            }
+        }
+    });
+
     $("#post-id").inputFilter(function(value) {
         return /^\d*$/.test(value); });
     
@@ -208,7 +232,8 @@
     $("#btn-edit").click(function(){
         let de_bai = trim(qeditor.getData());
         let dap_an = trim(aeditor.getData());
-        if($("#post-id").val() != prev_id || $("#post-itemid").val() != prev_itemid) 
+        let tieu_de = $('input[name="tieu_de"]').val();
+        if($("#post-id").val() != prev_id || $("#post-itemid").val() != prev_itemid)
         {
             toastr.error("Giữ nguyên ID và ItemID để thay đổi");
             return;
@@ -222,7 +247,8 @@
         $("#btn-edit").prop('disabled', true);
         let data = {
             de_bai: de_bai,
-            dap_an: dap_an
+            dap_an: dap_an,
+            tieu_de: tieu_de
         }
 
         let post_id = $("#post-id").val();

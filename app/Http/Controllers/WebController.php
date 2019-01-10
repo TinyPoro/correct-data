@@ -192,6 +192,7 @@ class WebController extends Controller
 
         $post->de_bai = $request->de_bai;
         $post->dap_an = $request->dap_an;
+        $post->tieu_de = $request->tieu_de;
         $post->updated_at = date('Y-m-d H:i:s', strtotime(Carbon::now() . '+ 10 minutes'));
 
         $post->save();
