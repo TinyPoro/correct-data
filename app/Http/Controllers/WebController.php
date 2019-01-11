@@ -355,9 +355,12 @@ class WebController extends Controller
                         $separator .= ' | ';
                     }
                 }
-                if ($i != count($array) - 1) {
+                if ($i == 0) {
                     $table .= PHP_EOL;
                     $table .= $separator . PHP_EOL;
+                }
+                else if ($i != count($array) - 1) {
+                    $table .= PHP_EOL;
                 }
             }
             $table .= '</table>';
