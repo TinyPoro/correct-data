@@ -30,8 +30,95 @@ class WebController extends Controller
             }
         }
 
-        $text = str_replace('< class="math-tex">\(', "\(", $text);
-        $text = str_replace('\)span</span>', "\)", $text);
+        //loại javascript
+        $text = preg_replace('/<script[^>]*>.*?<\/script>/', '', $text);
+
+        //chuyển số mũ thành dạng latext
+
+        if(preg_match_all('/(?<=\s)([^\s>]+)\s*<sup\>([^<]+)<\/sup>/', $text, $matches)){
+            foreach ($matches[0] as $k => $value){
+                $co_so = $matches[1][$k];
+                $he_so = $matches[2][$k];
+
+                if($this->isValidSomu($co_so) && $this->isValidSomu($he_so)){
+                    $latex = "\($co_so^$he_so\)";
+                    $text = str_replace($value, $latex, $text);
+                }
+            }
+        }
+
+        if(preg_match_all('/(?<=\s)([^\s>]+)\s*<sub\>([^<]+)<\/sub>/', $text, $matches)){
+            foreach ($matches[0] as $k => $value){
+                $co_so = $matches[1][$k];
+                $he_so = $matches[2][$k];
+
+                if($this->isValidSomu($co_so) && $this->isValidSomu($he_so)){
+                    $latex = "\($co_so"."_$he_so\)";
+                    $text = str_replace($value, $latex, $text);
+                }
+            }
+        }
+
+        $end_block_tags = [
+            '</p>',
+            '</h1>',
+            '</h2>',
+            '</h3>',
+            '</h4>',
+            '</h5>',
+            '</h6>',
+            '</ol>',
+            '</ul>',
+            '</pre>',
+            '</address>',
+            '</blockquote>',
+            '</dl>',
+            '</div>',
+            '</fieldset>',
+            '</form>',
+            '</hr>',
+            '</noscript>',
+            '</table>',
+            '<br>',
+            '<br/>',
+        ];
+
+        //loại tag text
+        if(preg_match_all('/<[^>]*>/', $text, $matches)){
+
+            foreach ($matches[0] as $tag_html){
+                if(!preg_match('/<\s*img/', $tag_html)
+                    && !preg_match('/<\s*table/', $tag_html)
+                    && !preg_match('/<\/\s*table/', $tag_html)){
+
+                    if(in_array($tag_html, $end_block_tags)) $text = str_replace($tag_html, '\n', $text);
+                    else $text = str_replace($tag_html, ' ', $text);
+                }
+            }
+        }
+
+        //loại text thừa đầu câu
+        $remove_texts2 = [
+            'Lời giải chi tiết',
+            'Lời giải',
+            'Hướng dẫn giải',
+            'GỢI Ý LÀM BÀI',
+            'Trả lời',
+            'Phương pháp giải - Xem chi tiết',
+            'Hướng dẫn giải',
+            'Hướng dẫn',
+            'Đáp án chi tiết',
+            'Đáp án',
+            'BÀI THAM KHẢO',
+            'Bài Tham Khảo',
+            'Hướng dẫn trả lời'
+        ];
+
+        foreach ($remove_texts2 as $remove_text){
+            $text = preg_replace('/^\s*'.$remove_text.'\s*:?\s*/ui', '', $text);
+        }
+
+        $text = preg_replace('/^\s*giải\s*:?\s*\\\n\s*/ui', '', $text);
 
         $text = htmlspecialchars_decode($text);
         $text = preg_replace('/(\s*\\\n\s*){2,}/', ' \n ', $text);
@@ -39,6 +126,25 @@ class WebController extends Controller
         $text = str_ireplace("&nbsp;", ' ', $text);
 
         $text = str_replace('http://dev.data.giaingay.io/TestProject/public/media/', 'media/', $text);
+
+        //loại \n đầu câu
+        while (true){
+            $text = trim($text);
+
+            if(mb_strpos($text, '\n') === 0) $text = mb_substr($text, 2);
+            else break;
+        }
+
+        //loại \n cuối câu
+        while (true){
+            $text = trim($text);
+
+            if(mb_strrpos($text, '\n') === mb_strlen($text) - 2) $text = mb_substr($text, 0, mb_strlen($text) - 2);
+            else break;
+        }
+
+        $text = trim($text);
+
         return $text;
     }
     
