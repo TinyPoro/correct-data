@@ -15,8 +15,8 @@ class WebController extends Controller
         $text = str_replace("\r", ' ', $text);
         $text = str_replace("\t", ' ', $text);
         $text = str_replace(' ', ' ', $text);
-        $text = str_replace('
-', ' ', $text);
+//        $text = str_replace('
+//', ' ', $text);
         $text = str_replace("\xc2\xa0", ' ', $text);
         $text = str_replace("&#13;", ' ', $text);
 
