@@ -84,7 +84,7 @@ class WebController extends Controller
         ];
 
         //loại tag text
-        if(preg_match_all('/<[^>]*>/', $text, $matches)){
+        if(preg_match_all('/<[^<>]*>/', $text, $matches)){
 
             foreach ($matches[0] as $tag_html){
                 if(!preg_match('/<\s*img/', $tag_html)
