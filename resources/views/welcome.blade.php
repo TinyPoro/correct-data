@@ -110,8 +110,8 @@
     let prev_id = "{{$post->id}}";
     let prev_itemid = "{{$post->hoi_dap_id}}";
 
-    CKEDITOR.replace('postquestion', { extraPlugins: 'mathjax,eqneditor', height: '250px', allowedContent: true});
-    CKEDITOR.replace('postanswer', { extraPlugins: 'mathjax,eqneditor', height: '250px', allowedContent: true});
+    CKEDITOR.replace('postquestion', { extraPlugins: 'mathjax', height: '250px', allowedContent: true});
+    CKEDITOR.replace('postanswer', { extraPlugins: 'mathjax', height: '250px', allowedContent: true});
     // CKEDITOR.replace('postquestion', { extraPlugins: 'eqneditor', height: '250px', allowedContent: true});
     // CKEDITOR.replace('postanswer', { extraPlugins: 'eqneditor', height: '250px', allowedContent: true});
 
