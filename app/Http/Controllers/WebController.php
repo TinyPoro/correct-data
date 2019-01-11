@@ -23,7 +23,7 @@ class WebController extends Controller
         $text = str_replace('<br />', '\n', $text);
         $text = str_replace('<br />', '\n', $text);
 
-        if (preg_match_all('/<table>(.|\||\s)*?<\/table>/', $text, $matches)) {
+        if (preg_match_all('/<table(.*)>(.|\||\s)*?<\/table>/', $text, $matches)) {
             foreach ($matches[0] as $table_html) {
                 $table_markdown = $this->htmlTableToMarkdown($table_html);
                 $text = str_replace($table_html, $table_markdown, $text);
