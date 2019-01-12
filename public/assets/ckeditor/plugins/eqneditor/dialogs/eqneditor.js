@@ -82,8 +82,8 @@ CKEDITOR.dialog.add( 'eqneditorDialog', function(editor)
 
 			let de_bai = CKEDITOR.instances.postquestion.getData();
         	let dap_an = CKEDITOR.instances.postanswer.getData();
-			CKEDITOR.instances.postquestion.setData(de_bai.substr(3, de_bai.length-8));
-			CKEDITOR.instances.postanswer.setData(dap_an.substr(3, dap_an.length-8));
+			CKEDITOR.instances.postquestion.setData(de_bai);
+			CKEDITOR.instances.postanswer.setData(dap_an);
 
 		}
 	};
