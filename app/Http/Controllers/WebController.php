@@ -178,12 +178,14 @@ class WebController extends Controller
     public function endlToBr($text)
     {
         $text = str_replace('\nolimits','\zolimits',$text);
+        $text = str_replace('\notin','\zotin',$text);
         $text = str_replace('\nleq','\zleq',$text);
         $text = str_replace('\ngeq','\zgeq',$text);
         $text = str_replace('\neq','\zeq',$text);
         $text = str_replace('\ne','\ze',$text);
         $text = str_replace('\n','<br/>',$text);
         $text = str_replace('\zolimits','\nolimits',$text);
+        $text = str_replace('\zotin','\notin',$text);
         $text = str_replace('\zleq','\nleq',$text);
         $text = str_replace('\zgeq','\ngeq',$text);
         $text = str_replace('\zeq','\neq',$text);
