@@ -272,10 +272,14 @@
 
     function rependl(str){
         str = str.replace('\nolimits', '\zolimits');
+        str = str.replace('\nleq', '\zleq');
+        str = str.replace('\ngeq', '\zgeq');
         str = str.replace('\neq', '\zeq');
         str = str.replace('\ne', '\ze');
         str = str.replace('\n', '<br/>');
         str = str.replace('\zolimits', '\nolimits');
+        str = str.replace('\zleq', '\nleq');
+        str = str.replace('\zgeq', '\ngeq');
         str = str.replace('\zeq', '\neq');
         str = str.replace('\ze', '\ne');
         return str;
