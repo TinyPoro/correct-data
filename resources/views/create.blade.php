@@ -24,7 +24,7 @@
         <div class="card-body">
                 <div class="col-md-8"><h3>Tạo câu hỏi đáp</h3></div>
         </div>
-        <input type="hidden" id="post-hoi-dap-id" value="">
+        <input type="hidden" id="post-hoi-dap-id" value="{{$guid}}">
         <div class="card-body" style="padding-bottom: 0px">
             <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px 20px">
                 <div class="form-group" style="width: 100%;">
