@@ -169,7 +169,7 @@
 
         $.ajax({
             method: 'POST',
-            url: "{{url('/api/post')}}/",
+            url: "{{url('/api/post')}}",
             data: data,
             success: function(result){
                 toastr.success("Tạo thành công");
