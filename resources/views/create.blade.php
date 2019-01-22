@@ -175,7 +175,7 @@
                 toastr.success("Tạo thành công");
             },
             error: function (jqXHR, exception) {
-                console.log(error);
+                console.log(exception);
                 toastr.error("Có lỗi xảy ra. Vui lòng thử lại sau");
             }
         });
