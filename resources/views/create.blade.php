@@ -173,6 +173,9 @@
             data: data,
             success: function(result){
                 toastr.success("Tạo thành công");
+                setTimeout(function() {
+                    window.location.reload();
+                }, 500);
             },
             error: function (jqXHR, exception) {
                 console.log(exception);
