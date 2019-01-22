@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class ManualPost extends Model
 {
-    protected $table='manual_posts';
+    protected $table = 'manual_posts';
 }
