@@ -14,8 +14,12 @@ Route::get('/', 'WebController@index');
 
 Route::get('/post/{postId}/edit', 'WebController@editPost');
 
+Route::get('/post/create', 'WebController@createPost');
+
 Route::get('/post/{postId}/raw', 'WebController@rawHistory');
 
-Route::post('/api/post/{postId}', 'WebController@editPostApi')->name('edit.post');
+Route::put('/api/post/{postId}', 'WebController@editPostApi')->name('edit.post');
+
+Route::post('/api/post', 'WebController@createPostApi')->name('create.post');
 
 Route::get('/api/test', 'WebController@test');

@@ -2,12 +2,12 @@ version: '3'
 services:
   redis:
     image: redis
-    container_name: ed-redis
+    container_name: cd-redis
     ports:
       - "6379:6379"
 
   workspace:
-    container_name: ed-workspace
+    container_name: cd-workspace
     build:
       context: ./docker/php
       dockerfile: Dockerfile
@@ -17,7 +17,7 @@ services:
       - ~/Desktop:/var/www/public/host
 
   nginx:
-    container_name: ed-nginx
+    container_name: cd-nginx
     build:
       context: ./docker/nginx
       dockerfile: Dockerfile
@@ -32,13 +32,13 @@ services:
       - redis
 
   mysql:
-    container_name: ed-mysql
+    container_name: cd-mysql
     image: mysql:5.7.21
     # build:
     #   context: ./docker/nginx
     #   dockerfile: Dockerfile
     volumes:
-      - editdata:/var/lib/mysql
+      - cordat:/var/lib/mysql
     environment:
       - "MYSQL_DATABASE=homestead"
       - "MYSQL_USER=homestead"
@@ -48,4 +48,4 @@ services:
         - "33061:3306"
         
 volumes:
-  editdata:
+  cordat:

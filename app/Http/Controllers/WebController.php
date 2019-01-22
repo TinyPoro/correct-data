@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Post;
 use App\PostHistory;
 use Carbon\Carbon;
+use App\ManualPost;
 
 class WebController extends Controller
 {
@@ -35,25 +36,25 @@ class WebController extends Controller
 
         //chuyển số mũ thành dạng latext
 
-        if(preg_match_all('/(?<=\s)([^\s>]+)\s*<sup\>([^<]+)<\/sup>/', $text, $matches)){
-            foreach ($matches[0] as $k => $value){
+        if (preg_match_all('/(?<=\s)([^\s>]+)\s*<sup\>([^<]+)<\/sup>/', $text, $matches)) {
+            foreach ($matches[0] as $k => $value) {
                 $co_so = $matches[1][$k];
                 $he_so = $matches[2][$k];
 
-                if($this->isValidSomu($co_so) && $this->isValidSomu($he_so)){
+                if ($this->isValidSomu($co_so) && $this->isValidSomu($he_so)) {
                     $latex = "\($co_so^$he_so\)";
                     $text = str_replace($value, $latex, $text);
                 }
             }
         }
 
-        if(preg_match_all('/(?<=\s)([^\s>]+)\s*<sub\>([^<]+)<\/sub>/', $text, $matches)){
-            foreach ($matches[0] as $k => $value){
+        if (preg_match_all('/(?<=\s)([^\s>]+)\s*<sub\>([^<]+)<\/sub>/', $text, $matches)) {
+            foreach ($matches[0] as $k => $value) {
                 $co_so = $matches[1][$k];
                 $he_so = $matches[2][$k];
 
-                if($this->isValidSomu($co_so) && $this->isValidSomu($he_so)){
-                    $latex = "\($co_so"."_$he_so\)";
+                if ($this->isValidSomu($co_so) && $this->isValidSomu($he_so)) {
+                    $latex = "\($co_so" . "_$he_so\)";
                     $text = str_replace($value, $latex, $text);
                 }
             }
@@ -84,14 +85,14 @@ class WebController extends Controller
         ];
 
         //loại tag text
-        if(preg_match_all('/<[^<>]*>/', $text, $matches)){
+        if (preg_match_all('/<[^<>]*>/', $text, $matches)) {
 
-            foreach ($matches[0] as $tag_html){
-                if(!preg_match('/<\s*img/', $tag_html)
+            foreach ($matches[0] as $tag_html) {
+                if (!preg_match('/<\s*img/', $tag_html)
                     && !preg_match('/<\s*table/', $tag_html)
-                    && !preg_match('/<\/\s*table/', $tag_html)){
+                    && !preg_match('/<\/\s*table/', $tag_html)) {
 
-                    if(in_array($tag_html, $end_block_tags)) $text = str_replace($tag_html, '\n', $text);
+                    if (in_array($tag_html, $end_block_tags)) $text = str_replace($tag_html, '\n', $text);
                     else $text = str_replace($tag_html, ' ', $text);
                 }
             }
@@ -114,8 +115,8 @@ class WebController extends Controller
             'Hướng dẫn trả lời'
         ];
 
-        foreach ($remove_texts2 as $remove_text){
-            $text = preg_replace('/^\s*'.$remove_text.'\s*:?\s*/ui', '', $text);
+        foreach ($remove_texts2 as $remove_text) {
+            $text = preg_replace('/^\s*' . $remove_text . '\s*:?\s*/ui', '', $text);
         }
 
         $text = preg_replace('/^\s*giải\s*:?\s*\\\n\s*/ui', '', $text);
@@ -128,18 +129,18 @@ class WebController extends Controller
         $text = str_replace('http://dev.data.giaingay.io/TestProject/public/media/', 'media/', $text);
 
         //loại \n đầu câu
-        while (true){
+        while (true) {
             $text = trim($text);
 
-            if(mb_strpos($text, '\n') === 0) $text = mb_substr($text, 2);
+            if (mb_strpos($text, '\n') === 0) $text = mb_substr($text, 2);
             else break;
         }
 
         //loại \n cuối câu
-        while (true){
+        while (true) {
             $text = trim($text);
 
-            if(mb_strrpos($text, '\n') === mb_strlen($text) - 2) $text = mb_substr($text, 0, mb_strlen($text) - 2);
+            if (mb_strrpos($text, '\n') === mb_strlen($text) - 2) $text = mb_substr($text, 0, mb_strlen($text) - 2);
             else break;
         }
 
@@ -147,8 +148,9 @@ class WebController extends Controller
 
         return $text;
     }
-    
-    public function removeEndl($text){
+
+    public function removeEndl($text)
+    {
         if (preg_match_all('/<p>(&nbsp;)*<\/p>\n( )*(\n)*( )*/', $text, $matches)) {
             foreach ($matches[0] as $space_text) {
                 $text = str_ireplace($space_text, '', $text);
@@ -157,18 +159,19 @@ class WebController extends Controller
         return $text;
     }
 
-    public function brToEndlLatex($text) {
+    public function brToEndlLatex($text)
+    {
         $ok = 0;
         $ntext = '';
-        for($i=0; $i<strlen($text); $i++){
-            if($ok == 1 && $text[$i] == '<' && $text[$i+1] == 'b' && $text[$i+2] == 'r' && $text[$i+3] == '/' && $text[$i+4] == '>'){
+        for ($i = 0; $i < strlen($text); $i++) {
+            if ($ok == 1 && $text[$i] == '<' && $text[$i + 1] == 'b' && $text[$i + 2] == 'r' && $text[$i + 3] == '/' && $text[$i + 4] == '>') {
                 $ntext = $ntext . '\\\\';
-                $i+=4;
+                $i += 4;
                 continue;
             }
-            if($text[$i] == '\\' && $text[$i+1] == '(')
+            if ($text[$i] == '\\' && $text[$i + 1] == '(')
                 $ok = 1;
-            if($text[$i] == '\\' && $text[$i+1] == ')')
+            if ($text[$i] == '\\' && $text[$i + 1] == ')')
                 $ok = 0;
             $ntext .= $text[$i];
         }
@@ -177,21 +180,21 @@ class WebController extends Controller
 
     public function endlToBr($text)
     {
-        $text = str_replace('\nolimits','\zolimits',$text);
-        $text = str_replace('\notin','\zotin',$text);
-        $text = str_replace('\nleq','\zleq',$text);
-        $text = str_replace('\ngeq','\zgeq',$text);
-        $text = str_replace('\neq','\zeq',$text);
-        $text = str_replace('\ne','\ze',$text);
-        $text = str_replace('\n','<br/>',$text);
-        $text = str_replace('\zolimits','\nolimits',$text);
-        $text = str_replace('\zotin','\notin',$text);
-        $text = str_replace('\zleq','\nleq',$text);
-        $text = str_replace('\zgeq','\ngeq',$text);
-        $text = str_replace('\zeq','\neq',$text);
-        $text = str_replace('\ze','\ne',$text);
+        $text = str_replace('\nolimits', '\zolimits', $text);
+        $text = str_replace('\notin', '\zotin', $text);
+        $text = str_replace('\nleq', '\zleq', $text);
+        $text = str_replace('\ngeq', '\zgeq', $text);
+        $text = str_replace('\neq', '\zeq', $text);
+        $text = str_replace('\ne', '\ze', $text);
+        $text = str_replace('\n', '<br/>', $text);
+        $text = str_replace('\zolimits', '\nolimits', $text);
+        $text = str_replace('\zotin', '\notin', $text);
+        $text = str_replace('\zleq', '\nleq', $text);
+        $text = str_replace('\zgeq', '\ngeq', $text);
+        $text = str_replace('\zeq', '\neq', $text);
+        $text = str_replace('\ze', '\ne', $text);
 
-        
+
 
         $text = str_replace('media/', 'http://dev.data.giaingay.io/TestProject/public/media/', $text);
 
@@ -220,8 +223,8 @@ class WebController extends Controller
         }
 
         $text = $this->brToEndlLatex($text);
-        if(preg_match_all('/\s{2,}/', $text, $matches)){
-            foreach ($matches[0] as $space_text){
+        if (preg_match_all('/\s{2,}/', $text, $matches)) {
+            foreach ($matches[0] as $space_text) {
                 $replace = str_repeat('&nbsp;', strlen($space_text));
 
                 $text = str_ireplace($space_text, $replace, $text);
@@ -260,7 +263,30 @@ class WebController extends Controller
         return view('welcome', ['post' => $post, 'histories' => $data['histories']]);
     }
 
-    public function rawHistory($postId, Request $request) {
+    public function createPost(Request $request)
+    {
+        $next_guid = str_random(9).uniqid('', true);
+        return view('create', ["guid" => str_pad($next_guid,32,"0",STR_PAD_LEFT)]);
+    }
+
+    public function createPostApi(Request $request) {
+        $request->de_bai = $this->reverse($request->de_bai);
+        $request->dap_an = $this->reverse($request->dap_an);
+        $manualPost = new ManualPost();
+        $manualPost->title = $request->tieu_de;
+        $manualPost->url = "";
+        $manualPost->subject_html = $request->de_bai;
+        $manualPost->content_html = $request->dap_an;
+        $manualPost->hoi_dap_id = $request->hoi_dap_id;
+        $manualPost->crawler = 'manual';
+        $manualPost->data = '';
+        $manualPost->save();
+        return ['message' => 'success'];
+
+    }
+
+    public function rawHistory($postId, Request $request)
+    {
         $post = DB::table('all_posts')->where('id', $postId)->first();
         if ($post == null) {
             $post = DB::table('all_posts')->where('hoi_dap_id', $postId)->first();
@@ -322,7 +348,8 @@ class WebController extends Controller
         }
         return $next;
     }
-    public function htmlTableToMarkdown($text) {
+    public function htmlTableToMarkdown($text)
+    {
         if (preg_match_all('/<tr>(.|\||\s)*?<\/tr>/', $text, $matches)) {
             $array = [];
             foreach ($matches[0] as $trtag) {
@@ -364,8 +391,7 @@ class WebController extends Controller
                 if ($i == 0) {
                     $table .= PHP_EOL;
                     $table .= $separator . PHP_EOL;
-                }
-                else if ($i != count($array) - 1) {
+                } else if ($i != count($array) - 1) {
                     $table .= PHP_EOL;
                 }
             }
