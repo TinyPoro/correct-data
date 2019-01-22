@@ -274,7 +274,7 @@ class WebController extends Controller
         $request->dap_an = $this->reverse($request->dap_an);
         $manualPost = new ManualPost();
         $manualPost->title = $request->tieu_de;
-        $manualPost->url = "";
+        $manualPost->url = $request->hoi_dap_id;
         $manualPost->subject_html = $request->de_bai;
         $manualPost->content_html = $request->dap_an;
         $manualPost->hoi_dap_id = $request->hoi_dap_id;
