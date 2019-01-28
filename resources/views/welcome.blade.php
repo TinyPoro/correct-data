@@ -106,7 +106,7 @@
 <script src="{{url('/assets/ckeditor/adapters/jquery.js')}}"></script>
 
 <script>
-    let histories = <?php json_encode($histories) ?>;
+    let histories = '<?php json_encode($histories) ?>';
     let prev_id = "{{$post->id}}";
     let prev_itemid = "{{$post->hoi_dap_id}}";
 
