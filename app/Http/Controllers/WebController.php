@@ -164,16 +164,16 @@ class WebController extends Controller
         $ok = 0;
         $ntext = '';
         for ($i = 0; $i < mb_strlen($text); $i++) {
-            if ($ok == 1 && $text[$i] == '<' && $text[$i + 1] == 'b' && $text[$i + 2] == 'r' && $text[$i + 3] == '/' && $text[$i + 4] == '>') {
+            if ($ok == 1 && mb_substr($text,$i,1) == '<' && mb_substr($text,$i+1,1) == 'b' && mb_substr($text,$i+2,1) == 'r' && mb_substr($text,$i+3,1) == '/' && mb_substr($text,$i+4,1) == '>') {
                 $ntext = $ntext . '\\\\';
                 $i += 4;
                 continue;
             }
-            if ($text[$i] == '\\' && $text[$i + 1] == '(')
+            if (mb_substr($text,$i,1) == '\\' && mb_substr($text,$i+1,1) == '(')
                 $ok = 1;
-            if ($text[$i] == '\\' && $text[$i + 1] == ')')
+            if (mb_substr($text,$i,1) == '\\' && mb_substr($text,$i+1,1) == ')')
                 $ok = 0;
-            $ntext .= $text[$i];
+            $ntext .= mb_substr($text,$i,1);
         }
         return $ntext;
     }
@@ -341,10 +341,10 @@ class WebController extends Controller
     {
         $next = '';
         for ($i = 0; $i < mb_strlen($text); ++$i) {
-            if ($text[$i] == '\\' && ($text[$i + 1] == '(' || $text[$i + 1] == ')')) {
-                $next .= '\\\\' . $text[$i + 1];
+            if (mb_substr($text,$i,1) == '\\' && (mb_substr($text,$i+1,1) == '(' || mb_substr($text,$i+1,1) == ')')) {
+                $next .= '\\\\' . mb_substr($text,$i+1,1);
                 $i += 1;
-            } else $next .= $text[$i];
+            } else $next .= mb_substr($text,$i,1);
         }
         return $next;
     }
