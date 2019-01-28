@@ -266,8 +266,7 @@ class WebController extends Controller
     }
 
     private function safe_json_encode($value, $options = 0, $depth = 512, $utfErrorFlag = false) {
-        $value = iconv('UTF-8', 'UTF-8//IGNORE', $value);
-        $value = json_decode($value);
+        $value = mb_convert_encoding($value, "UTF-8", "auto");
         $encoded = json_encode($value, $options, $depth);
         switch (json_last_error()) {
             case JSON_ERROR_NONE:
