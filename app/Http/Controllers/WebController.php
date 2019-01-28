@@ -163,7 +163,7 @@ class WebController extends Controller
     {
         $ok = 0;
         $ntext = '';
-        for ($i = 0; $i < strlen($text); $i++) {
+        for ($i = 0; $i < mb_strlen($text); $i++) {
             if ($ok == 1 && $text[$i] == '<' && $text[$i + 1] == 'b' && $text[$i + 2] == 'r' && $text[$i + 3] == '/' && $text[$i + 4] == '>') {
                 $ntext = $ntext . '\\\\';
                 $i += 4;
@@ -225,7 +225,7 @@ class WebController extends Controller
         $text = $this->brToEndlLatex($text);
         if (preg_match_all('/\s{2,}/', $text, $matches)) {
             foreach ($matches[0] as $space_text) {
-                $replace = str_repeat('&nbsp;', strlen($space_text));
+                $replace = str_repeat('&nbsp;', mb_strlen($space_text));
 
                 $text = str_ireplace($space_text, $replace, $text);
             }
@@ -340,7 +340,7 @@ class WebController extends Controller
     public function escapeSlash($text)
     {
         $next = '';
-        for ($i = 0; $i < strlen($text); ++$i) {
+        for ($i = 0; $i < mb_strlen($text); ++$i) {
             if ($text[$i] == '\\' && ($text[$i + 1] == '(' || $text[$i + 1] == ')')) {
                 $next .= '\\\\' . $text[$i + 1];
                 $i += 1;
@@ -370,7 +370,7 @@ class WebController extends Controller
             for ($i = 0; $i < count($array[0]); ++$i) {
                 $max = 1;
                 for ($j = 0; $j < count($array); ++$j)
-                    $max = max($max, strlen($array[$j][$i]));
+                    $max = max($max, mb_strlen($array[$j][$i]));
                 array_push($col_width, $max);
             }
             $table = '<table>';
