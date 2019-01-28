@@ -259,8 +259,7 @@ class WebController extends Controller
             $history->created = date('H:i d-m-Y', strtotime($history->created_at . ' + 10 minutes'));
             return $history;
         });
-        $data['histories_json'] = json_encode($data['histories']);
-        if($data['histories_json'] === false) $data['histories_json'] = '';
+
         return view('welcome', ['post' => $post, 'histories' => $data['histories']]);
     }
 
