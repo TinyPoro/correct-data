@@ -260,7 +260,7 @@ class WebController extends Controller
             return $history;
         });
 
-        return view('welcome', ['post' => $post, 'histories' => $data['histories'], 'histories_encode' => $data['histories_encode']]);
+        return view('welcome', ['post' => $post, 'histories' => $data['histories']]);
     }
 
     public function createPost(Request $request)
