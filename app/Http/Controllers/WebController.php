@@ -260,6 +260,7 @@ class WebController extends Controller
             return $history;
         });
         $data['histories_json'] = json_encode($data['histories']);
+        if($data['histories_json'] === false) $data['histories_json'] = [];
         return view('welcome', ['post' => $post, 'histories' => $data['histories']]);
     }
 
