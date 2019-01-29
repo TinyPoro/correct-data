@@ -12,7 +12,7 @@
 
 Route::get('/', 'WebController@index');
 
-Route::get('/post/{postId}/edit', 'WebController@editPost');
+Route::get('/post/edit/{postId}', 'WebController@editPost');
 
 Route::get('/post/create', 'WebController@createPost');
 
