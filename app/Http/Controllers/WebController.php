@@ -281,6 +281,18 @@ class WebController extends Controller
         $manualPost->crawler = 'manual';
         $manualPost->data = '';
         $manualPost->save();
+
+        \DB::table('all_posts')->insert([
+            'hoi_dap_id' => $request->hoi_dap_id,
+            'tieu_de' => $request->tieu_de,
+            'url' => '',
+            'de_bai' => $request->de_bai,
+            'dap_an' => $request->dap_an,
+            'ten_nguon' => 'manual',
+            'duong_dan_hoi' => "media/$request->hoi_dap_id-CH.jpg",
+            'duong_dan_tra_loi' => "media/$request->hoi_dap_id-DA-D.jpg",
+        ]);
+
         return ['message' => 'success'];
 
     }
