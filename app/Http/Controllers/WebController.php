@@ -243,7 +243,7 @@ class WebController extends Controller
 
     public function editPost($postId, Request $request)
     {
-        $post = DB::table('all_posts')->where('id', $postId)->first();
+        $post = DB::table('all_posts')->where('id', 'LIKE BINARY', $postId)->first();
         if (!$post) {
             $post = DB::table('all_posts')->where('hoi_dap_id', $postId)->first();
 
