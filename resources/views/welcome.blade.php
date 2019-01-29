@@ -160,7 +160,7 @@
                 toastr.error("Tìm kiếm bằng ID: ID không được để trống và phải là số nguyên dương");
                 return;
             }
-            window.location = "{{url('/post')}}/edit/" + post_id;
+            window.location = "{{url('/post')}}/" + post_id + "/edit";
         }
     });
 
@@ -173,7 +173,7 @@
                     toastr.error("Tìm kiếm bằng ID: ID không được để trống và phải là số nguyên dương");
                     return;
                 }
-                window.location = "{{url('/post')}}/edit/" + post_id;
+                window.location = "{{url('/post')}}/" + post_id + "/edit";
             }
         }
     });
@@ -191,7 +191,7 @@
                 toastr.error("Tìm kiếm bằng ItemId: ItemID không được để trống");
                 return;
             }
-            window.location = "{{url('/post')}}/edit/" + post_id;
+            window.location = "{{url('/post')}}/" + post_id + "/edit";
         }
     });
 
