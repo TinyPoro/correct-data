@@ -289,8 +289,8 @@ class WebController extends Controller
             'de_bai' => $request->de_bai,
             'dap_an' => $request->dap_an,
             'ten_nguon' => 'manual',
-            'duong_dan_hoi' => "media/$request->hoi_dap_id-CH.jpg",
-            'duong_dan_tra_loi' => "media/$request->hoi_dap_id-DA-D.jpg",
+            'duong_dan_hoi' => $request->duong_dan_hoi,
+            'duong_dan_tra_loi' => $request->duong_dan_tra_loi,
         ]);
 
         return ['message' => 'success'];
@@ -343,6 +343,8 @@ class WebController extends Controller
         $post->de_bai = $request->de_bai;
         $post->dap_an = $request->dap_an;
         $post->tieu_de = $request->tieu_de;
+        $post->duong_dan_hoi = $request->duong_dan_hoi;
+        $post->duong_dan_tra_loi = $request->duong_dan_tra_loi;
         $post->updated_at = date('Y-m-d H:i:s', strtotime(Carbon::now() . '+ 10 minutes'));
 
         $post->save();

@@ -34,11 +34,25 @@
                 <hr width="100%">
                 <div class="form-group" style="width: 100%;">
                     <label style="vertical-align: top; width: 15%"><b>Tiêu đề:</b></label>
-                    <div style="display:inline-block; width:80%">
+                    <div style="display:inline-block; width:80%"></div>
 
                     <input class="form-control" type="text" name="tieu_de" id="title" value="">
                 </div>
-                    <hr width="100%">
+                <hr width="100%">
+                <div class="form-group" style="width: 100%;">
+                    <label style="vertical-align: top; width: 15%"><b>Đường dẫn câu hỏi:</b></label>
+                    <div style="display:inline-block; width:80%"></div>
+
+                    <input class="form-control" type="text" name="duong_dan_hoi" value="{{$post->duong_dan_hoi}}">
+                </div>
+                <hr width="100%">
+                <div class="form-group" style="width: 100%;">
+                    <label style="vertical-align: top; width: 15%"><b>Đường dẫn câu trả lời:</b></label>
+                    <div style="display:inline-block; width:80%"></div>
+
+                    <input class="form-control" type="text" name="duong_dan_tra_loi" value="{{$post->duong_dan_tra_loi}}">
+                </div>
+                <hr width="100%">
                 <div class="form-group" style="width: 100%;">
                     <label style="vertical-align: top; width: 15%"><b>Đề bài:</b></label>
                     <div style="display:inline-block; width:80%">
@@ -151,7 +165,8 @@
         let de_bai = trim(qeditor.getData());
         let dap_an = trim(aeditor.getData());
         let tieu_de = $('input[name="tieu_de"]').val();
-
+        let duong_dan_hoi = $('input[name="duong_dan_hoi"]').val();
+        let duong_dan_tra_loi = $('input[name="duong_dan_tra_loi"]').val();
 
         if(tieu_de == "" || de_bai == "" || dap_an == "" || de_bai.trim() == "" || dap_an.trim() == "" || tieu_de.trim() == "")
         {
@@ -164,6 +179,8 @@
             de_bai: de_bai,
             dap_an: dap_an,
             tieu_de: tieu_de,
+            duong_dan_hoi: duong_dan_hoi,
+            duong_dan_tra_loi: duong_dan_tra_loi,
             hoi_dap_id: '{{$guid}}'
         }
 
