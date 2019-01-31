@@ -23,3 +23,16 @@ Route::put('/api/post/{postId}', 'WebController@editPostApi')->name('edit.post')
 Route::post('/api/post', 'WebController@createPostApi')->name('create.post');
 
 Route::get('/api/test', 'WebController@test');
+
+
+//test
+
+Route::get('/post1/{postId}/edit', 'WebController1@editPost');
+
+Route::get('/post1/create', 'WebController1@createPost');
+
+Route::get('/post1/{postId}/raw', 'WebController1@rawHistory');
+
+Route::put('/api/post1/{postId}', 'WebController1@editPostApi')->name('edit.post1');
+
+Route::post('/api/post1', 'WebController1@createPostApi')->name('create.post1');
