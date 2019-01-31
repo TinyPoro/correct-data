@@ -16,7 +16,7 @@ $id = $_POST['id'];
 $type = $_POST['type'];
 
 try{
-    $image_server = 'http://dev.data.giaingay.io/TestProject/public/api/v1/upload_multipart1';
+    $image_server = 'http://dev.data.giaingay.io/TestProject/public/api/v1/upload_multipart2';
 
     $client = new \GuzzleHttp\Client();
 
