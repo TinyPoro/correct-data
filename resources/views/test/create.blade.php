@@ -280,17 +280,17 @@
                 err = true;
             }
 
-            if(de_bai.trim() == "")
-            {
-                toastr.error("Thiếu thông tin đề bài");
-                if(!err) qeditor.focus();
-                err = true;
-            }
-
             if(dap_an.trim() == "")
             {
                 toastr.error("Thiếu thông tin đáp án");
                 if(!err) aeditor.focus();
+                err = true;
+            }
+
+            if(de_bai.trim() == "")
+            {
+                toastr.error("Thiếu thông tin đề bài");
+                if(!err) qeditor.focus();
                 err = true;
             }
 
