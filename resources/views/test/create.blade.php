@@ -96,7 +96,7 @@
                     <label style="vertical-align: top; width: 15%"><b>Chọn tập:</b></label>
                     <div style="display:inline-block; width:80%"></div>
 
-                    <input class="form-control" type="number" name="tap" value="0">
+                    <input class="form-control" type="number" name="tap" value="0" min="0">
 
                 </div>
                 <hr width="100%">
@@ -114,7 +114,7 @@
                     <label style="vertical-align: top; width: 15%"><b>Chọn bài:</b></label>
                     <div style="display:inline-block; width:80%"></div>
 
-                    <input class="form-control" type="number" name="bai" value="1">
+                    <input class="form-control" type="number" name="bai" value="1" min="0">
 
                 </div>
                 <hr width="100%">
