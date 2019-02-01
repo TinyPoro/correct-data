@@ -234,7 +234,7 @@
                     <div class="radio tab">
                         <label><input type="checkbox" name="diem_kien_thuc" value="Tam giác đều">Tam giác đều</label>
                     </div>
-                    <div class="radio tab1">
+                    <div class="radio tab">
                         <label><input type="checkbox" name="diem_kien_thuc" value="Tam giác cân">Tam giác cân</label>
                     </div>
                     <div class="radio tab">
