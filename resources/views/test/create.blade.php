@@ -62,6 +62,31 @@
                     {{--<input class="form-control" type="text" name="duong_dan_tra_loi">--}}
                 {{--</div>--}}
                 {{--<hr width="100%">--}}
+
+                <hr width="100%">
+
+                <div class="form-group" style="width: 100%;">
+                    <label style="vertical-align: top; width: 15%"><b>Đề bài:</b></label>
+                    <div style="display:inline-block; width:80%">
+
+                    <textarea class="form-control" style="width:100%" id="postquestion" rows="7"
+                        placeholder="Post's question in HTML"></textarea>
+                    <p style="margin-top:20px; width: 100%" id="postquestion-display">
+                    </p>
+                    </div>
+                </div>
+                <div class="form-group" style="width: 100%;">
+                    <label style="vertical-align: top; width: 15%"><b>Đáp án:</b></label>
+                    <div style="display:inline-block; width:80%">
+                    <textarea class="form-control" style="width:100%" id="postanswer" rows="7"
+                        placeholder="Post's answer"></textarea>
+                    <p style="margin-top:20px; width: 100%" id="postanswer-display">
+                    </p>
+                    </div>
+                </div>
+
+                <hr width="100%">
+
                 <div class="form-inline" style="width: 100%;">
                     <div class="form-group mb-4">
                         <label style="vertical-align: top;"><b>Lớp:</b></label>
@@ -112,7 +137,7 @@
                         ]
                         ?>
                         @foreach($taps as $tap)
-                                <option value="{{$tap}}">{{$tap}}</option>
+                            <option value="{{$tap}}">{{$tap}}</option>
                         @endforeach
                     </select>
 
@@ -325,27 +350,6 @@
                         <label><input type="checkbox" name="diem_kien_thuc" value="Tìm đường thẳng">Tìm đường thẳng</label>
                     </div>
 
-                </div>
-                <hr width="100%">
-
-                <div class="form-group" style="width: 100%;">
-                    <label style="vertical-align: top; width: 15%"><b>Đề bài:</b></label>
-                    <div style="display:inline-block; width:80%">
-
-                    <textarea class="form-control" style="width:100%" id="postquestion" rows="7"
-                        placeholder="Post's question in HTML"></textarea>
-                    <p style="margin-top:20px; width: 100%" id="postquestion-display">
-                    </p>
-                    </div>
-                </div>
-                <div class="form-group" style="width: 100%;">
-                    <label style="vertical-align: top; width: 15%"><b>Đáp án:</b></label>
-                    <div style="display:inline-block; width:80%">
-                    <textarea class="form-control" style="width:100%" id="postanswer" rows="7"
-                        placeholder="Post's answer"></textarea>
-                    <p style="margin-top:20px; width: 100%" id="postanswer-display">
-                    </p>
-                    </div>
                 </div>
                 <button class="btn btn-success" style="width: 30%; margin: 10px; padding: 15px;" id="btn-create">Lưu
                 </button>
