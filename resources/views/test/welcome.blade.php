@@ -545,7 +545,7 @@
             }
         });
 
-        let check_count = 0;
+        let check_count = {{$dkt_count}};
 
         $("input[name='diem_kien_thuc']").click(function(){
             let value = $(this).val();

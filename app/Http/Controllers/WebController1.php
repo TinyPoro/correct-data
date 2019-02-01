@@ -272,6 +272,8 @@ class WebController1 extends Controller
                 'bai' => $profile->bai,
                 'diem_kien_thuc' => $profile->diem_kien_thuc,
             ];
+
+            $dkt_count = count(explode(';', $profile->diem_kien_thuc));
         }else{
             $profiles = [
                 'class' => '',
@@ -282,6 +284,8 @@ class WebController1 extends Controller
                 'bai' => 1,
                 'diem_kien_thuc' => '',
             ];
+
+            $dkt_count = 0;
         }
 
         $classes = \DB::table('classes')->get();
@@ -295,6 +299,7 @@ class WebController1 extends Controller
             'classes' => $classes,
             'subjects' => $subjects,
             'categories' => $categories,
+            'dkt_count' => $dkt_count
         ]);
     }
 
