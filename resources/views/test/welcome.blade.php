@@ -13,6 +13,10 @@
         .select2-container{
             width: 10rem!important;
         }
+        .tab{
+            position: relative;
+            left: 3rem;
+        }
     </style>
 
     <?php
@@ -70,10 +74,10 @@
                 <hr width="100%">
                 <div class="form-inline" style="width: 100%;">
                     <div class="form-group mb-4">
-                        <label style="vertical-align: top;"><b>Chọn lớp:</b></label>
+                        <label style="vertical-align: top;"><b>Lớp:</b></label>
                         <div style="display:inline-block; width:80%"></div>
 
-                        <select class="class_input" name="class">
+                        <select class="class_input" name="class" disabled>
                             @foreach($classes as $class)
                                 @if($class->name === $profiles['class'])
                                     <option value="{{$class->name}}" selected>{{$class->name}}</option>
@@ -84,10 +88,10 @@
                         </select>
                     </div>
                     <div class="form-group mb-4">
-                        <label style="vertical-align: top;"><b>Chọn môn:</b></label>
+                        <label style="vertical-align: top;"><b>Môn:</b></label>
                         <div style="display:inline-block; width:80%"></div>
 
-                        <select class="subject_input" name="subject">
+                        <select class="subject_input" name="subject" disabled>
                             @foreach($subjects as $subject)
                                 @if($subject->name === $profiles['subject'])
                                     <option value="{{$subject->name}}" selected>{{$subject->name}}</option>
@@ -98,10 +102,11 @@
                         </select>
                     </div>
                     <div class="form-group mb-4">
-                        <label style="vertical-align: top;"><b>Chọn loại sách:</b></label>
+                        <label style="vertical-align: top;"><b>Loại sách:</b></label>
                         <div style="display:inline-block; width:80%"></div>
 
                         <select class="category_input" name="category">
+                            <option value=""> </option>
                             @foreach($categories as $category)
                                 @if($category->name === $profiles['category'])
                                     <option value="{{$category->name}}" selected>{{$category->name}}</option>
@@ -115,11 +120,27 @@
                 <hr width="100%">
 
                 <div class="form-group" style="width: 100%;">
-                    <label style="vertical-align: top; width: 15%"><b>Chọn tập:</b></label>
+                    <label style="vertical-align: top; width: 15%"><b>Tập:</b></label>
                     <div style="display:inline-block; width:80%"></div>
 
-                    <input class="form-control" type="number" name="tap" value="{{$profiles['tap']}}" min="0" max="99999999999999999999" step="1">
-
+                    <select class="tap_input" name="tap">
+                        <?php
+                            $taps = [
+                                '1',
+                                '2',
+                                '3',
+                                '4',
+                                '5',
+                            ]
+                        ?>
+                        @foreach($taps as $tap)
+                            @if($tap === $profiles['tap'])
+                                <option value="{{$tap}}" selected>{{$tap}}</option>
+                            @else
+                                <option value="{{$tap}}">{{$tap}}</option>
+                            @endif
+                        @endforeach
+                    </select>
                 </div>
                 <hr width="100%">
 
@@ -133,7 +154,7 @@
                 <hr width="100%">
 
                 <div class="form-group" style="width: 100%;">
-                    <label style="vertical-align: top; width: 15%"><b>Chọn bài:</b></label>
+                    <label style="vertical-align: top; width: 15%"><b>Bài:</b></label>
                     <div style="display:inline-block; width:80%"></div>
 
                     <input class="form-control" type="number" name="bai" value="{{$profiles['bai']}}" min="0" max="99999999999999999999">
@@ -145,7 +166,189 @@
                     <label style="vertical-align: top; width: 15%"><b>Điểm kiến thức:</b></label>
                     <div style="display:inline-block; width:80%"></div>
 
-                    <input class="form-control" type="text" name="diem_kien_thuc" value="{{$profiles['diem_kien_thuc']}}">
+                    <div class="radio">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Không xác định">Không xác định</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="checkbox" name="diem_kien_thuc" disabled value="Hình học - Hình trụ, hình nón, hình cầ">Hình học - Hình trụ, hình nón, hình cầu</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Hình trụ">Hình trụ</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Hình nón">Hình nón</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Hình nón cụt">Hình nón cụt</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Hình cầu">Hình cầu</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Diện tích xung quanh">Diện tích xung quanh</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Thể tích">Thể tích</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="checkbox" name="diem_kien_thuc" disabled value="Hình học - Hệ thức lượng trong tam giác vuông">Hình học - Hệ thức lượng trong tam giác vuông</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Đường trung tuyến">Đường trung tuyến</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Đường cao">Đường cao</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Đường phân giác">Đường phân giác</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Cạnh góc vuông">Cạnh góc vuông</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Hình chiếu">Hình chiếu</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Tam giác đồng dạng">Tam giác đồng dạng</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Tam giác đều">Tam giác đều</label>
+                    </div>
+                    <div class="radio tab1">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Tam giác cân">Tam giác cân</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Tam giác vuông">Tam giác vuông</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Tam giác">Tam giác</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Lượng giác, sin, cos, tg, cotg">Lượng giác, sin, cos, tg, cotg</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="checkbox" name="diem_kien_thuc" disabled value="Hình học - Đường tròn">Hình học - Đường tròn</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Bán kính">Bán kính</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Đường kính">Đường kính</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Dây của đường tròn">Dây của đường tròn</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Cung của đường tròn">Cung của đường tròn</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Chu vi">Chu vi</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Khoảng cách từ tâm đến dây và cung">Khoảng cách từ tâm đến dây và cung</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Độ dài đường tròn">Độ dài đường tròn</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Cung tròn">Cung tròn</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Hình quạt">Hình quạt</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Diện tích">Diện tích</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Đường tròn nội tiếp">Đường tròn nội tiếp</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Đường tròn ngoại tiếp">Đường tròn ngoại tiếp</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Tam giác nội tiếp">Tam giác nội tiếp</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Tam giác ngoại tiếp">Tam giác ngoại tiếp</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Đa giác nội tiếp(tứ giác, lục giác)">Đa giác nội tiếp(tứ giác, lục giác)</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Đa giác ngoại tiếp">Đa giác ngoại tiếp</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Tâm đối xứng">Tâm đối xứng</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Trục đối xứng">Trục đối xứng</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Tiếp tuyến đường tròn">Tiếp tuyến đường tròn</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Vị trí tương đối của hai đường tròn">Vị trí tương đối của hai đường tròn</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Góc tâm">Góc tâm</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Góc nội tiếp">Góc nội tiếp</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="checkbox" name="diem_kien_thuc" disabled value="Đại số - Căn thức">Đại số - Căn thức</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Căn bậc 2">Căn bậc 2</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Khai phương">Khai phương</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Bài toán rút gọn và tính biểu thức (chứa căn thức)">Bài toán rút gọn và tính biểu thức (chứa căn thức)</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Căn bậc 3">Căn bậc 3</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Lập phương">Lập phương</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="checkbox" name="diem_kien_thuc" disabled value="Đại số - Hàm số bậc nhất">Đại số - Hàm số bậc nhất</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Hàm đồng biến">Hàm đồng biến</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Hàm nghịch biến">Hàm nghịch biến</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Đường thẳng">Đường thẳng</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="checkbox" name="diem_kien_thuc" disabled value="Đại số - Hàm số bậc hai một ẩn">Đại số - Hàm số bậc hai một ẩn</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Vẽ đồ thị - Parabol">Vẽ đồ thị - Parabol</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Phương trình bậc hai">Phương trình bậc hai</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Phương trình trùng phương">Phương trình trùng phương</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Phương trình chủa ẩn mẫu thức">Phương trình chủa ẩn mẫu thức</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="checkbox" name="diem_kien_thuc" disabled value="Đại số - Hệ hai phương trình bậc nhất hai ẩn">Đại số - Hệ hai phương trình bậc nhất hai ẩn</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Tìm tọa độ mặt phẳng">Tìm tọa độ mặt phẳng</label>
+                    </div>
+                    <div class="radio tab">
+                        <label><input type="checkbox" name="diem_kien_thuc" value="Tìm đường thẳng">Tìm đường thẳng</label>
+                    </div>
 
                 </div>
                 <hr width="100%">
@@ -211,6 +414,7 @@
         $('.class_input').select2();
         $('.subject_input').select2();
         $('.category_input').select2();
+        $('.tap_input').select2();
         let histories = {!! $histories !!};
         let prev_id = "{{$post->id}}";
         let prev_itemid = "{{$post->hoi_dap_id}}";
@@ -330,7 +534,50 @@
             text = text.replace('http://dev.data.giaingay.io/TestProject/public/media/', "media/");
 
             return text;
-        }
+        };
+
+        let old_dkt = '{{$profiles['diem_kien_thuc']}}';
+        old_dkt = old_dkt.split(';');
+
+        $.each($("input[name='diem_kien_thuc']"), function(){
+            if(old_dkt.indexOf($(this).val()) !== -1) {
+                $(this).prop("checked", true);
+            }
+        });
+
+        let check_count = 0;
+
+        $("input[name='diem_kien_thuc']").click(function(){
+            let value = $(this).val();
+
+            if(value === 'Không xác định'){
+                $.each($("input[name='diem_kien_thuc']:checked"), function(){
+                    if($(this).val() !== 'Không xác định') $(this).prop("checked", false);
+                });
+
+                check_count = 1;
+            }else{
+                $.each($("input[name='diem_kien_thuc']:checked"), function(){
+                    if($(this).val() === 'Không xác định') {
+                        if($(this).is(':checked') === true) check_count--;
+
+                        $(this).prop("checked", false);
+                    }
+                });
+
+                if($(this).is(':checked') === true){
+                    if(check_count >= 5){
+                        toastr.error("Bạn chỉ được chọn tối đa 5 điểm kiến thức!");
+                        $(this).prop("checked", false);
+                    }else{
+                        check_count++;
+                    }
+                }else{
+                    check_count--;
+                }
+            }
+
+        });
 
         $("#btn-edit").click(function(){
             let de_bai = trim(qeditor.getData());
@@ -339,12 +586,16 @@
             let duong_dan_hoi = $('input[name="duong_dan_hoi"]').val();
             let duong_dan_tra_loi = $('input[name="duong_dan_tra_loi"]').val();
             let class_name = $('select[name="class"]').val();
-            let subject = $('select[name="category"]').val();
-            let category = $('select[name="subject"]').val();
-            let tap = $('input[name="tap"]').val();
+            let subject = $('select[name="subject"]').val();
+            let category = $('select[name="category"]').val();
+            let tap = $('select[name="tap"]').val();
             let chuong = $('input[name="chuong"]').val();
             let bai = $('input[name="bai"]').val();
-            let diem_kien_thuc = $('input[name="diem_kien_thuc"]').val();
+            let diem_kien_thuc = [];
+            $.each($("input[name='diem_kien_thuc']:checked"), function(){
+                diem_kien_thuc.push($(this).val());
+            });
+            diem_kien_thuc = diem_kien_thuc.join(";");
 
             let err = false;
 
