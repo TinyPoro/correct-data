@@ -338,45 +338,78 @@
         let bai = $('input[name="bai"]').val();
         let diem_kien_thuc = $('input[name="diem_kien_thuc"]').val();
 
+        let err = false;
+
+        if($("#post-id").val() != prev_id || $("#post-itemid").val() != prev_itemid)
+        {
+            toastr.error("Giữ nguyên ID và ItemID để thay đổi");
+            if(!err) $("#post-id").focus();
+            $("#post-id").css({
+                'color': '#495057',
+                'background-color': '#fff',
+                'border-color': '#80bdff',
+                'outline': '0',
+                'box-shadow': '0 0 0 0.2rem rgba(0,123,255,.25)'
+            });
+            err = true;
+
+        }
+
         if(tap < 0){
             toastr.error("Tập phải là 1 số nguyên dương");
-            $('input[name="tap"]').focus();
-            return;
+            if(!err) $('input[name="tap"]').focus();
+            $('input[name="tap"]').css({
+                'color': '#495057',
+                'background-color': '#fff',
+                'border-color': '#80bdff',
+                'outline': '0',
+                'box-shadow': '0 0 0 0.2rem rgba(0,123,255,.25)'
+            });
+            err = true;
         }
 
         if(bai < 0){
             toastr.error("Bài phải là 1 số dương");
-            $('input[name="bai"]').focus();
-            return;
+            if(!err) $('input[name="bai"]').focus();
+            $('input[name="bai"]').css({
+                'color': '#495057',
+                'background-color': '#fff',
+                'border-color': '#80bdff',
+                'outline': '0',
+                'box-shadow': '0 0 0 0.2rem rgba(0,123,255,.25)'
+            });
+            err = true;
         }
 
         if(de_bai.trim() == "")
         {
             toastr.error("Thiếu thông tin đề bài");
-            qeditor.focus();
-            return;
+            if(!err) qeditor.focus();
+            err = true;
         }
 
         if(dap_an.trim() == "")
         {
             toastr.error("Thiếu thông tin đáp án");
-            aeditor.focus();
-            return;
+            if(!err) aeditor.focus();
+            err = true;
         }
 
         if(tieu_de.trim() == "")
         {
             toastr.error("Thiếu thông tin tiêu đề");
-            $('input[name="tieu_de"]').focus();
-            return;
+            if(!err) $('input[name="tieu_de"]').focus();
+            $('input[name="tieu_de"]').css({
+                'color': '#495057',
+                'background-color': '#fff',
+                'border-color': '#80bdff',
+                'outline': '0',
+                'box-shadow': '0 0 0 0.2rem rgba(0,123,255,.25)'
+            });
+            err = true;
         }
 
-        if($("#post-id").val() != prev_id || $("#post-itemid").val() != prev_itemid)
-        {
-            toastr.error("Giữ nguyên ID và ItemID để thay đổi");
-            $("#post-id").focus();
-            return;
-        }
+        if(err) return;
 
         $("#btn-edit").prop('disabled', true);
         let data = {
