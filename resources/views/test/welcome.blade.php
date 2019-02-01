@@ -154,7 +154,7 @@
                         ]
                         ?>
                         @foreach($taps as $tap)
-                            @if($tap === $profiles['tap'])
+                            @if($tap == $profiles['tap'])
                                 <option value="{{$tap}}" selected>{{$tap}}</option>
                             @else
                                 <option value="{{$tap}}">{{$tap}}</option>
