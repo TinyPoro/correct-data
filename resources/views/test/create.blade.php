@@ -245,8 +245,8 @@
             let dap_an = trim(aeditor.getData());
             let tieu_de = $('input[name="tieu_de"]').val();
             let class_name = $('select[name="class"]').val();
-            let subject = $('select[name="category"]').val();
-            let category = $('select[name="subject"]').val();
+            let subject = $('select[name="subject"]').val();subject
+            let category = $('select[name="category"]').val();
             let tap = $('input[name="tap"]').val();
             let chuong = $('input[name="chuong"]').val();
             let bai = $('input[name="bai"]').val();
