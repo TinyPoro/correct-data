@@ -118,7 +118,7 @@
                     <label style="vertical-align: top; width: 15%"><b>Chọn tập:</b></label>
                     <div style="display:inline-block; width:80%"></div>
 
-                    <input class="form-control" type="number" name="tap" value="{{$profiles['tap']}}" min="0" max="50" step="1">
+                    <input class="form-control" type="number" name="tap" value="{{$profiles['tap']}}" min="0" max="99999999999999999999" step="1">
 
                 </div>
                 <hr width="100%">
@@ -136,7 +136,7 @@
                     <label style="vertical-align: top; width: 15%"><b>Chọn bài:</b></label>
                     <div style="display:inline-block; width:80%"></div>
 
-                    <input class="form-control" type="number" name="bai" value="{{$profiles['bai']}}" min="0" max="50">
+                    <input class="form-control" type="number" name="bai" value="{{$profiles['bai']}}" min="0" max="99999999999999999999">
 
                 </div>
                 <hr width="100%">
@@ -363,8 +363,8 @@
 
             }
 
-            if(tap < 0){
-                toastr.error("Tập phải là 1 số nguyên dương");
+            if(tap < 0 || tap > 99999999999999999999){
+                toastr.error("Tập phải là 1 số nguyên dương tối đa 99999999999999999999");
                 if(!err) $('input[name="tap"]').focus();
                 $('input[name="tap"]').css({
                     'color': '#495057',
@@ -376,8 +376,8 @@
                 err = true;
             }
 
-            if(bai < 0){
-                toastr.error("Bài phải là 1 số dương");
+            if(bai < 0 || bai > 99999999999999999999){
+                toastr.error("Bài phải là 1 số dương tối đa 99999999999999999999");
                 if(!err) $('input[name="bai"]').focus();
                 $('input[name="bai"]').css({
                     'color': '#495057',
