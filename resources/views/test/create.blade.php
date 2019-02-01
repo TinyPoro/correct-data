@@ -245,18 +245,45 @@
             let dap_an = trim(aeditor.getData());
             let tieu_de = $('input[name="tieu_de"]').val();
             let class_name = $('select[name="class"]').val();
-            let subject = $('select[name="subject"]').val();subject
+            let subject = $('select[name="subject"]').val();
             let category = $('select[name="category"]').val();
             let tap = $('input[name="tap"]').val();
             let chuong = $('input[name="chuong"]').val();
             let bai = $('input[name="bai"]').val();
             let diem_kien_thuc = $('input[name="diem_kien_thuc"]').val();
 
-            // if(tieu_de == "" || de_bai == "" || dap_an == "" || de_bai.trim() == "" || dap_an.trim() == "" || tieu_de.trim() == "")
-            // {
-            //     toastr.error("Thiếu thông tin");
-            //     return;
-            // }
+            if(tap < 0){
+                toastr.error("Tập phải là 1 số nguyên dương");
+                $('input[name="tap"]').focus();
+                return;
+            }
+
+            if(bai < 0){
+                toastr.error("Bài phải là 1 số dương");
+                $('input[name="bai"]').focus();
+                return;
+            }
+
+            if(de_bai.trim() == "")
+            {
+                toastr.error("Thiếu thông tin đề bài");
+                qeditor.focus();
+                return;
+            }
+
+            if(dap_an.trim() == "")
+            {
+                toastr.error("Thiếu thông tin đáp án");
+                aeditor.focus();
+                return;
+            }
+
+            if(tieu_de.trim() == "")
+            {
+                toastr.error("Thiếu thông tin tiêu đề");
+                $('input[name="tieu_de"]').focus();
+                return;
+            }
 
             $("#btn-create").prop('disabled', true);
             let data = {
