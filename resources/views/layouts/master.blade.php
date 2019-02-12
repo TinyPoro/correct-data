@@ -8,7 +8,9 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Sửa câu hỏi đáp</title>
+    <title>
+        @yield('title')
+    </title>
 
     <!-- Scripts -->
 

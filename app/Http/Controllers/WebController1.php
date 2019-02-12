@@ -354,6 +354,17 @@ class WebController1 extends Controller
             'diem_kien_thuc' => $request->diem_kien_thuc,
         ]);
 
+        $diem_kien_thucs = explode(';', $request->diem_kien_thuc);
+
+        foreach ($diem_kien_thucs as $diem_kien_thuc){
+            $label = \DB::table('labels')->where('name', $diem_kien_thuc)->first();
+
+            \DB::table('raw_label_items')->insert([
+                'hoi_dap_id' => $request->hoi_dap_id,
+                'label_id' => $label->id,
+            ]);
+        }
+
         return ['message' => 'success'];
 
     }
@@ -432,6 +443,19 @@ class WebController1 extends Controller
                     'bai' => $request->bai,
                     'diem_kien_thuc' => $request->diem_kien_thuc,
                 ]);
+        }
+
+        $diem_kien_thucs = explode(';', $request->diem_kien_thuc);
+
+        \DB::table('raw_label_items')->where('hoi_dap_id', $request->hoi_dap_id)->delete();
+
+        foreach ($diem_kien_thucs as $diem_kien_thuc){
+            $label = \DB::table('labels')->where('name', $diem_kien_thuc)->first();
+
+            \DB::table('raw_label_items')->insert([
+                'hoi_dap_id' => $post->hoi_dap_id,
+                'label_id' => $label->id,
+            ]);
         }
 
         return ['message' => 'success'];

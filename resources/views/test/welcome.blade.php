@@ -1,7 +1,13 @@
 @extends('layouts.master')
 
+@section('title')
+    Sửa câu hỏi đáp
+@endsection
+
 @section('content')
     <link href="{{url('/css/select2.min.css')}}"  rel="stylesheet">
+    <link href="{{url('/css/kendo.common.min.css')}}"  rel="stylesheet">
+    <link href="{{url('/css/kendo.default.min.css')}}"  rel="stylesheet">
 
     <style>
         table th, table td{
@@ -186,190 +192,7 @@
                     <label style="vertical-align: top; width: 15%"><b>Điểm kiến thức:</b></label>
                     <div style="display:inline-block; width:80%"></div>
 
-                    <div class="radio">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Không xác định">Không xác định</label>
-                    </div>
-                    <div class="radio">
-                        <label><input type="checkbox" name="diem_kien_thuc" disabled value="Hình học - Hình trụ, hình nón, hình cầ">Hình học - Hình trụ, hình nón, hình cầu</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Hình trụ">Hình trụ</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Hình nón">Hình nón</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Hình nón cụt">Hình nón cụt</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Hình cầu">Hình cầu</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Diện tích xung quanh">Diện tích xung quanh</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Thể tích">Thể tích</label>
-                    </div>
-                    <div class="radio">
-                        <label><input type="checkbox" name="diem_kien_thuc" disabled value="Hình học - Hệ thức lượng trong tam giác vuông">Hình học - Hệ thức lượng trong tam giác vuông</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Đường trung tuyến">Đường trung tuyến</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Đường cao">Đường cao</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Đường phân giác">Đường phân giác</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Cạnh góc vuông">Cạnh góc vuông</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Hình chiếu">Hình chiếu</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Tam giác đồng dạng">Tam giác đồng dạng</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Tam giác đều">Tam giác đều</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Tam giác cân">Tam giác cân</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Tam giác vuông">Tam giác vuông</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Tam giác">Tam giác</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Lượng giác, sin, cos, tg, cotg">Lượng giác, sin, cos, tg, cotg</label>
-                    </div>
-                    <div class="radio">
-                        <label><input type="checkbox" name="diem_kien_thuc" disabled value="Hình học - Đường tròn">Hình học - Đường tròn</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Bán kính">Bán kính</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Đường kính">Đường kính</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Dây của đường tròn">Dây của đường tròn</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Cung của đường tròn">Cung của đường tròn</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Chu vi">Chu vi</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Khoảng cách từ tâm đến dây và cung">Khoảng cách từ tâm đến dây và cung</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Độ dài đường tròn">Độ dài đường tròn</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Cung tròn">Cung tròn</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Hình quạt">Hình quạt</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Diện tích">Diện tích</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Đường tròn nội tiếp">Đường tròn nội tiếp</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Đường tròn ngoại tiếp">Đường tròn ngoại tiếp</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Tam giác nội tiếp">Tam giác nội tiếp</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Tam giác ngoại tiếp">Tam giác ngoại tiếp</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Đa giác nội tiếp(tứ giác, lục giác)">Đa giác nội tiếp(tứ giác, lục giác)</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Đa giác ngoại tiếp">Đa giác ngoại tiếp</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Tâm đối xứng">Tâm đối xứng</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Trục đối xứng">Trục đối xứng</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Tiếp tuyến đường tròn">Tiếp tuyến đường tròn</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Vị trí tương đối của hai đường tròn">Vị trí tương đối của hai đường tròn</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Góc tâm">Góc tâm</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Góc nội tiếp">Góc nội tiếp</label>
-                    </div>
-                    <div class="radio">
-                        <label><input type="checkbox" name="diem_kien_thuc" disabled value="Đại số - Căn thức">Đại số - Căn thức</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Căn bậc 2">Căn bậc 2</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Khai phương">Khai phương</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Bài toán rút gọn và tính biểu thức (chứa căn thức)">Bài toán rút gọn và tính biểu thức (chứa căn thức)</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Căn bậc 3">Căn bậc 3</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Lập phương">Lập phương</label>
-                    </div>
-                    <div class="radio">
-                        <label><input type="checkbox" name="diem_kien_thuc" disabled value="Đại số - Hàm số bậc nhất">Đại số - Hàm số bậc nhất</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Hàm đồng biến">Hàm đồng biến</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Hàm nghịch biến">Hàm nghịch biến</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Đường thẳng">Đường thẳng</label>
-                    </div>
-                    <div class="radio">
-                        <label><input type="checkbox" name="diem_kien_thuc" disabled value="Đại số - Hàm số bậc hai một ẩn">Đại số - Hàm số bậc hai một ẩn</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Vẽ đồ thị - Parabol">Vẽ đồ thị - Parabol</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Phương trình bậc hai">Phương trình bậc hai</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Phương trình trùng phương">Phương trình trùng phương</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Phương trình chủa ẩn mẫu thức">Phương trình chủa ẩn mẫu thức</label>
-                    </div>
-                    <div class="radio">
-                        <label><input type="checkbox" name="diem_kien_thuc" disabled value="Đại số - Hệ hai phương trình bậc nhất hai ẩn">Đại số - Hệ hai phương trình bậc nhất hai ẩn</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Tìm tọa độ mặt phẳng">Tìm tọa độ mặt phẳng</label>
-                    </div>
-                    <div class="radio tab">
-                        <label><input type="checkbox" name="diem_kien_thuc" value="Tìm đường thẳng">Tìm đường thẳng</label>
-                    </div>
-
+                    <input id="diem_kien_thuc_tree" name="diem_kien_thuc" style="width: 100%;" />
                 </div>
                 <button class="btn btn-success" style="width: 30%; margin: 10px; padding: 15px;" id="btn-edit">Lưu
                 </button>
@@ -407,7 +230,9 @@
 @push('scripts')
 <script src="{{url('/assets/ckeditor/ckeditor.js')}}" charset="utf-8"></script>
 <script src="{{url('/assets/ckeditor/adapters/jquery.js')}}"></script>
+<script src="{{url('/js/jquery.min.js')}}"></script>
 <script src="{{url('/js/select2.min.js')}}"></script>
+<script src="{{url('/js/kendo.all.min.js')}}"></script>
 
 <script>
     $(document).ready(function() {
@@ -418,6 +243,99 @@
         let histories = {!! $histories !!};
         let prev_id = "{{$post->id}}";
         let prev_itemid = "{{$post->hoi_dap_id}}";
+
+        $("#diem_kien_thuc_tree").kendoDropDownTree({
+            placeholder: "Chọn tối đa 5 điểm kiến thức",
+            checkboxes: true,
+            autoClose: false,
+            filter: "contains",
+            dataSource: [
+                {
+                    text: "Không xác định",
+                },
+                {
+                    text: "Hình học - Hình trụ, hình nón, hình cầu", expanded: true, items: [
+                        { text: "hình trụ" },
+                        { text: "hình nón" },
+                        { text: "hình nón cụt" },
+                        { text: "hình cầu" },
+                        { text: "diện tích xung quanh" },
+                        { text: "thể tích" }
+                    ]
+                },
+                {
+                    text: "Hình học - Hệ thức lượng tam giác vuông", items: [
+                        { text: "đường trung tuyến" },
+                        { text: "đường cao" },
+                        { text: "đường phân giác" },
+                        { text: "cạnh góc vuông" },
+                        { text: "hình chiếu" },
+                        { text: "tam giác đồng dạng" },
+                        { text: "tam giác đều" },
+                        { text: "tam giác cân" },
+                        { text: "tam giác vuông" },
+                        { text: "tam giác" },
+                        { text: "lượng giác, sin, cos, tg, cotg." }
+                    ]
+                },
+                {
+                    text: "Hình học - đường tròn", items: [
+                        { text: "bán kính" },
+                        { text: "đường kính" },
+                        { text: "dây của đường tròn" },
+                        { text: "cung của đường tròn" },
+                        { text: "chu vi" },
+                        { text: "khoảng cách từ tâm đến dây và cung" },
+                        { text: "độ dài đường tròn" },
+                        { text: "cung tròn" },
+                        { text: "hình quạt" },
+                        { text: "diện tích" },
+                        { text: "đường tròn nội tiếp" },
+                        { text: "đường tròn ngoại tiếp" },
+                        { text: "tam giác nội tiếp" },
+                        { text: "tam giác ngoại tiếp" },
+                        { text: "đa gia giác nội tiếp (tứ giác, lục giác)" },
+                        { text: "đa giác ngoại tiếp" },
+                        { text: "tâm đối xứng" },
+                        { text: "trục đối xứng" },
+                        { text: "tiếp tuyến đường tròn" },
+                        { text: "vị trí tương đối của hai đường tròn" },
+                        { text: "góc tâm" },
+                        { text: "góc nội tiếp." },
+                    ]
+                },
+                {
+                    text: "Đại số - Căn thức", items: [
+                        { text: "căn bậc hai" },
+                        { text: "khai phương" },
+                        { text: "bài toán rút gọn và tính biểu thức (chứa căn thức)" },
+                        { text: "căn bậc ba" },
+                        { text: "lập phương." },
+                    ]
+                },
+                {
+                    text: "Đại số - Hàm số bậc nhất", items: [
+                        { text: "hàm đồng biến" },
+                        { text: "hàm nghịch biến" },
+                        { text: "đường thẳng." },
+                    ]
+                },
+                {
+                    text: "Đại số - Hàm số bậc hai một ẩn", items: [
+                        { text: "vẽ đồ thị - parabol" },
+                        { text: "phương trình bậc hai" },
+                        { text: "phương trình trùng phương" },
+                        { text: "phương trình chứa ẩn mẫu thức" },
+                    ]
+                },
+                {
+                    text: "Đại số - Hệ hai phương trình bậc nhất hai ẩn", items: [
+                        { text: "tìm tọa độ mặt phẳng" },
+                        { text: "tìm đường thẳng" },
+                    ]
+                },
+            ]
+        });
 
         CKEDITOR.replace('postquestion', { extraPlugins: 'mathjax, eqneditor', height: '250px', allowedContent: true});
         CKEDITOR.replace('postanswer', { extraPlugins: 'mathjax, eqneditor', height: '250px', allowedContent: true});
@@ -536,54 +454,73 @@
             return text;
         };
 
+        let findText = function(ele){
+            return ele.parent().next().text();
+        };
+
+        let isCheck = function(ele){
+            return ele.is(':checked');
+        };
+
+        let uncheck = function(ele){
+            return ele.next().click();
+        };
+
         let old_dkt = '{{$profiles['diem_kien_thuc']}}';
         old_dkt = old_dkt.split(';');
 
-        $.each($("input[name='diem_kien_thuc']"), function(){
-            if(old_dkt.indexOf($(this).val()) !== -1) {
-                $(this).prop("checked", true);
+        $.each($(".k-checkbox"), function(){
+            if(old_dkt.indexOf(findText($(this))) !== -1) {
+                $(this).next().click();
             }
         });
 
-        let check_count = {{$dkt_count}};
+        let check_count = 0;
 
-        $("input[name='diem_kien_thuc']").click(function(){
-            let value = $(this).val();
+        $(".k-checkbox").change(function(){
+            let check = isCheck($(this));
+            let value = findText($(this));
 
             if(value === 'Không xác định'){
-                if($(this).is(':checked') === true){
-                    $.each($("input[name='diem_kien_thuc']:checked"), function(){
-                        if($(this).val() !== 'Không xác định') $(this).prop("checked", false);
+                if(check === true){
+                    $.each($(".k-checkbox"), function(){
+                        if(findText($(this)) !== 'Không xác định' && isCheck($(this))) {
+                            uncheck($(this));
+                        }
                     });
+
+                    $(this).click();
 
                     check_count = 1;
                 }else{
                     check_count = 0;
                 }
             }else{
-                $.each($("input[name='diem_kien_thuc']:checked"), function(){
-                    if($(this).val() === 'Không xác định') {
-                        if($(this).is(':checked') === true) check_count--;
-
-                        $(this).prop("checked", false);
+                $.each($(".k-checkbox"), function(){
+                    if(findText($(this)) === 'Không xác định') {
+                        if(isCheck($(this)) === true) {
+                            check_count--;
+                            uncheck($(this));
+                        }
                     }
                 });
 
-                if($(this).is(':checked') === true){
-                    if(check_count >= 5){
+                if(check === true){
+                    check_count++;
+
+                    if(check_count > 5){
                         toastr.error("Bạn chỉ được chọn tối đa 5 điểm kiến thức!");
-                        $(this).prop("checked", false);
-                    }else{
-                        check_count++;
+                        uncheck($(this));
                     }
                 }else{
                     check_count--;
                 }
             }
-
         });
 
         $("#btn-edit").click(function(){
+            toastr.clear();
+
             let de_bai = trim(qeditor.getData());
             let dap_an = trim(aeditor.getData());
             let tieu_de = $('input[name="tieu_de"]').val();
@@ -596,8 +533,8 @@
             let chuong = $('input[name="chuong"]').val();
             let bai = $('input[name="bai"]').val();
             let diem_kien_thuc = [];
-            $.each($("input[name='diem_kien_thuc']:checked"), function(){
-                diem_kien_thuc.push($(this).val());
+            $.each($(".k-multiselect-wrap > ul > li > span:first-child"), function(){
+                diem_kien_thuc.push($(this).text());
             });
             diem_kien_thuc = diem_kien_thuc.join(";");
 
@@ -612,34 +549,60 @@
                     'background-color': '#fff',
                     'border-color': '#80bdff',
                     'outline': '0',
-                    'box-shadow': '0 0 0 0.2rem rgba(0,123,255,.25)'
+                    'box-shadow': '0 0 0 0.2rem rgba(255, 0, 0, 1)'
                 });
                 err = true;
 
             }
 
-            if(tap < 0 || tap > 99999999999999999999){
-                toastr.error("Tập phải là 1 số nguyên dương tối đa 99999999999999999999");
+            if(tap < 0){
+                toastr.error("Tập không thể là 1 số âm!");
                 if(!err) $('input[name="tap"]').focus();
                 $('input[name="tap"]').css({
                     'color': '#495057',
                     'background-color': '#fff',
                     'border-color': '#80bdff',
                     'outline': '0',
-                    'box-shadow': '0 0 0 0.2rem rgba(0,123,255,.25)'
+                    'box-shadow': '0 0 0 0.2rem rgba(255, 0, 0, 1)'
                 });
                 err = true;
             }
 
-            if(bai < 0 || bai > 99999999999999999999){
-                toastr.error("Bài phải là 1 số dương tối đa 99999999999999999999");
+            if(tap > 99999999999999999999){
+                toastr.error("Tập không được vượt quá 20 kí tự");
+                if(!err) $('input[name="tap"]').focus();
+                $('input[name="tap"]').css({
+                    'color': '#495057',
+                    'background-color': '#fff',
+                    'border-color': '#80bdff',
+                    'outline': '0',
+                    'box-shadow': '0 0 0 0.2rem rgba(255, 0, 0, 1)'
+                });
+                err = true;
+            }
+
+            if(bai < 0){
+                toastr.error("Bài không thể là 1 số âm!");
                 if(!err) $('input[name="bai"]').focus();
                 $('input[name="bai"]').css({
                     'color': '#495057',
                     'background-color': '#fff',
                     'border-color': '#80bdff',
                     'outline': '0',
-                    'box-shadow': '0 0 0 0.2rem rgba(0,123,255,.25)'
+                    'box-shadow': '0 0 0 0.2rem rgba(255, 0, 0, 1)'
+                });
+                err = true;
+            }
+
+            if(bai > 99999999999999999999){
+                toastr.error("Bài không được vượt quá 20 kí tự");
+                if(!err) $('input[name="bai"]').focus();
+                $('input[name="bai"]').css({
+                    'color': '#495057',
+                    'background-color': '#fff',
+                    'border-color': '#80bdff',
+                    'outline': '0',
+                    'box-shadow': '0 0 0 0.2rem rgba(255, 0, 0, 1)'
                 });
                 err = true;
             }
@@ -667,7 +630,7 @@
                     'background-color': '#fff',
                     'border-color': '#80bdff',
                     'outline': '0',
-                    'box-shadow': '0 0 0 0.2rem rgba(0,123,255,.25)'
+                    'box-shadow': '0 0 0 0.2rem rgba(255, 0, 0, 1)'
                 });
                 err = true;
             }
@@ -703,7 +666,7 @@
                     }, 500);
                 },
                 error: function (jqXHR, exception) {
-                    console.log(error);
+                    console.log(jqXHR.responseText);
                     toastr.error("Có lỗi xảy ra. Vui lòng thử lại sau");
                 }
             });
