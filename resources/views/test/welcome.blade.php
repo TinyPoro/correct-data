@@ -382,26 +382,26 @@
 
         $("#btn-change-id").click(function(){
             let post_id = $("#post-id").val();
-            if(prev_id != post_id) {
+            // if(prev_id != post_id) {
                 if(post_id == "" || isNaN(post_id) || Number(post_id) <= 0 || Number.isInteger(Number(post_id)) == false){
                     toastr.error("Tìm kiếm bằng ID: ID không được để trống và phải là số nguyên dương");
                     return;
                 }
                 window.location = "{{url('/post1')}}/" + post_id + "/edit";
-            }
+            // }
         });
 
         $("#post-id").bind("keypress", function(e) {
             if (e.keyCode == 13) {
                 e.preventDefault();
                 let post_id = $("#post-id").val();
-                if(prev_id != post_id) {
+                // if(prev_id != post_id) {
                     if(post_id == "" || isNaN(post_id) || Number(post_id) <= 0 || Number.isInteger(Number(post_id)) == false){
                         toastr.error("Tìm kiếm bằng ID: ID không được để trống và phải là số nguyên dương");
                         return;
                     }
                     window.location = "{{url('/post1')}}/" + post_id + "/edit";
-                }
+                // }
             }
         });
 
