@@ -475,7 +475,7 @@
             }
         });
 
-        let check_count = 0;
+        let check_count = {{$dkt_count}};
 
         $(".k-checkbox").change(function(){
             let check = isCheck($(this));
