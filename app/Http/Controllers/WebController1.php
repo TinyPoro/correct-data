@@ -273,7 +273,7 @@ class WebController1 extends Controller
                 'diem_kien_thuc' => $profile->diem_kien_thuc,
             ];
 
-            $dkt_count = count(explode(';', $profile->diem_kien_thuc));
+            $dkt_count = count(array_filter(explode(';', $profile->diem_kien_thuc)));
         }else{
             $profiles = [
                 'class' => '',
