@@ -449,11 +449,15 @@
             let value = $(this).val();
 
             if(value === 'Không xác định'){
-                $.each($("input[name='diem_kien_thuc']:checked"), function(){
-                    if($(this).val() !== 'Không xác định') $(this).prop("checked", false);
-                });
+                if($(this).is(':checked') === true){
+                    $.each($("input[name='diem_kien_thuc']:checked"), function(){
+                        if($(this).val() !== 'Không xác định') $(this).prop("checked", false);
+                    });
 
-                check_count = 1;
+                    check_count = 1;
+                }else{
+                    check_count = 0;
+                }
             }else{
                 $.each($("input[name='diem_kien_thuc']:checked"), function(){
                     if($(this).val() === 'Không xác định') {
