@@ -404,7 +404,6 @@
                 $.each($(".k-checkbox"), function(){
                     if(findText($(this)) === 'Không xác định') {
                         if(isCheck($(this)) === true) {
-                            check_count--;
                             uncheck($(this));
                         }
                     }
@@ -421,8 +420,12 @@
                     check_count--;
                 }
             }
+            console.log(check_count);
         });
 
+        $(".k-in").click(function () {
+            return false;
+        });
         $("#btn-create").click(function(){
             toastr.clear();
 
