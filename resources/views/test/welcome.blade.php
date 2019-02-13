@@ -82,12 +82,14 @@
                             <div style="display:inline-block; width:80%"></div>
 
                             <input class="form-control" type="text" name="tieu_de" value="{{$post->tieu_de}}">
+                            <div style="height:6px"></div>
                         </div>
                         <hr width="100%">
                         <div class="form-group" style="width: 100%;">
                             <label><b>Đường dẫn câu hỏi:</b></label>
 
                             <input class="form-control" type="text" name="duong_dan_hoi" value="{{$post->duong_dan_hoi}}">
+                            <div style="height:7px"></div>
                         </div>
                         <hr width="100%">
                         <div class="form-group" style="width: 100%;">

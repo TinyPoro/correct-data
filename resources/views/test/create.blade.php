@@ -73,6 +73,7 @@
                             <div style="display:inline-block; width:80%"></div>
 
                             <input class="form-control" type="text" name="tieu_de" id="title" value="">
+                            <div style="height:6px"></div>
                         </div>
                         <hr width="100%">
                         <div class="form-group" style="width: 100%;">
@@ -80,6 +81,7 @@
                             <div style="display:inline-block; width:80%"></div>
 
                             <input disabled class="form-control" type="text" name="duong_dan_hoi">
+                            <div style="height:7px"></div>
                         </div>
                         <hr width="100%">
                         <div class="form-group" style="width: 100%;">
