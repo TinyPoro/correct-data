@@ -271,7 +271,6 @@
 <script src="{{url('/js/kendo.all.min.js')}}"></script>
 
 <script>
-    $(document).ready(function() {
         $('.class_input').select2();
         $('.subject_input').select2();
         $('.category_input').select2();
@@ -752,6 +751,5 @@
             qeditor.setData(de_bai);
             aeditor.setData(dap_an);
         }
-    });
 </script>
 @endpush
