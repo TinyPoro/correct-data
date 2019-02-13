@@ -496,7 +496,7 @@
                         }
                     });
 
-                    $(this).click();
+                    if(!isCheck($(this))) $(this).click();
 
                     check_count = 1;
                 }else{
