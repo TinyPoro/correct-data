@@ -211,7 +211,7 @@
                 <hr width="100%">
                 <div class="form-group" style="width: 100%;">
                     <label style="vertical-align: top; width: 15%"><b>Đề bài:</b></label>
-                    <div style="display:inline-block; width:80%">
+                    <div style="display:inline-block; width:101%">
 
                     <textarea class="form-control" style="width:100%" id="postquestion" rows="7"
                         placeholder="Post's question in HTML"><?php echo standardCkeditor($post->de_bai); ?></textarea>
@@ -221,7 +221,7 @@
                 </div>
                 <div class="form-group" style="width: 100%;">
                     <label style="vertical-align: top; width: 15%"><b>Đáp án:</b></label>
-                    <div style="display:inline-block; width:80%">
+                    <div style="display:inline-block; width:101%">
                     <textarea class="form-control" style="width:100%" id="postanswer" rows="7"
                         placeholder="Post's answer"><?php echo standardCkeditor($post->dap_an); ?></textarea>
                     <p style="margin-top:20px; width: 100%" id="postanswer-display">
