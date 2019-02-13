@@ -30,6 +30,12 @@
             outline: 0!important;
             box-shadow: 0 0 0 0.1rem rgba(235, 50, 50, 1)!important;
         }
+        .k-state-focused{
+            box-shadow: none!important;
+        }
+        .k-state-hover{
+            background: none!important;
+        }
     </style>
 
     <?php
