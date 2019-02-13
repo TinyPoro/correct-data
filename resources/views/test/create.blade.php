@@ -23,6 +23,13 @@
             position: relative;
             left: 3rem;
         }
+        .error{
+            color: #495057!important;
+            background-color: #fff!important;
+            border-color: #80bdff!important;
+            outline: 0!important;
+            box-shadow: 0 0 0 0.1rem rgba(235, 50, 50, 1)!important;
+        }
     </style>
 
     <?php
@@ -439,52 +446,28 @@
             if(tap < 0){
                 toastr.error("Tập không thể là 1 số âm!");
                 if(!err) $('input[name="tap"]').focus();
-                $('input[name="tap"]').css({
-                    'color': '#495057',
-                    'background-color': '#fff',
-                    'border-color': '#80bdff',
-                    'outline': '0',
-                    'box-shadow': '0 0 0 0.2rem rgba(255, 0, 0, 1)'
-                });
+                $('input[name="tap"]').addClass('error');
                 err = true;
             }
 
             if(tap > 99999999999999999999){
                 toastr.error("Tập không được vượt quá 20 kí tự");
                 if(!err) $('input[name="tap"]').focus();
-                $('input[name="tap"]').css({
-                    'color': '#495057',
-                    'background-color': '#fff',
-                    'border-color': '#80bdff',
-                    'outline': '0',
-                    'box-shadow': '0 0 0 0.2rem rgba(255, 0, 0, 1)'
-                });
+                $('input[name="tap"]').addClass('error');
                 err = true;
             }
 
             if(bai < 0){
                 toastr.error("Bài không thể là 1 số âm!");
                 if(!err) $('input[name="bai"]').focus();
-                $('input[name="bai"]').css({
-                    'color': '#495057',
-                    'background-color': '#fff',
-                    'border-color': '#80bdff',
-                    'outline': '0',
-                    'box-shadow': '0 0 0 0.2rem rgba(255, 0, 0, 1)'
-                });
+                $('input[name="bai"]').addClass('error');
                 err = true;
             }
 
             if(bai > 99999999999999999999){
                 toastr.error("Bài không được vượt quá 20 kí tự");
                 if(!err) $('input[name="bai"]').focus();
-                $('input[name="bai"]').css({
-                    'color': '#495057',
-                    'background-color': '#fff',
-                    'border-color': '#80bdff',
-                    'outline': '0',
-                    'box-shadow': '0 0 0 0.2rem rgba(255, 0, 0, 1)'
-                });
+                $('input[name="bai"]').addClass('error');
                 err = true;
             }
 
@@ -506,13 +489,7 @@
             {
                 toastr.error("Thiếu thông tin tiêu đề");
                 if(!err) $('input[name="tieu_de"]').focus();
-                $('input[name="tieu_de"]').css({
-                    'color': '#495057',
-                    'background-color': '#fff',
-                    'border-color': '#80bdff',
-                    'outline': '0',
-                    'box-shadow': '0 0 0 0.2rem rgba(255, 0, 0, 1)'
-                });
+                $('input[name="tieu_de"]').addClass('error');
                 err = true;
             }
 
@@ -545,10 +522,14 @@
                     }, 500);
                 },
                 error: function (jqXHR, exception) {
-                    console.log(exception);
+                    console.log(jqXHR.responseText);
                     toastr.error("Có lỗi xảy ra. Vui lòng thử lại sau");
                 }
             });
+        });
+
+        $('input').keyup(function(){
+           $(this).removeClass('error');
         });
 
         function rependl(str){
