@@ -392,6 +392,8 @@
             let check = isCheck($(this));
             let value = findText($(this));
 
+            check_count = $(".k-multiselect-wrap > ul > li > span:first-child").length;
+
             if(value === 'Không xác định'){
                 if(check === true){
                     $.each($(".k-checkbox"), function(){
