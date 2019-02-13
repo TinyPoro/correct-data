@@ -69,7 +69,7 @@
                 <div class="row col-md-12">
                     <div class="col-md-5">
                         <div class="form-group" style="width: 100%;">
-                            <label style="vertical-align: top; width: 15%"><b>Tiêu đề:</b></label>
+                            <label style="vertical-align: top;"><b>Tiêu đề:</b></label>
                             <div style="display:inline-block; width:80%"></div>
 
                             <input class="form-control" type="text" name="tieu_de" id="title" value="">
@@ -78,7 +78,6 @@
                         <hr width="100%">
                         <div class="form-group" style="width: 100%;">
                             <label style="vertical-align: top;"><b>Đường dẫn câu hỏi:</b></label>
-                            <div style="display:inline-block; width:80%"></div>
 
                             <input disabled class="form-control" type="text" name="duong_dan_hoi">
                             <div style="height:7px"></div>
@@ -86,11 +85,9 @@
                         <hr width="100%">
                         <div class="form-group" style="width: 100%;">
                             <label style="vertical-align: top;"><b>Đường dẫn câu trả lời:</b></label>
-                            <div style="display:inline-block; width:80%"></div>
 
                             <input disabled class="form-control" type="text" name="duong_dan_tra_loi">
                         </div>
-                        <hr width="100%">
                     </div>
                     <div class="col-md-1" id="vertical-line">
 
