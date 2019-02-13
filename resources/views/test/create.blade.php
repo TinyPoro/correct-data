@@ -223,6 +223,11 @@
 <script src="{{url('/js/kendo.all.min.js')}}"></script>
 
 <script>
+    toastr.options = {
+        "preventDuplicates": true,
+        "preventOpenDuplicates": true
+    };
+    
     $(document).ready(function() {
         $('.class_input').select2();
         $('.subject_input').select2();
@@ -448,7 +453,7 @@
                 if(check === true){
 
                     if(check_count >= 5){
-                        toastr.clear();
+                        
                         toastr.error("Bạn chỉ được chọn tối đa 5 điểm kiến thức!");
                         uncheck($(this));
                     }
@@ -469,7 +474,7 @@
             }
         });
         $("#btn-create").click(function(){
-            toastr.clear();
+            
 
             let de_bai = trim(qeditor.getData());
             let dap_an = trim(aeditor.getData());
@@ -489,7 +494,7 @@
             let err = false;
 
             if(tap < 0){
-                toastr.clear();
+                
                 toastr.error("Tập không thể là 1 số âm!");
                 if(!err) $('input[name="tap"]').focus();
                 $('input[name="tap"]').addClass('error');
@@ -497,7 +502,7 @@
             }
 
             if(tap > 99999999999999999999){
-                toastr.clear();
+                
                 toastr.error("Tập không được vượt quá 20 kí tự");
                 if(!err) $('input[name="tap"]').focus();
                 $('input[name="tap"]').addClass('error');
@@ -505,7 +510,7 @@
             }
 
             if(bai < 0){
-                toastr.clear();
+                
                 toastr.error("Bài không thể là 1 số âm!");
                 if(!err) $('input[name="bai"]').focus();
                 $('input[name="bai"]').addClass('error');
@@ -513,7 +518,7 @@
             }
 
             if(bai > 99999999999999999999){
-                toastr.clear();
+                
                 toastr.error("Bài không được vượt quá 20 kí tự");
                 if(!err) $('input[name="bai"]').focus();
                 $('input[name="bai"]').addClass('error');
@@ -522,7 +527,7 @@
 
             if(dap_an.trim() == "")
             {
-                toastr.clear();
+                
                 toastr.error("Thiếu thông tin đáp án");
                 if(!err) aeditor.focus();
                 err = true;
@@ -530,7 +535,7 @@
 
             if(de_bai.trim() == "")
             {
-                toastr.clear();
+                
                 toastr.error("Thiếu thông tin đề bài");
                 if(!err) qeditor.focus();
                 err = true;
@@ -538,7 +543,7 @@
 
             if(tieu_de.trim() == "")
             {
-                toastr.clear();
+                
                 toastr.error("Thiếu thông tin tiêu đề");
                 if(!err) $('input[name="tieu_de"]').focus();
                 $('input[name="tieu_de"]').addClass('error');
@@ -568,7 +573,7 @@
                 url: "{{url('/api/post1')}}",
                 data: data,
                 success: function(result){
-                    toastr.clear();
+                    
                     toastr.success("Tạo thành công");
                     setTimeout(function() {
                         window.location.reload();
@@ -576,7 +581,7 @@
                 },
                 error: function (jqXHR, exception) {
                     console.log(jqXHR.responseText);
-                    toastr.clear();
+                    
                     toastr.error("Có lỗi xảy ra. Vui lòng thử lại sau");
                 }
             });
