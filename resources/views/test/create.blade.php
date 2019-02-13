@@ -36,6 +36,11 @@
         .k-state-hover{
             background: none!important;
         }
+        @media (min-width: 1200px){
+            .container {
+                max-width: 1200px!important;
+            }
+        }
     </style>
 
     <?php
@@ -60,27 +65,123 @@
                     <label><b>{{$guid}}</b></label>
                 </div>
                 <hr width="100%">
-                <div class="form-group" style="width: 100%;">
-                    <label style="vertical-align: top; width: 15%"><b>Tiêu đề:</b></label>
-                    <div style="display:inline-block; width:80%"></div>
 
-                    <input class="form-control" type="text" name="tieu_de" id="title" value="">
+                <div class="row col-md-12">
+                    <div class="col-md-5">
+                        <div class="form-group" style="width: 100%;">
+                            <label style="vertical-align: top; width: 15%"><b>Tiêu đề:</b></label>
+                            <div style="display:inline-block; width:80%"></div>
+
+                            <input class="form-control" type="text" name="tieu_de" id="title" value="">
+                        </div>
+                        <hr width="100%">
+                        <div class="form-group" style="width: 100%;">
+                            <label style="vertical-align: top;"><b>Đường dẫn câu hỏi:</b></label>
+                            <div style="display:inline-block; width:80%"></div>
+
+                            <input disabled class="form-control" type="text" name="duong_dan_hoi">
+                        </div>
+                        <hr width="100%">
+                        <div class="form-group" style="width: 100%;">
+                            <label style="vertical-align: top;"><b>Đường dẫn câu trả lời:</b></label>
+                            <div style="display:inline-block; width:80%"></div>
+
+                            <input disabled class="form-control" type="text" name="duong_dan_tra_loi">
+                        </div>
+                        <hr width="100%">
+                    </div>
+                    <div class="col-md-1" id="vertical-line">
+
+                    </div>
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="form-inline" style="width: 100%;">
+                                <div class="form-group mb-4">
+                                    <label style="vertical-align: top;"><b>Lớp:</b></label>
+                                    <div style="display:inline-block; width:80%"></div>
+
+                                    <select class="class_input" name="class" disabled>
+                                        @foreach($classes as $class)
+                                            <option value="{{$class->name}}">{{$class->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group mb-4" style="position: relative;left: 10%;">
+                                    <label style="vertical-align: top;"><b>Môn:</b></label>
+                                    <div style="display:inline-block; width:80%"></div>
+
+                                    <select class="subject_input" name="subject" disabled>
+                                        @foreach($subjects as $subject)
+                                            <option value="{{$subject->name}}">{{$subject->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <hr width="100%">
+
+                            <div class="form-inline" style="width: 100%;">
+                                <div class="form-group mb-4">
+                                    <label style="vertical-align: top;"><b>Loại sách:</b></label>
+                                    <div style="display:inline-block; width:80%"></div>
+
+                                    <select class="category_input" name="category">
+                                        <option value=""> </option>
+                                        @foreach($categories as $category)
+                                            <option value="{{$category->name}}">{{$category->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group mb-4">
+                                    <label style="vertical-align: top;"><b>Tập:</b></label>
+                                    <div style="display:inline-block; width:80%"></div>
+
+                                    <select class="tap_input" name="tap">
+                                        <?php
+                                        $taps = [
+                                            '1',
+                                            '2',
+                                            '3',
+                                            '4',
+                                            '5',
+                                        ]
+                                        ?>
+                                        @foreach($taps as $tap)
+                                            <option value="{{$tap}}">{{$tap}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <hr width="100%">
+
+                            <div class="form-group" style="width: 100%;">
+                                <label style="vertical-align: top;"><b>Chương:</b></label>
+                                <div style="display:inline-block; width:80%"></div>
+
+                                <input class="form-control" type="text" name="chuong">
+
+                            </div>
+                            <hr width="100%">
+
+                            <div class="form-group" style="width: 100%;">
+                                <label style="vertical-align: top;"><b>Bài:</b></label>
+                                <div style="display:inline-block; width:80%"></div>
+
+                                <input class="form-control" type="number" name="bai" min="0" max="99999999999999999999">
+
+                            </div>
+                            <hr width="100%">
+
+                            <div class="form-group" style="width: 100%;">
+                                <label style="vertical-align: top;"><b>Điểm kiến thức:</b></label>
+
+                                <input id="diem_kien_thuc_tree" name="diem_kien_thuc" style="width: 100%;" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
                 <hr width="100%">
-                {{--<div class="form-group" style="width: 100%;">--}}
-                    {{--<label style="vertical-align: top; width: 15%"><b>Đường dẫn câu hỏi:</b></label>--}}
-                    {{--<div style="display:inline-block; width:80%"></div>--}}
-
-                    {{--<input class="form-control" type="text" name="duong_dan_hoi">--}}
-                {{--</div>--}}
-                {{--<hr width="100%">--}}
-                {{--<div class="form-group" style="width: 100%;">--}}
-                    {{--<label style="vertical-align: top; width: 15%"><b>Đường dẫn câu trả lời:</b></label>--}}
-                    {{--<div style="display:inline-block; width:80%"></div>--}}
-
-                    {{--<input class="form-control" type="text" name="duong_dan_tra_loi">--}}
-                {{--</div>--}}
-                {{--<hr width="100%">--}}
 
                 <div class="form-group" style="width: 100%;">
                     <label style="vertical-align: top; width: 15%"><b>Đề bài:</b></label>
@@ -104,87 +205,6 @@
 
                 <hr width="100%">
 
-                <div class="form-inline" style="width: 100%;">
-                    <div class="form-group mb-4">
-                        <label style="vertical-align: top;"><b>Lớp:</b></label>
-                        <div style="display:inline-block; width:80%"></div>
-
-                        <select class="class_input" name="class" disabled>
-                            @foreach($classes as $class)
-                                <option value="{{$class->name}}">{{$class->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group mb-4">
-                        <label style="vertical-align: top;"><b>Môn:</b></label>
-                        <div style="display:inline-block; width:80%"></div>
-
-                        <select class="subject_input" name="subject" disabled>
-                            @foreach($subjects as $subject)
-                                <option value="{{$subject->name}}">{{$subject->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group mb-4">
-                        <label style="vertical-align: top;"><b>Loại sách:</b></label>
-                        <div style="display:inline-block; width:80%"></div>
-
-                        <select class="category_input" name="category">
-                            <option value=""> </option>
-                            @foreach($categories as $category)
-                                <option value="{{$category->name}}">{{$category->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <hr width="100%">
-
-                <div class="form-group" style="width: 100%;">
-                    <label style="vertical-align: top; width: 15%"><b>Tập:</b></label>
-                    <div style="display:inline-block; width:80%"></div>
-
-                    <select class="tap_input" name="tap">
-                        <?php
-                        $taps = [
-                            '1',
-                            '2',
-                            '3',
-                            '4',
-                            '5',
-                        ]
-                        ?>
-                        @foreach($taps as $tap)
-                            <option value="{{$tap}}">{{$tap}}</option>
-                        @endforeach
-                    </select>
-
-                </div>
-                <hr width="100%">
-
-                <div class="form-group" style="width: 100%;">
-                    <label style="vertical-align: top; width: 15%"><b>Chương:</b></label>
-                    <div style="display:inline-block; width:80%"></div>
-
-                    <input class="form-control" type="text" name="chuong">
-
-                </div>
-                <hr width="100%">
-
-                <div class="form-group" style="width: 100%;">
-                    <label style="vertical-align: top; width: 15%"><b>Bài:</b></label>
-                    <div style="display:inline-block; width:80%"></div>
-
-                    <input class="form-control" type="number" name="bai" value="1" min="0" max="99999999999999999999">
-
-                </div>
-                <hr width="100%">
-
-                <div class="form-group" style="width: 100%;">
-                    <label style="vertical-align: top; width: 15%"><b>Điểm kiến thức:</b></label>
-                    <div style="display:inline-block; width:80%"></div>
-
-                    <input id="diem_kien_thuc_tree" name="diem_kien_thuc" style="width: 100%;" />
-                </div>
                 <button class="btn btn-success" style="width: 30%; margin: 10px; padding: 15px;" id="btn-create">Lưu
                 </button>
             </div>

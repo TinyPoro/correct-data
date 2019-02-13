@@ -36,6 +36,11 @@
         .k-state-hover{
             background: none!important;
         }
+        @media (min-width: 1200px){
+            .container {
+                max-width: 1200px!important;
+            }
+        }
     </style>
 
     <?php
@@ -70,25 +75,132 @@
                     <button class="btn btn-success" style="display: inline-block;" id="btn-change-itemid">Tìm kiếm</button>
                 </div>
                 <hr width="100%">
-                <div class="form-group" style="width: 100%;">
-                    <label style="vertical-align: top; width: 15%"><b>Tiêu đề:</b></label>
-                    <div style="display:inline-block; width:80%"></div>
+                <div class="row col-md-12">
+                    <div class="col-md-5">
+                        <div class="form-group" style="width: 100%;">
+                            <label style="vertical-align: top;"><b>Tiêu đề:</b></label>
+                            <div style="display:inline-block; width:80%"></div>
 
-                    <input class="form-control" type="text" name="tieu_de" value="{{$post->tieu_de}}">
-                </div>
-                <hr width="100%">
-                <div class="form-group" style="width: 100%;">
-                    <label><b>Đường dẫn câu hỏi:</b></label>
-                    <div style="display:inline-block; width:80%"></div>
+                            <input class="form-control" type="text" name="tieu_de" value="{{$post->tieu_de}}">
+                        </div>
+                        <hr width="100%">
+                        <div class="form-group" style="width: 100%;">
+                            <label><b>Đường dẫn câu hỏi:</b></label>
 
-                    <input class="form-control" type="text" name="duong_dan_hoi" value="{{$post->duong_dan_hoi}}">
-                </div>
-                <hr width="100%">
-                <div class="form-group" style="width: 100%;">
-                    <label><b>Đường dẫn câu trả lời:</b></label>
-                    <div style="display:inline-block; width:80%"></div>
+                            <input class="form-control" type="text" name="duong_dan_hoi" value="{{$post->duong_dan_hoi}}">
+                        </div>
+                        <hr width="100%">
+                        <div class="form-group" style="width: 100%;">
+                            <label><b>Đường dẫn câu trả lời:</b></label>
 
-                    <input class="form-control" type="text" name="duong_dan_tra_loi" value="{{$post->duong_dan_tra_loi}}">
+                            <input class="form-control" type="text" name="duong_dan_tra_loi" value="{{$post->duong_dan_tra_loi}}">
+                        </div>
+                    </div>
+                    <div class="col-md-1" id="vertical-line">
+
+                    </div>
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="form-inline" style="width: 100%;">
+                                <div class="form-group mb-4">
+                                    <label style="vertical-align: top;"><b>Lớp:</b></label>
+                                    <div style="display:inline-block; width:80%"></div>
+
+                                    <select class="class_input" name="class" disabled>
+                                        @foreach($classes as $class)
+                                            @if($class->name === $profiles['class'])
+                                                <option value="{{$class->name}}" selected>{{$class->name}}</option>
+                                            @else
+                                                <option value="{{$class->name}}">{{$class->name}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group mb-4" style="position: relative;left: 10%;">
+                                    <label style="vertical-align: top;"><b>Môn:</b></label>
+                                    <div style="display:inline-block; width:80%"></div>
+
+                                    <select class="subject_input" name="subject" disabled>
+                                        @foreach($subjects as $subject)
+                                            @if($subject->name === $profiles['subject'])
+                                                <option value="{{$subject->name}}" selected>{{$subject->name}}</option>
+                                            @else
+                                                <option value="{{$subject->name}}">{{$subject->name}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <hr width="100%">
+
+                            <div class="form-inline" style="width: 100%;">
+                                <div class="form-group mb-4">
+                                    <label style="vertical-align: top;"><b>Loại sách:</b></label>
+                                    <div style="display:inline-block; width:80%"></div>
+
+                                    <select class="category_input" name="category">
+                                        <option value=""> </option>
+                                        @foreach($categories as $category)
+                                            @if($category->name === $profiles['category'])
+                                                <option value="{{$category->name}}" selected>{{$category->name}}</option>
+                                            @else
+                                                <option value="{{$category->name}}">{{$category->name}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group mb-4">
+                                    <label style="vertical-align: top;"><b>Tập:</b></label>
+                                    <div style="display:inline-block; width:80%"></div>
+
+                                    <select class="tap_input" name="tap">
+                                        <?php
+                                        $taps = [
+                                            '1',
+                                            '2',
+                                            '3',
+                                            '4',
+                                            '5',
+                                        ]
+                                        ?>
+                                        @foreach($taps as $tap)
+                                            @if($tap == $profiles['tap'])
+                                                <option value="{{$tap}}" selected>{{$tap}}</option>
+                                            @else
+                                                <option value="{{$tap}}">{{$tap}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <hr width="100%">
+
+                            <div class="form-group" style="width: 100%;">
+                                <label style="vertical-align: top;"><b>Chương:</b></label>
+                                <div style="display:inline-block; width:80%"></div>
+
+                                <input class="form-control" type="text" name="chuong" value="{{$profiles['chuong']}}">
+
+                            </div>
+                            <hr width="100%">
+
+                            <div class="form-group" style="width: 100%;">
+                                <label style="vertical-align: top;"><b>Bài:</b></label>
+                                <div style="display:inline-block; width:80%"></div>
+
+                                <input class="form-control" type="number" name="bai" value="{{$profiles['bai']}}" min="0" max="99999999999999999999">
+
+                            </div>
+                            <hr width="100%">
+
+                            <div class="form-group" style="width: 100%;">
+                                <label style="vertical-align: top;"><b>Điểm kiến thức:</b></label>
+
+                                <input id="diem_kien_thuc_tree" name="diem_kien_thuc" style="width: 100%;" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <hr width="100%">
                 <div class="form-group" style="width: 100%;">
@@ -111,102 +223,7 @@
                     </div>
                 </div>
                 <hr width="100%">
-                <div class="form-inline" style="width: 100%;">
-                    <div class="form-group mb-4">
-                        <label style="vertical-align: top;"><b>Lớp:</b></label>
-                        <div style="display:inline-block; width:80%"></div>
 
-                        <select class="class_input" name="class" disabled>
-                            @foreach($classes as $class)
-                                @if($class->name === $profiles['class'])
-                                    <option value="{{$class->name}}" selected>{{$class->name}}</option>
-                                @else
-                                    <option value="{{$class->name}}">{{$class->name}}</option>
-                                @endif
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group mb-4">
-                        <label style="vertical-align: top;"><b>Môn:</b></label>
-                        <div style="display:inline-block; width:80%"></div>
-
-                        <select class="subject_input" name="subject" disabled>
-                            @foreach($subjects as $subject)
-                                @if($subject->name === $profiles['subject'])
-                                    <option value="{{$subject->name}}" selected>{{$subject->name}}</option>
-                                @else
-                                    <option value="{{$subject->name}}">{{$subject->name}}</option>
-                                @endif
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group mb-4">
-                        <label style="vertical-align: top;"><b>Loại sách:</b></label>
-                        <div style="display:inline-block; width:80%"></div>
-
-                        <select class="category_input" name="category">
-                            <option value=""> </option>
-                            @foreach($categories as $category)
-                                @if($category->name === $profiles['category'])
-                                    <option value="{{$category->name}}" selected>{{$category->name}}</option>
-                                @else
-                                    <option value="{{$category->name}}">{{$category->name}}</option>
-                                @endif
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <hr width="100%">
-
-                <div class="form-group" style="width: 100%;">
-                    <label style="vertical-align: top; width: 15%"><b>Tập:</b></label>
-                    <div style="display:inline-block; width:80%"></div>
-
-                    <select class="tap_input" name="tap">
-                        <?php
-                        $taps = [
-                            '1',
-                            '2',
-                            '3',
-                            '4',
-                            '5',
-                        ]
-                        ?>
-                        @foreach($taps as $tap)
-                            @if($tap == $profiles['tap'])
-                                <option value="{{$tap}}" selected>{{$tap}}</option>
-                            @else
-                                <option value="{{$tap}}">{{$tap}}</option>
-                            @endif
-                        @endforeach
-                    </select>
-                </div>
-                <hr width="100%">
-
-                <div class="form-group" style="width: 100%;">
-                    <label style="vertical-align: top; width: 15%"><b>Chương:</b></label>
-                    <div style="display:inline-block; width:80%"></div>
-
-                    <input class="form-control" type="text" name="chuong" value="{{$profiles['chuong']}}">
-
-                </div>
-                <hr width="100%">
-
-                <div class="form-group" style="width: 100%;">
-                    <label style="vertical-align: top; width: 15%"><b>Bài:</b></label>
-                    <div style="display:inline-block; width:80%"></div>
-
-                    <input class="form-control" type="number" name="bai" value="{{$profiles['bai']}}" min="0" max="99999999999999999999">
-
-                </div>
-                <hr width="100%">
-
-                <div class="form-group" style="width: 100%;">
-                    <label style="vertical-align: top; width: 15%"><b>Điểm kiến thức:</b></label>
-                    <div style="display:inline-block; width:80%"></div>
-
-                    <input id="diem_kien_thuc_tree" name="diem_kien_thuc" style="width: 100%;" />
-                </div>
                 <button class="btn btn-success" style="width: 30%; margin: 10px; padding: 15px;" id="btn-edit">Lưu
                 </button>
             </div>
@@ -570,13 +587,20 @@
 
             let err = false;
 
-            if($("#post-id").val() != prev_id || $("#post-itemid").val() != prev_itemid)
+            if($("#post-id").val() != prev_id)
             {
-                toastr.error("Giữ nguyên ID và ItemID để thay đổi");
+                toastr.error("Bạn phải giữ nguyên trường ID để thay đổi!");
                 if(!err) $("#post-id").focus();
                 $("#post-id").addClass('error');
                 err = true;
+            }
 
+            if($("#post-itemid").val() != prev_itemid)
+            {
+                toastr.error("Bạn phải giữ nguyên trường Item ID để thay đổi!");
+                if(!err) $("#post-itemid").focus();
+                $("#post-itemid").addClass('error');
+                err = true;
             }
 
             if(tap < 0){
