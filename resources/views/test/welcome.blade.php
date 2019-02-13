@@ -504,9 +504,6 @@
 
                     if(!isCheck($(this))) $(this).click();
 
-                    check_count = 1;
-                }else{
-                    check_count = 0;
                 }
             }else{
                 $.each($(".k-checkbox"), function(){
@@ -518,17 +515,15 @@
                 });
 
                 if(check === true){
-                    check_count++;
 
-                    if(check_count > 5){
+                    if(check_count >= 5){
                         toastr.error("Bạn chỉ được chọn tối đa 5 điểm kiến thức!");
                         uncheck($(this));
                     }
-                }else{
-                    check_count--;
                 }
             }
-            console.log(check_count);
+
+            check_count = $(".k-multiselect-wrap > ul > li > span:first-child").length;
         });
 
         $(".k-in").click(function () {
