@@ -109,7 +109,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group mb-4" style="position: relative;left: 10%;">
+                                <div class="form-group mb-4" style="position: relative;left: 7%;">
                                     <label style="vertical-align: top;"><b>Môn:</b></label>
                                     <div style="display:inline-block; width:80%"></div>
 
