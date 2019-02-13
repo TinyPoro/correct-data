@@ -386,6 +386,14 @@
             return ele.next().click();
         };
 
+        let disable_value = ['Hình học - Hình trụ, hình nón, hình cầu','Hình học - Hệ thức lượng tam giác vuông','Hình học - đường tròn','Đại số - Căn thức','Đại số - Hàm số bậc nhất','Đại số - Hàm số bậc hai một ẩn','Đại số - Hệ hai phương trình bậc nhất hai ẩn'];
+
+        $.each($(".k-checkbox"), function(){
+            if(disable_value.indexOf(findText($(this))) !== -1) {
+                $(this).prop('disabled', true);
+            }
+        });
+
         let check_count = 0;
 
         $(".k-checkbox").change(function(){
