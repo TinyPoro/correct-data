@@ -256,7 +256,7 @@ class WebController1 extends Controller
         $data['histories'] = PostHistory::where('post_id', $post->id)->orderBy('created_at', 'desc')->get()->map(function ($history) {
             $history->de_bai = $this->endlToBr(json_decode($history->content)->de_bai);
             $history->dap_an = $this->endlToBr(json_decode($history->content)->dap_an);
-            $history->created = date('H:i d-m-Y', strtotime($history->created_at . ' + 10 minutes'));
+            $history->created = date('H:i d-m-Y', strtotime($history->created_at));
             return $history;
         });
 
@@ -384,7 +384,7 @@ class WebController1 extends Controller
         $data['histories'] = PostHistory::where('post_id', $postId)->orderBy('created_at', 'desc')->get()->map(function ($history) {
             $history->de_bai = json_decode($history->content)->de_bai;
             $history->dap_an = json_decode($history->content)->dap_an;
-            $history->created = date('H:i d-m-Y', strtotime($history->created_at . ' + 10 minutes'));
+            $history->created = date('H:i d-m-Y', strtotime($history->created_at));
             return $history;
         });
         $data['histories_json'] = json_encode($data['histories']);
@@ -417,7 +417,7 @@ class WebController1 extends Controller
         $post->tieu_de = $request->tieu_de;
         $post->duong_dan_hoi = $request->duong_dan_hoi;
         $post->duong_dan_tra_loi = $request->duong_dan_tra_loi;
-        $post->updated_at = date('Y-m-d H:i:s', strtotime(Carbon::now() . '+ 10 minutes'));
+        $post->updated_at = date('Y-m-d H:i:s', strtotime(Carbon::now()));
 
         $post->save();
 
