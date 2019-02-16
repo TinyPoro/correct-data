@@ -260,46 +260,14 @@ class WebController1 extends Controller
             return $history;
         });
 
-        $profile = \DB::table('data_profiles')->where('data_hoi_dap_id', $post->hoi_dap_id)->first();
-
-        if($profile){
-            $profiles = [
-                'class' => $profile->class,
-                'subject' => $profile->subject,
-                'category' => $profile->category,
-                'tap' => $profile->tap,
-                'chuong' => $profile->chuong,
-                'bai' => $profile->bai,
-                'diem_kien_thuc' => $profile->diem_kien_thuc,
-            ];
-
-            $dkt_count = count(array_filter(explode(';', $profile->diem_kien_thuc)));
-        }else{
-            $profiles = [
-                'class' => '',
-                'subject' => '',
-                'category' => '',
-                'tap' => 0,
-                'chuong' => '',
-                'bai' => 1,
-                'diem_kien_thuc' => '',
-            ];
-
-            $dkt_count = 0;
-        }
-
-        $classes = \DB::table('classes')->get();
-        $subjects = \DB::table('subjects')->get();
-        $categories = \DB::table('categories')->get();
+        $profiles = \DB::table('profiles')->get();
+        $post_profile = \DB::table('profiles')->where('id', $post->profile_id)->first();
 
         return view('test.welcome', [
             'post' => $post,
+            'post_profile' => $post_profile,
             'histories' => $data['histories'],
-            'profiles' => $profiles,
-            'classes' => $classes,
-            'subjects' => $subjects,
-            'categories' => $categories,
-            'dkt_count' => $dkt_count
+            'profiles' => $profiles
         ]);
     }
 
@@ -395,6 +363,8 @@ class WebController1 extends Controller
     {
         $post = Post::find($postId);
 
+        if(!$post) return ['message' => 'Invalid post id!'];
+
         $request->de_bai = $this->reverse($request->de_bai);
         $request->dap_an = $this->reverse($request->dap_an);
 
@@ -419,44 +389,18 @@ class WebController1 extends Controller
         $post->duong_dan_tra_loi = $request->duong_dan_tra_loi;
         $post->updated_at = date('Y-m-d H:i:s', strtotime(Carbon::now()));
 
+        if($request->bai) {
+            $profile = \DB::table('profiles')->where('lesson', $request->bai)->first();
+
+            if(!$profile) return ['message' => 'Invalid profile!'];
+
+            $post->profile_id = $profile->id;
+
+        }
+
+        $post->knowledge_question = $request->knowledge_point;
+
         $post->save();
-
-        if(\DB::table('data_profiles')->where('data_hoi_dap_id', $post->hoi_dap_id)->count() == 0){
-            \DB::table('data_profiles')->insert([
-                'data_hoi_dap_id' => $post->hoi_dap_id,
-                'class' => $request->class_name,
-                'subject' => $request->subject,
-                'category' => $request->category,
-                'tap' => $request->tap,
-                'chuong' => $request->chuong,
-                'bai' => $request->bai,
-                'diem_kien_thuc' => $request->diem_kien_thuc,
-            ]);
-        }else{
-            \DB::table('data_profiles')->where('data_hoi_dap_id', $post->hoi_dap_id)
-                ->update([
-                    'class' => $request->class_name,
-                    'subject' => $request->subject,
-                    'category' => $request->category,
-                    'tap' => $request->tap,
-                    'chuong' => $request->chuong,
-                    'bai' => $request->bai,
-                    'diem_kien_thuc' => $request->diem_kien_thuc,
-                ]);
-        }
-
-        $diem_kien_thucs = array_filter(explode(';', $request->diem_kien_thuc));
-
-        \DB::table('raw_label_items')->where('hoi_dap_id', $request->hoi_dap_id)->delete();
-
-        foreach ($diem_kien_thucs as $diem_kien_thuc){
-            $label = \DB::table('labels')->where('name', $diem_kien_thuc)->first();
-
-            \DB::table('raw_label_items')->insert([
-                'hoi_dap_id' => $post->hoi_dap_id,
-                'label_id' => $label->id,
-            ]);
-        }
 
         return ['message' => 'success'];
     }

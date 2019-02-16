@@ -17,7 +17,10 @@
             margin-left: 21rem!important;
         }
         .select2-container{
-            width: 10rem!important;
+            width: 100%!important;
+        }
+        .select2-selection{
+            min-height: 2.3rem!important;
         }
         .tab{
             position: relative;
@@ -67,7 +70,7 @@
                 <div class="form-group" style="width: 100%;">
                     <label style="width: 15%"><b>ID:</b></label>
                     <input class="form-control" style="display: inline-block; width:35%" id="post-id" min="0" type="html"
-                        placeholder="Post's id" value="{{$post->id}}" maxlength="8">
+                        placeholder="Post's id" value="{{$post->id}}" maxlength="8"/>
                     &nbsp;
                     <button class="btn btn-success" style="display: inline-block;" id="btn-change-id">Tìm kiếm</button>
                 </div>
@@ -109,85 +112,30 @@
                         <div class="row">
                             <div class="form-inline" style="width: 100%;">
                                 <div class="form-group mb-4">
-                                    <label style="vertical-align: top;"><b>Lớp:</b></label>
-                                    <div style="display:inline-block; width:80%"></div>
+                                    <label style="vertical-align: top;"><b>Mã sách:</b></label>
 
-                                    <select class="class_input" name="class" disabled>
-                                        @foreach($classes as $class)
-                                            @if($class->name === $profiles['class'])
-                                                <option value="{{$class->name}}" selected>{{$class->name}}</option>
-                                            @else
-                                                <option value="{{$class->name}}">{{$class->name}}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
+                                    <input class="form-control" id="ma_sach" name="ma_sach" style="width: 100%;" value="VNTK000000000107" disabled/>
                                 </div>
                                 <div class="form-group mb-4" style="position: relative;left: 7%;">
-                                    <label style="vertical-align: top;"><b>Môn:</b></label>
-                                    <div style="display:inline-block; width:80%"></div>
+                                    <label style="vertical-align: top;"><b>Loại:</b></label>
 
-                                    <select class="subject_input" name="subject" disabled>
-                                        @foreach($subjects as $subject)
-                                            @if($subject->name === $profiles['subject'])
-                                                <option value="{{$subject->name}}" selected>{{$subject->name}}</option>
-                                            @else
-                                                <option value="{{$subject->name}}">{{$subject->name}}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
+                                    @if($post_profile)
+                                        <input class="form-control" type="text" name="type" style="width: 100%;" value="{{$post_profile->type}}">
+                                    @else
+                                        <input class="form-control" type="text" name="type" style="width: 100%;" value="" disabled>
+                                    @endif
                                 </div>
                             </div>
-                            <hr width="100%">
-
-                            <div class="form-inline" style="width: 100%;">
-                                <div class="form-group mb-4">
-                                    <label style="vertical-align: top;"><b>Loại sách:</b></label>
-                                    <div style="display:inline-block; width:80%"></div>
-
-                                    <select class="category_input" name="category">
-                                        <option value=""> </option>
-                                        @foreach($categories as $category)
-                                            @if($category->name === $profiles['category'])
-                                                <option value="{{$category->name}}" selected>{{$category->name}}</option>
-                                            @else
-                                                <option value="{{$category->name}}">{{$category->name}}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group mb-4">
-                                    <label style="vertical-align: top;"><b>Tập:</b></label>
-                                    <div style="display:inline-block; width:80%"></div>
-
-                                    <select class="tap_input" name="tap">
-                                        <?php
-                                        $taps = [
-                                            '1',
-                                            '2',
-                                            '3',
-                                            '4',
-                                            '5',
-                                        ]
-                                        ?>
-                                        @foreach($taps as $tap)
-                                            @if($tap == $profiles['tap'])
-                                                <option value="{{$tap}}" selected>{{$tap}}</option>
-                                            @else
-                                                <option value="{{$tap}}">{{$tap}}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
                             <hr width="100%">
 
                             <div class="form-group" style="width: 100%;">
                                 <label style="vertical-align: top;"><b>Chương:</b></label>
-                                <div style="display:inline-block; width:80%"></div>
 
-                                <input class="form-control" type="text" name="chuong" value="{{$profiles['chuong']}}">
-
+                                @if($post_profile)
+                                    <input class="form-control" type="text" name="chapter" style="width: 100%;" value="{{$post_profile->chapter}}">
+                                @else
+                                    <input class="form-control" type="text" name="chapter" style="width: 100%;" value="" disabled>
+                                @endif
                             </div>
                             <hr width="100%">
 
@@ -195,15 +143,40 @@
                                 <label style="vertical-align: top;"><b>Bài:</b></label>
                                 <div style="display:inline-block; width:80%"></div>
 
-                                <input class="form-control" type="number" name="bai" value="{{$profiles['bai']}}" min="0" max="99999999999999999999">
+                                <select class="bai_input" name="bai">
+                                    <option value=""></option>
+                                    @foreach($profiles as $profile)
+                                        @if($post_profile)
+                                            @if($profile->lesson === $post_profile->lesson)
+                                                <option value="{{$profile->lesson}}" selected>{{$profile->lesson}}</option>
+                                            @else
+                                                <option value="{{$profile->lesson}}">{{$profile->lesson}}</option>
+                                            @endif
+                                        @else
+                                            <option value="{{$profile->lesson}}">{{$profile->lesson}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                            <hr width="100%">
+
+                            <div class="form-group" style="width: 100%;">
+                                <label style="vertical-align: top;"><b>knowledge point tổng:</b></label>
+                                <div style="display:inline-block; width:80%"></div>
+
+                                @if($post_profile)
+                                    <input class="form-control" type="text" name="total_knowledge_point" style="width: 100%;" value="{{$post_profile->knowledge_point}}">
+                                @else
+                                    <input class="form-control" type="text" name="total_knowledge_point" style="width: 100%;" value="" disabled>
+                                @endif
 
                             </div>
                             <hr width="100%">
 
                             <div class="form-group" style="width: 100%;">
-                                <label style="vertical-align: top;"><b>Điểm kiến thức:</b></label>
+                                <label style="vertical-align: top;"><b>knowledge point:</b></label>
 
-                                <input id="diem_kien_thuc_tree" name="diem_kien_thuc" style="width: 100%;" />
+                                <input id="knowledge_point_tree" name="diem_kien_thuc" style="width: 100%;"/>
                             </div>
                         </div>
                     </div>
@@ -275,501 +248,411 @@
         "preventDuplicates": true,
         "preventOpenDuplicates": true
     };
-    
-        $('.class_input').select2();
-        $('.subject_input').select2();
-        $('.category_input').select2();
-        $('.tap_input').select2();
-        let histories = {!! $histories !!};
-        let prev_id = "{{$post->id}}";
-        let prev_itemid = "{{$post->hoi_dap_id}}";
 
-        $("#diem_kien_thuc_tree").kendoDropDownTree({
+    $('.bai_input').select2();
+    let histories = {!! $histories !!};
+    let prev_id = "{{$post->id}}";
+    let prev_itemid = "{{$post->hoi_dap_id}}";
+
+    let profiles = {!! $profiles !!};
+
+    $('.bai_input').change(function(){
+        let value = $(this).val();
+
+        profiles.forEach(function(profile){
+            if(profile.lesson === value) {
+                $('input[name="type"]').val(profile.type);
+                $('input[name="chapter"]').val(profile.chapter);
+                $('input[name="total_knowledge_point"]').val(profile.knowledge_point);
+
+                let knowledge_point = profile.knowledge_point;
+                let knowledge_point_arr = knowledge_point.split("|");
+                let total_knowledge_point_html = [];
+
+                knowledge_point_arr.forEach(function(knowledge_point_value){
+                    total_knowledge_point_html.push({
+                        text: knowledge_point_value,
+                    });
+                });
+
+                reset_knowledge_point_tree(total_knowledge_point_html);
+
+            }
+        });
+    });
+
+    $('input[name="trang"]').keydown(function(e){
+        if(!((e.keyCode > 95 && e.keyCode < 106)
+            || (e.keyCode > 47 && e.keyCode < 58)
+            || e.keyCode === 8)) {
+            return false;
+        }
+    });
+
+    let check_count = 0;
+
+    let findText = function(ele){
+        return ele.parent().next().text();
+    };
+
+    let isCheck = function(ele){
+        return ele.is(':checked');
+    };
+
+    let uncheck = function(ele){
+        return ele.next().click();
+    };
+
+    let reset_knowledge_point_tree = function(dataSource){
+        $('.k-widget.k-dropdowntree.k-dropdowntree-clearable').replaceWith('<input id="knowledge_point_tree" name="diem_kien_thuc" style="width: 100%;"/>');
+
+        $("#knowledge_point_tree").kendoDropDownTree({
             placeholder: "Chọn tối đa 5 điểm kiến thức",
             checkboxes: true,
             autoClose: false,
             filter: "contains",
-            dataSource: [
-                {
-                    text: "Không xác định",
-                },
-                {
-                    text: "Hình học - Hình trụ, hình nón, hình cầu", expanded: true, items: [
-                        { text: "hình trụ" },
-                        { text: "hình nón" },
-                        { text: "hình nón cụt" },
-                        { text: "hình cầu" },
-                        { text: "diện tích xung quanh" },
-                        { text: "thể tích" }
-                    ]
-                },
-                {
-                    text: "Hình học - Hệ thức lượng tam giác vuông", items: [
-                        { text: "đường trung tuyến" },
-                        { text: "đường cao" },
-                        { text: "đường phân giác" },
-                        { text: "cạnh góc vuông" },
-                        { text: "hình chiếu" },
-                        { text: "tam giác đồng dạng" },
-                        { text: "tam giác đều" },
-                        { text: "tam giác cân" },
-                        { text: "tam giác vuông" },
-                        { text: "tam giác" },
-                        { text: "lượng giác, sin, cos, tg, cotg." }
-                    ]
-                },
-                {
-                    text: "Hình học - đường tròn", items: [
-                        { text: "bán kính" },
-                        { text: "đường kính" },
-                        { text: "dây của đường tròn" },
-                        { text: "cung của đường tròn" },
-                        { text: "chu vi" },
-                        { text: "khoảng cách từ tâm đến dây và cung" },
-                        { text: "độ dài đường tròn" },
-                        { text: "cung tròn" },
-                        { text: "hình quạt" },
-                        { text: "diện tích" },
-                        { text: "đường tròn nội tiếp" },
-                        { text: "đường tròn ngoại tiếp" },
-                        { text: "tam giác nội tiếp" },
-                        { text: "tam giác ngoại tiếp" },
-                        { text: "đa gia giác nội tiếp (tứ giác, lục giác)" },
-                        { text: "đa giác ngoại tiếp" },
-                        { text: "tâm đối xứng" },
-                        { text: "trục đối xứng" },
-                        { text: "tiếp tuyến đường tròn" },
-                        { text: "vị trí tương đối của hai đường tròn" },
-                        { text: "góc tâm" },
-                        { text: "góc nội tiếp." },
-                    ]
-                },
-                {
-                    text: "Đại số - Căn thức", items: [
-                        { text: "căn bậc hai" },
-                        { text: "khai phương" },
-                        { text: "bài toán rút gọn và tính biểu thức (chứa căn thức)" },
-                        { text: "căn bậc ba" },
-                        { text: "lập phương." },
-                    ]
-                },
-                {
-                    text: "Đại số - Hàm số bậc nhất", items: [
-                        { text: "hàm đồng biến" },
-                        { text: "hàm nghịch biến" },
-                        { text: "đường thẳng." },
-                    ]
-                },
-                {
-                    text: "Đại số - Hàm số bậc hai một ẩn", items: [
-                        { text: "vẽ đồ thị - parabol" },
-                        { text: "phương trình bậc hai" },
-                        { text: "phương trình trùng phương" },
-                        { text: "phương trình chứa ẩn mẫu thức" },
-                    ]
-                },
-                {
-                    text: "Đại số - Hệ hai phương trình bậc nhất hai ẩn", items: [
-                        { text: "tìm tọa độ mặt phẳng" },
-                        { text: "tìm đường thẳng" },
-                    ]
-                },
-            ]
+            dataSource: dataSource
         });
 
-        CKEDITOR.replace('postquestion', { extraPlugins: 'mathjax, eqneditor', height: '250px', allowedContent: true});
-        CKEDITOR.replace('postanswer', { extraPlugins: 'mathjax, eqneditor', height: '250px', allowedContent: true});
-        // CKEDITOR.replace('postquestion', { extraPlugins: 'eqneditor', height: '250px', allowedContent: true});
-        // CKEDITOR.replace('postanswer', { extraPlugins: 'eqneditor', height: '250px', allowedContent: true});
-
-        let qeditor = CKEDITOR.instances.postquestion;
-        let aeditor = CKEDITOR.instances.postanswer;
-
-        qeditor.on( 'fileUploadRequest', function( evt ) {
-            let post_id = $("#post-hoi-dap-id").val();
-
-            evt.data.requestData.id = post_id;
-            evt.data.requestData.type = 'Problems';
-
-        } );
-
-        aeditor.on( 'fileUploadRequest', function( evt ) {
-            let post_id = $("#post-hoi-dap-id").val();
-
-            evt.data.requestData.id = post_id;
-            evt.data.requestData.type = 'Solutions';
-        } );
-
-        function renderMathJax()
-        {
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-        }
-
-        (function($) {
-            $.fn.inputFilter = function(inputFilter) {
-                return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function() {
-                    if (inputFilter(this.value)) {
-                        this.oldValue = this.value;
-                        this.oldSelectionStart = this.selectionStart;
-                        this.oldSelectionEnd = this.selectionEnd;
-                    } else if (this.hasOwnProperty("oldValue")) {
-                        this.value = this.oldValue;
-                        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
-                    }
-                });
-            };
-        }(jQuery));
-
-        $("#btn-change-id").click(function(){
-            let post_id = $("#post-id").val();
-            // if(prev_id != post_id) {
-                if(post_id == "" || isNaN(post_id) || Number(post_id) <= 0 || Number.isInteger(Number(post_id)) == false){
-                    
-                    toastr.error("Tìm kiếm bằng ID: ID không được để trống và phải là số nguyên dương");
-                    return;
-                }
-                window.location = "{{url('/post1')}}/" + post_id + "/edit";
-            // }
-        });
-
-        $("#post-id").bind("keypress", function(e) {
-            if (e.keyCode == 13) {
-                e.preventDefault();
-                let post_id = $("#post-id").val();
-                // if(prev_id != post_id) {
-                    if(post_id == "" || isNaN(post_id) || Number(post_id) <= 0 || Number.isInteger(Number(post_id)) == false){
-                        
-                        toastr.error("Tìm kiếm bằng ID: ID không được để trống và phải là số nguyên dương");
-                        return;
-                    }
-                    window.location = "{{url('/post1')}}/" + post_id + "/edit";
-                // }
-            }
-        });
-
-        $("#post-id").inputFilter(function(value) {
-            return /^\d*$/.test(value); });
-
-        $("#post-itemid").inputFilter(function(value) {
-            return /^[0-9a-zA-Z.]*$/i.test(value); });
-
-        $("#btn-change-itemid").click(function(){
-            let post_id = $("#post-itemid").val();
-            if(prev_itemid != post_id){
-                if(post_id == ""){
-                    
-                    toastr.error("Tìm kiếm bằng ItemId: ItemID không được để trống");
-                    return;
-                }
-                window.location = "{{url('/post1')}}/" + post_id + "/edit";
-            }
-        });
-
-        $("#postquestion-display")[0].innerHTML = qeditor.getData();
-        $("#postanswer-display")[0].innerHTML = aeditor.getData();
-
-        qeditor.on('change', function(){
-            $("#postquestion-display")[0].innerHTML = qeditor.getData();
-            renderMathJax();
-        });
-
-        aeditor.on('change', function(){
-            $("#postanswer-display")[0].innerHTML = aeditor.getData();
-            renderMathJax();
-        });
-
-        $('#postquestion').bind('input propertychange', function() {
-            $("#postquestion-display")[0].innerHTML = qeditor.getData();
-            // renderMathJax();
-        });
-
-        $('#postanswer').bind('input propertychange', function() {
-            $("#postanswer-display")[0].innerHTML = aeditor.getData();
-            // renderMathJax();
-        });
-
-        let trim = function(text){
-            text = text.replace('<span class="math-tex">', "");
-            text = text.replace('</span>', "");
-
-            text = text.replace('http://dev.data.giaingay.io/TestProject/public/media/', "media/");
-
-            return text;
-        };
-
-        let findText = function(ele){
-            return ele.parent().next().text();
-        };
-
-        let isCheck = function(ele){
-            return ele.is(':checked');
-        };
-
-        let uncheck = function(ele){
-            return ele.next().click();
-        };
-
-        let old_dkt = '{{$profiles['diem_kien_thuc']}}';
-        old_dkt = old_dkt.split(';');
-
-        $.each($(".k-checkbox"), function(){
-            if(old_dkt.indexOf(findText($(this))) !== -1) {
-                $(this).next().click();
-            }
-        });
-
-        let disable_value = ['Hình học - Hình trụ, hình nón, hình cầu','Hình học - Hệ thức lượng tam giác vuông','Hình học - đường tròn','Đại số - Căn thức','Đại số - Hàm số bậc nhất','Đại số - Hàm số bậc hai một ẩn','Đại số - Hệ hai phương trình bậc nhất hai ẩn'];
-
-        $.each($(".k-checkbox"), function(){
-            if(disable_value.indexOf(findText($(this))) !== -1) {
-                $(this).prop('disabled', true);
-            }
-        });
-
-        let check_count = {{$dkt_count}};
+        check_count = 0;
 
         $(".k-checkbox").change(function(){
             let check = isCheck($(this));
-            let value = findText($(this));
 
             check_count = $(".k-multiselect-wrap > ul > li > span:first-child").length;
+            if(check === true){
 
-            if(value === 'Không xác định'){
-                if(check === true){
-                    $.each($(".k-checkbox"), function(){
-                        if(findText($(this)) !== 'Không xác định' && isCheck($(this))) {
-                            uncheck($(this));
-                        }
-                    });
+                if(check_count >= 5){
 
-                    if(!isCheck($(this))) $(this).click();
-
-                }
-            }else{
-                $.each($(".k-checkbox"), function(){
-                    if(findText($(this)) === 'Không xác định') {
-                        if(isCheck($(this)) === true) {
-                            uncheck($(this));
-                        }
-                    }
-                });
-
-                if(check === true){
-
-                    if(check_count >= 5){
-                        
-                        toastr.error("Bạn chỉ được chọn tối đa 5 điểm kiến thức!");
-                        uncheck($(this));
-                    }
+                    toastr.error("Bạn chỉ được chọn tối đa 5 điểm kiến thức!");
+                    uncheck($(this));
                 }
             }
 
             check_count = $(".k-multiselect-wrap > ul > li > span:first-child").length;
+
         });
 
         $(".k-in").click(function () {
             return false;
         });
+    };
 
-        $('input[name="bai"]').keydown(function(e){
-            if(!((e.keyCode > 95 && e.keyCode < 106)
-                || (e.keyCode > 47 && e.keyCode < 58)
-                || e.keyCode === 8)) {
-                return false;
-            }
+    let old_total_knowledge_point = '<?php
+            if($post_profile) echo json_encode($post_profile->knowledge_point);
+            else echo '';
+        ?>';
+
+    if(old_total_knowledge_point){
+        let old_knowledge_point = '{!! $post->knowledge_question !!}';
+
+        old_total_knowledge_point = old_total_knowledge_point.split('|');
+
+        let total_knowledge_point_html = [];
+
+        old_total_knowledge_point.forEach(function(knowledge_point_value){
+            total_knowledge_point_html.push({
+                text: knowledge_point_value,
+            });
         });
 
-        $("#btn-edit").click(function(){
-            
+        reset_knowledge_point_tree(total_knowledge_point_html);
 
-            let de_bai = trim(qeditor.getData());
-            let dap_an = trim(aeditor.getData());
-            let tieu_de = $('input[name="tieu_de"]').val();
-            let duong_dan_hoi = $('input[name="duong_dan_hoi"]').val();
-            let duong_dan_tra_loi = $('input[name="duong_dan_tra_loi"]').val();
-            let class_name = $('select[name="class"]').val();
-            let subject = $('select[name="subject"]').val();
-            let category = $('select[name="category"]').val();
-            let tap = $('select[name="tap"]').val();
-            let chuong = $('input[name="chuong"]').val();
-            let bai = $('input[name="bai"]').val();
-            let diem_kien_thuc = [];
-            $.each($(".k-multiselect-wrap > ul > li > span:first-child"), function(){
-                diem_kien_thuc.push($(this).text());
-            });
-            diem_kien_thuc = diem_kien_thuc.join(";");
+        old_knowledge_point = old_knowledge_point.split('|');
 
-            let err = false;
+        check_count = old_knowledge_point.length;
 
-            if($("#post-id").val() != prev_id)
-            {
-                
-                toastr.error("Bạn phải giữ nguyên trường ID để thay đổi!");
-                if(!err) $("#post-id").focus();
-                $("#post-id").addClass('error');
-                err = true;
+        $.each($(".k-checkbox"), function(){
+            if(old_knowledge_point.indexOf(findText($(this))) !== -1) {
+                $(this).next().click();
             }
+        });
+    }else{
+        check_count = 0;
 
-            if($("#post-itemid").val() != prev_itemid)
-            {
-                
-                toastr.error("Bạn phải giữ nguyên trường Item ID để thay đổi!");
-                if(!err) $("#post-itemid").focus();
-                $("#post-itemid").addClass('error');
-                err = true;
-            }
+        reset_knowledge_point_tree([]);
+    }
 
-            if(tap < 0){
-                
-                toastr.error("Tập không thể là 1 số âm!");
-                if(!err) $('input[name="tap"]').focus();
-                $('input[name="tap"]').addClass('error');
-                err = true;
-            }
+    CKEDITOR.replace('postquestion', { extraPlugins: 'mathjax, eqneditor', height: '250px', allowedContent: true});
+    CKEDITOR.replace('postanswer', { extraPlugins: 'mathjax, eqneditor', height: '250px', allowedContent: true});
+    // CKEDITOR.replace('postquestion', { extraPlugins: 'eqneditor', height: '250px', allowedContent: true});
+    // CKEDITOR.replace('postanswer', { extraPlugins: 'eqneditor', height: '250px', allowedContent: true});
 
-            if(tap > 99999999999999999999){
-                
-                toastr.error("Tập không được vượt quá 20 kí tự");
-                if(!err) $('input[name="tap"]').focus();
-                $('input[name="tap"]').addClass('error');
-                err = true;
-            }
+    let qeditor = CKEDITOR.instances.postquestion;
+    let aeditor = CKEDITOR.instances.postanswer;
 
-            if(bai < 0){
-                
-                toastr.error("Bài không thể là 1 số âm!");
-                if(!err) $('input[name="bai"]').focus();
-                $('input[name="bai"]').addClass('error');
-                err = true;
-            }
+    qeditor.on( 'fileUploadRequest', function( evt ) {
+        let post_id = $("#post-hoi-dap-id").val();
 
-            if(bai > 99999999999999999999){
-                
-                toastr.error("Bài không được vượt quá 20 kí tự");
-                if(!err) $('input[name="bai"]').focus();
-                $('input[name="bai"]').addClass('error');
-                err = true;
-            }
+        evt.data.requestData.id = post_id;
+        evt.data.requestData.type = 'Problems';
 
-            if(dap_an.trim() == "")
-            {
-                
-                toastr.error("Thiếu thông tin đáp án");
-                if(!err) aeditor.focus();
-                err = true;
-            }
+    } );
 
-            if(de_bai.trim() == "")
-            {
-                
-                toastr.error("Thiếu thông tin đề bài");
-                if(!err) qeditor.focus();
-                err = true;
-            }
+    aeditor.on( 'fileUploadRequest', function( evt ) {
+        let post_id = $("#post-hoi-dap-id").val();
 
-            if(tieu_de.trim() == "")
-            {
-                
-                toastr.error("Thiếu thông tin tiêu đề");
-                if(!err) $('input[name="tieu_de"]').focus();
-                $('input[name="tieu_de"]').addClass('error');
-                err = true;
-            }
+        evt.data.requestData.id = post_id;
+        evt.data.requestData.type = 'Solutions';
+    } );
 
-            if(err) return;
+    function renderMathJax()
+    {
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+    }
 
-            $("#btn-edit").prop('disabled', true);
-            let data = {
-                de_bai: de_bai,
-                dap_an: dap_an,
-                tieu_de: tieu_de,
-                duong_dan_hoi: duong_dan_hoi,
-                duong_dan_tra_loi: duong_dan_tra_loi,
-                class_name: class_name,
-                subject: subject,
-                category: category,
-                tap: tap,
-                chuong: chuong,
-                bai: bai,
-                diem_kien_thuc: diem_kien_thuc,
-            }
-
-            let post_id = $("#post-id").val();
-
-            $.ajax({
-                method: 'PUT',
-                url: "{{url('api/post1')}}/"+post_id,
-                data: data,
-                success: function(result){
-                    
-                    toastr.success("Sửa Thành công");
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 500);
-                },
-                error: function (jqXHR, exception) {
-                    console.log(jqXHR.responseText);
-                    
-                    toastr.error("Có lỗi xảy ra. Vui lòng thử lại sau");
+    (function($) {
+        $.fn.inputFilter = function(inputFilter) {
+            return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function() {
+                if (inputFilter(this.value)) {
+                    this.oldValue = this.value;
+                    this.oldSelectionStart = this.selectionStart;
+                    this.oldSelectionEnd = this.selectionEnd;
+                } else if (this.hasOwnProperty("oldValue")) {
+                    this.value = this.oldValue;
+                    this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
                 }
             });
-        });
+        };
+    }(jQuery));
 
-        $('input').keyup(function(){
-            $(this).removeClass('error');
-        });
+    $("#btn-change-id").click(function(){
+        let post_id = $("#post-id").val();
+        // if(prev_id != post_id) {
+        if(post_id == "" || isNaN(post_id) || Number(post_id) <= 0 || Number.isInteger(Number(post_id)) == false){
 
-        function rependl(str){
-            str = str.replace('\nolimits', '\zolimits');
-            str = str.replace('\notin', '\zotin');
-            str = str.replace('\nleq', '\zleq');
-            str = str.replace('\ngeq', '\zgeq');
-            str = str.replace('\neq', '\zeq');
-            str = str.replace('\ne', '\ze');
-            str = str.replace('\n', '<br/>');
-            str = str.replace('\zolimits', '\nolimits');
-            str = str.replace('\zotin', '\notin');
-            str = str.replace('\zleq', '\nleq');
-            str = str.replace('\zgeq', '\ngeq');
-            str = str.replace('\zeq', '\neq');
-            str = str.replace('\ze', '\ne');
-            return str;
+            toastr.error("Tìm kiếm bằng ID: ID không được để trống và phải là số nguyên dương");
+            return;
+        }
+        window.location = "{{url('/post1')}}/" + post_id + "/edit";
+        // }
+    });
+
+    $("#post-id").bind("keypress", function(e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            let post_id = $("#post-id").val();
+            // if(prev_id != post_id) {
+            if(post_id == "" || isNaN(post_id) || Number(post_id) <= 0 || Number.isInteger(Number(post_id)) == false){
+
+                toastr.error("Tìm kiếm bằng ID: ID không được để trống và phải là số nguyên dương");
+                return;
+            }
+            window.location = "{{url('/post1')}}/" + post_id + "/edit";
+            // }
+        }
+    });
+
+    $("#post-id").inputFilter(function(value) {
+        return /^\d*$/.test(value); });
+
+    $("#post-itemid").inputFilter(function(value) {
+        return /^[0-9a-zA-Z.]*$/i.test(value); });
+
+    $("#btn-change-itemid").click(function(){
+        let post_id = $("#post-itemid").val();
+        if(prev_itemid != post_id){
+            if(post_id == ""){
+
+                toastr.error("Tìm kiếm bằng ItemId: ItemID không được để trống");
+                return;
+            }
+            window.location = "{{url('/post1')}}/" + post_id + "/edit";
+        }
+    });
+
+    $("#postquestion-display")[0].innerHTML = qeditor.getData();
+    $("#postanswer-display")[0].innerHTML = aeditor.getData();
+
+    qeditor.on('change', function(){
+        $("#postquestion-display")[0].innerHTML = qeditor.getData();
+        renderMathJax();
+    });
+
+    aeditor.on('change', function(){
+        $("#postanswer-display")[0].innerHTML = aeditor.getData();
+        renderMathJax();
+    });
+
+    $('#postquestion').bind('input propertychange', function() {
+        $("#postquestion-display")[0].innerHTML = qeditor.getData();
+        // renderMathJax();
+    });
+
+    $('#postanswer').bind('input propertychange', function() {
+        $("#postanswer-display")[0].innerHTML = aeditor.getData();
+        // renderMathJax();
+    });
+
+    let trim = function(text){
+        text = text.replace('<span class="math-tex">', "");
+        text = text.replace('</span>', "");
+
+        text = text.replace('http://dev.data.giaingay.io/TestProject/public/media/', "media/");
+
+        return text;
+    };
+
+    $("#btn-edit").click(function(){
+
+
+        let de_bai = trim(qeditor.getData());
+        let dap_an = trim(aeditor.getData());
+        let tieu_de = $('input[name="tieu_de"]').val();
+        let duong_dan_hoi = $('input[name="duong_dan_hoi"]').val();
+        let duong_dan_tra_loi = $('input[name="duong_dan_tra_loi"]').val();
+
+        let ma_sach = $('input[name="ma_sach"]').val();
+        let type = $('input[name="type"]').val();
+        let chapter = $('input[name="chapter"]').val();
+        let bai = $('select[name="bai"]').val();
+        let total_knowledge_point = $('input[name="total_knowledge_point"]').val();
+
+        let knowledge_point = [];
+        $.each($(".k-multiselect-wrap > ul > li > span:first-child"), function(){
+            knowledge_point.push($(this).text());
+        });
+        knowledge_point = knowledge_point.join("|");
+
+        let err = false;
+
+        if($("#post-id").val() !== prev_id)
+        {
+
+            toastr.error("Bạn phải giữ nguyên trường ID để thay đổi!");
+            if(!err) $("#post-id").focus();
+            $("#post-id").addClass('error');
+            err = true;
         }
 
-        function addSpan(str)
+        if($("#post-itemid").val() !== prev_itemid)
         {
-            let out = '';
 
-            for(i=0;i<str.length;++i){
-                if(str[i] == '\\' && str[i+1] == '(') {
-                    out = out + '<span class="math-tex">\\(';
+            toastr.error("Bạn phải giữ nguyên trường Item ID để thay đổi!");
+            if(!err) $("#post-itemid").focus();
+            $("#post-itemid").addClass('error');
+            err = true;
+        }
+
+        if(dap_an.trim() === "")
+        {
+
+            toastr.error("Thiếu thông tin đáp án");
+            if(!err) aeditor.focus();
+            err = true;
+        }
+
+        if(de_bai.trim() === "")
+        {
+
+            toastr.error("Thiếu thông tin đề bài");
+            if(!err) qeditor.focus();
+            err = true;
+        }
+
+        if(tieu_de.trim() === "")
+        {
+
+            toastr.error("Thiếu thông tin tiêu đề");
+            if(!err) $('input[name="tieu_de"]').focus();
+            $('input[name="tieu_de"]').addClass('error');
+            err = true;
+        }
+
+        if(err) return;
+
+        $("#btn-edit").prop('disabled', true);
+        let data = {
+            de_bai: de_bai,
+            dap_an: dap_an,
+            tieu_de: tieu_de,
+            duong_dan_hoi: duong_dan_hoi,
+            duong_dan_tra_loi: duong_dan_tra_loi,
+            ma_sach: ma_sach,
+            type: type,
+            chapter: chapter,
+            bai: bai,
+            total_knowledge_point: total_knowledge_point,
+            knowledge_point: knowledge_point,
+        };
+
+        let post_id = $("#post-id").val();
+
+        $.ajax({
+            method: 'PUT',
+            url: "{{url('api/post1')}}/"+post_id,
+            data: data,
+            success: function(result){
+                console.log(result);
+
+                toastr.success("Sửa Thành công");
+                setTimeout(function() {
+                    window.location.reload();
+                }, 500);
+            },
+            error: function (jqXHR) {
+                console.log(jqXHR.responseText);
+
+                toastr.error("Có lỗi xảy ra. Vui lòng thử lại sau");
+            }
+        });
+    });
+
+    $('input').keyup(function(){
+        $(this).removeClass('error');
+    });
+
+    function rependl(str){
+        str = str.replace('\nolimits', '\zolimits');
+        str = str.replace('\notin', '\zotin');
+        str = str.replace('\nleq', '\zleq');
+        str = str.replace('\ngeq', '\zgeq');
+        str = str.replace('\neq', '\zeq');
+        str = str.replace('\ne', '\ze');
+        str = str.replace('\n', '<br/>');
+        str = str.replace('\zolimits', '\nolimits');
+        str = str.replace('\zotin', '\notin');
+        str = str.replace('\zleq', '\nleq');
+        str = str.replace('\zgeq', '\ngeq');
+        str = str.replace('\zeq', '\neq');
+        str = str.replace('\ze', '\ne');
+        return str;
+    }
+
+    function addSpan(str)
+    {
+        let out = '';
+
+        for(i=0;i<str.length;++i){
+            if(str[i] == '\\' && str[i+1] == '(') {
+                out = out + '<span class="math-tex">\\(';
+                i+=1;
+            }
+            else {
+                if(str[i] == '\\' && str[i+1] == ')'){
+                    out = out + '\\)</span>';
                     i+=1;
                 }
-                else {
-                    if(str[i] == '\\' && str[i+1] == ')'){
-                        out = out + '\\)</span>';
-                        i+=1;
-                    }
-                    else
-                        out+=str[i];
-                }
+                else
+                    out+=str[i];
             }
-            console.log(out);
-            return out;
         }
+        console.log(out);
+        return out;
+    }
 
-        var x;
-        var y;
-        function rollback(historyId){
-            let history = histories.find(x => x.id == historyId);
-            de_bai = history.de_bai;
-            dap_an = history.dap_an;
-            // de_bai = rependl(de_bai);
-            de_bai = addSpan(de_bai);
-            // dap_an = rependl(dap_an);
-            dap_an = addSpan(dap_an);
-            qeditor.setData(de_bai);
-            aeditor.setData(dap_an);
-        }
+    var x;
+    var y;
+    function rollback(historyId){
+        let history = histories.find(x => x.id == historyId);
+        de_bai = history.de_bai;
+        dap_an = history.dap_an;
+        // de_bai = rependl(de_bai);
+        de_bai = addSpan(de_bai);
+        // dap_an = rependl(dap_an);
+        dap_an = addSpan(dap_an);
+        qeditor.setData(de_bai);
+        aeditor.setData(dap_an);
+    }
 </script>
 @endpush
