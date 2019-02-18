@@ -355,6 +355,7 @@
     if(old_total_knowledge_point){
         let old_knowledge_point = '{!! $post->knowledge_question !!}';
 
+        old_total_knowledge_point = old_total_knowledge_point.replace('"', '');
         old_total_knowledge_point = old_total_knowledge_point.split('|');
 
         let total_knowledge_point_html = [];
