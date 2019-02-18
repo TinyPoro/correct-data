@@ -48,6 +48,15 @@
             padding-right: 0!important;
             padding-left: 0!important;
         }
+        .mb-4{
+            margin-bottom: .4rem!important;
+        }
+        label {
+            margin-bottom: .5rem!important;
+        }
+        .form-group {
+            margin-bottom: .4rem!important;
+        }
     </style>
 
     <?php
