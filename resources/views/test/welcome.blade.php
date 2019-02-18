@@ -174,9 +174,9 @@
                                 <div style="display:inline-block; width:80%"></div>
 
                                 @if($post_profile)
-                                    <input class="form-control" type="text" name="total_knowledge_point" style="width: 100%;" value="{{$post_profile->knowledge_point}}">
+                                    <textarea class="form-control" type="text" name="total_knowledge_point" style="width: 100%;">{{$post_profile->knowledge_point}}</textarea>
                                 @else
-                                    <input class="form-control" type="text" name="total_knowledge_point" style="width: 100%;" value="" disabled>
+                                    <textarea class="form-control" type="text" name="total_knowledge_point" style="width: 100%;" disabled></textarea>
                                 @endif
 
                             </div>
@@ -272,7 +272,7 @@
             if(profile.lesson === value) {
                 $('input[name="type"]').val(profile.type);
                 $('input[name="chapter"]').val(profile.chapter);
-                $('input[name="total_knowledge_point"]').val(profile.knowledge_point);
+                $('textarea[name="total_knowledge_point"]').val(profile.knowledge_point);
 
                 let knowledge_point = profile.knowledge_point;
                 let knowledge_point_arr = knowledge_point.split("|");
@@ -515,7 +515,7 @@
         let type = $('input[name="type"]').val();
         let chapter = $('input[name="chapter"]').val();
         let bai = $('select[name="bai"]').val();
-        let total_knowledge_point = $('input[name="total_knowledge_point"]').val();
+        let total_knowledge_point = $('textarea[name="total_knowledge_point"]').val();
 
         let knowledge_point = [];
         $.each($(".k-multiselect-wrap > ul > li > span:first-child"), function(){
