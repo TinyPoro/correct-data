@@ -275,12 +275,13 @@
                 $('textarea[name="total_knowledge_point"]').val(profile.knowledge_point);
 
                 let knowledge_point = profile.knowledge_point;
+                knowledge_point = knowledge_point.replace(/"/g, '');
                 let knowledge_point_arr = knowledge_point.split("|");
                 let total_knowledge_point_html = [];
 
                 knowledge_point_arr.forEach(function(knowledge_point_value){
                     total_knowledge_point_html.push({
-                        text: knowledge_point_value,
+                        text: knowledge_point_value.trim(),
                     });
                 });
 
@@ -362,7 +363,7 @@
 
         old_total_knowledge_point.forEach(function(knowledge_point_value){
             total_knowledge_point_html.push({
-                text: knowledge_point_value,
+                text: knowledge_point_value.trim(),
             });
         });
 
@@ -520,7 +521,7 @@
 
         let knowledge_point = [];
         $.each($(".k-multiselect-wrap > ul > li > span:first-child"), function(){
-            knowledge_point.push($(this).text());
+            knowledge_point.push($(this).text().trim());
         });
         knowledge_point = knowledge_point.join("|");
 
