@@ -129,7 +129,7 @@
                                     <label style="vertical-align: top;"><b>Loại:</b></label>
 
                                     @if($post_profile)
-                                        <input class="form-control" type="text" name="type" style="width: 100%;" value="{{$post_profile->type}}">
+                                        <input class="form-control" type="text" name="type" style="width: 100%;" value="{{$post_profile->type}}" disabled>
                                     @else
                                         <input class="form-control" type="text" name="type" style="width: 100%;" value="" disabled>
                                     @endif
@@ -140,11 +140,13 @@
                             <div class="form-group" style="width: 100%;">
                                 <label style="vertical-align: top;"><b>Chương:</b></label>
 
-                                @if($post_profile)
-                                    <input class="form-control" type="text" name="chapter" style="width: 100%;" value="{{$post_profile->chapter}}">
-                                @else
-                                    <input class="form-control" type="text" name="chapter" style="width: 100%;" value="" disabled>
-                                @endif
+                                <div class="chapter_area">
+                                    @if($post_profile)
+                                        <input class="form-control" type="text" name="chapter" style="width: 100%;" value="{{$post_profile->chapter}}" disabled>
+                                    @else
+                                        <input class="form-control" type="text" name="chapter" style="width: 100%;" value="" disabled>
+                                    @endif
+                                </div>
                             </div>
                             <hr width="100%">
 
@@ -174,7 +176,7 @@
                                 <div style="display:inline-block; width:80%"></div>
 
                                 @if($post_profile)
-                                    <textarea class="form-control" type="text" name="total_knowledge_point" style="width: 100%;">{{$post_profile->knowledge_point}}</textarea>
+                                    <textarea class="form-control" type="text" name="total_knowledge_point" style="width: 100%;" disabled>{{$post_profile->knowledge_point}}</textarea>
                                 @else
                                     <textarea class="form-control" type="text" name="total_knowledge_point" style="width: 100%;" disabled></textarea>
                                 @endif
@@ -258,6 +260,8 @@
         "preventOpenDuplicates": true
     };
 
+    let chapter_is_input = true;
+
     $('.bai_input').select2();
     let histories = {!! $histories !!};
     let prev_id = "{{$post->id}}";
@@ -265,30 +269,77 @@
 
     let profiles = {!! $profiles !!};
 
+    let enable_select_chapter = function(){
+        let chapter_option_html = '<option value=""></option>';
+
+        let inserted_chapter = [];
+
+        profiles.forEach(function(profile){
+            if(inserted_chapter.indexOf(profile.chapter) === -1){
+                chapter_option_html += '<option value="'+profile.chapter+'">'+profile.chapter+'</option>';
+
+                inserted_chapter.push(profile.chapter);
+            }
+        });
+
+        $('.chapter_area').html('<select class="chapter_input" name="chapter">'+chapter_option_html+'<select/>')
+        $('.chapter_input').select2();
+
+        chapter_is_input = false;
+
+        $('select[name="chapter"]').change(function(){
+            let value = $(this).val();
+
+            profiles.forEach(function(profile){
+                if(profile.chapter === value) {
+                    $('input[name="type"]').val(profile.type);
+                }
+            });
+        });
+    };
+
     $('.bai_input').change(function(){
         let value = $(this).val();
 
-        profiles.forEach(function(profile){
-            if(profile.lesson === value) {
-                $('input[name="type"]').val(profile.type);
-                $('input[name="chapter"]').val(profile.chapter);
-                $('textarea[name="total_knowledge_point"]').val(profile.knowledge_point);
+        if(value === ''){
+            $('input[name="type"]').val('');
 
-                let knowledge_point = profile.knowledge_point;
-                knowledge_point = knowledge_point.replace(/"/g, '');
-                let knowledge_point_arr = knowledge_point.split("|");
-                let total_knowledge_point_html = [];
+            // $('input[name="chapter"]').val('');
+            enable_select_chapter();
 
-                knowledge_point_arr.forEach(function(knowledge_point_value){
-                    total_knowledge_point_html.push({
-                        text: knowledge_point_value.trim(),
+            $('textarea[name="total_knowledge_point"]').val('');
+
+            $('input[name="chapter"]').prop('disabled', false);
+
+            reset_knowledge_point_tree([]);
+        }else{
+            chapter_is_input = true;
+
+            $('.chapter_area').html('<input class="form-control" type="text" name="chapter" style="width: 100%;" value="" disabled>')
+            $('input[name="chapter"]').prop('disabled', true);
+
+            profiles.forEach(function(profile){
+                if(profile.lesson === value) {
+                    $('input[name="type"]').val(profile.type);
+                    $('input[name="chapter"]').val(profile.chapter);
+                    $('textarea[name="total_knowledge_point"]').val(profile.knowledge_point);
+
+                    let knowledge_point = profile.knowledge_point;
+                    knowledge_point = knowledge_point.replace(/"/g, '');
+                    let knowledge_point_arr = knowledge_point.split("|");
+                    let total_knowledge_point_html = [];
+
+                    knowledge_point_arr.forEach(function(knowledge_point_value){
+                        total_knowledge_point_html.push({
+                            text: knowledge_point_value.trim(),
+                        });
                     });
-                });
 
-                reset_knowledge_point_tree(total_knowledge_point_html);
+                    reset_knowledge_point_tree(total_knowledge_point_html);
 
-            }
-        });
+                }
+            });
+        }
     });
 
     $('input[name="trang"]').keydown(function(e){
@@ -515,7 +566,9 @@
 
         let ma_sach = $('input[name="ma_sach"]').val();
         let type = $('input[name="type"]').val();
-        let chapter = $('input[name="chapter"]').val();
+        let chapter = '';
+        if(chapter_is_input) chapter = $('input[name="chapter"]').val();
+        else chapter = $('select[name="chapter"]').val();
         let bai = $('select[name="bai"]').val();
         let total_knowledge_point = $('textarea[name="total_knowledge_point"]').val();
 

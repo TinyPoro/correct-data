@@ -389,10 +389,25 @@ class WebController1 extends Controller
         $post->duong_dan_tra_loi = $request->duong_dan_tra_loi;
         $post->updated_at = date('Y-m-d H:i:s', strtotime(Carbon::now()));
 
-        if($request->bai) {
-            $profile = \DB::table('profiles')->where('lesson', $request->bai)->first();
+        if($request->chapter) {
+            if(!$request->bai) $request->bai = '';
 
-            if(!$profile) return ['message' => 'Invalid profile!'];
+            $profile = \DB::table('profiles')
+                ->where('chapter', $request->chapter)
+                ->where('lesson', $request->bai)->first();
+
+            if(!$profile) {
+                \DB::table('profiles')->insert([
+                    'type' => $request->type,
+                    'chapter' => $request->chapter,
+                    'lesson' => $request->bai
+                ]);
+
+                $profile = \DB::table('profiles')
+                    ->where('chapter', $request->chapter)
+                    ->where('lesson', $request->bai)->first();
+
+            }
 
             $post->profile_id = $profile->id;
 
