@@ -91,6 +91,11 @@
                     <button class="btn btn-success" style="display: inline-block;" id="btn-change-itemid">Tìm kiếm</button>
                 </div>
                 <hr width="100%">
+                <div class="form-group" style="width: 100%;">
+                    <input type="checkbox" class="" id="hard_label" name="hard_label">
+                    <label class="custom-control-label" for="hard_label">Loại khó gán nhãn</label>
+                </div>
+                <hr width="100%">
                 <div class="row col-md-12">
                     <div class="col-md-5">
                         <div class="form-group" style="width: 100%;">
@@ -569,7 +574,7 @@
     };
 
     $("#btn-edit").click(function(){
-
+        let hard_label = $('input[name="hard_label"]:checked').length;
 
         let de_bai = trim(qeditor.getData());
         let dap_an = trim(aeditor.getData());
@@ -651,6 +656,7 @@
             bai: bai,
             total_knowledge_point: total_knowledge_point,
             knowledge_point: knowledge_point,
+            hard_label: hard_label,
         };
 
         let post_id = $("#post-id").val();

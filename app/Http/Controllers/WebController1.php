@@ -415,6 +415,8 @@ class WebController1 extends Controller
 
         $post->knowledge_question = $request->knowledge_point;
 
+        $post->hard_label = $request->hard_label;
+
         $post->save();
 
         return ['message' => 'success'];
