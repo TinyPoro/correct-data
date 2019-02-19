@@ -43,6 +43,15 @@
                 </div>
                 <hr width="100%">
                 <div class="form-group" style="width: 100%;">
+                    @if($post->hard_label === 1)
+                        <input type="checkbox" class="" id="hard_label" name="hard_label" checked>
+                    @else
+                        <input type="checkbox" class="" id="hard_label" name="hard_label">
+                    @endif
+                    <label class="" for="hard_label">Loại khó gán nhãn</label>
+                </div>
+                <hr width="100%">
+                <div class="form-group" style="width: 100%;">
                     <label style="vertical-align: top; width: 15%"><b>Tiêu đề:</b></label>
                     <div style="display:inline-block; width:80%"></div>
 
@@ -244,6 +253,8 @@
     }
 
     $("#btn-edit").click(function(){
+        let hard_label = $('input[name="hard_label"]:checked').length;
+
         let de_bai = trim(qeditor.getData());
         let dap_an = trim(aeditor.getData());
         let tieu_de = $('input[name="tieu_de"]').val();
@@ -266,8 +277,9 @@
             dap_an: dap_an,
             tieu_de: tieu_de,
             duong_dan_hoi: duong_dan_hoi,
-            duong_dan_tra_loi: duong_dan_tra_loi
-        }
+            duong_dan_tra_loi: duong_dan_tra_loi,
+            hard_label: hard_label
+        };
 
         let post_id = $("#post-id").val();
 

@@ -97,7 +97,7 @@
                     @else
                         <input type="checkbox" class="" id="hard_label" name="hard_label">
                     @endif
-                    <label class="custom-control-label" for="hard_label">Loại khó gán nhãn</label>
+                    <label class="" for="hard_label">Loại khó gán nhãn</label>
                 </div>
                 <hr width="100%">
                 <div class="row col-md-12">

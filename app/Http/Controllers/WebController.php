@@ -347,6 +347,8 @@ class WebController extends Controller
         $post->duong_dan_tra_loi = $request->duong_dan_tra_loi;
         $post->updated_at = date('Y-m-d H:i:s', strtotime(Carbon::now()));
 
+        $post->hard_label = $request->hard_label;
+        
         $post->save();
         return ['message' => 'success'];
     }
