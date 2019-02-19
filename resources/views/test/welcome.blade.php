@@ -92,7 +92,11 @@
                 </div>
                 <hr width="100%">
                 <div class="form-group" style="width: 100%;">
-                    <input type="checkbox" class="" id="hard_label" name="hard_label">
+                    @if($post->hard_label === 1)
+                        <input type="checkbox" class="" id="hard_label" name="hard_label" checked>
+                    @else
+                        <input type="checkbox" class="" id="hard_label" name="hard_label">
+                    @endif
                     <label class="custom-control-label" for="hard_label">Loại khó gán nhãn</label>
                 </div>
                 <hr width="100%">
