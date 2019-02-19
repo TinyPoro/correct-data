@@ -156,6 +156,7 @@
 
                                 <select class="bai_input" name="bai">
                                     <option value=""></option>
+                                    <option value="null">Không xác định</option>
                                     @foreach($profiles as $profile)
                                         @if($post_profile)
                                             @if($profile->lesson === $post_profile->lesson)
@@ -302,6 +303,18 @@
         let value = $(this).val();
 
         if(value === ''){
+            $('input[name="type"]').val('');
+
+            chapter_is_input = true;
+
+            $('.chapter_area').html('<input class="form-control" type="text" name="chapter" style="width: 100%;" value="" disabled>')
+            $('input[name="chapter"]').prop('disabled', true);
+
+            $('textarea[name="total_knowledge_point"]').val('');
+
+            reset_knowledge_point_tree([]);
+
+        }else if(value === 'null'){
             $('input[name="type"]').val('');
 
             // $('input[name="chapter"]').val('');

@@ -260,7 +260,7 @@ class WebController1 extends Controller
             return $history;
         });
 
-        $profiles = \DB::table('profiles')->get();
+        $profiles = \DB::table('profiles')->where('lesson', '<>', '')->get();
         $post_profile = \DB::table('profiles')->where('id', $post->profile_id)->first();
 
         return view('test.welcome', [
@@ -390,7 +390,7 @@ class WebController1 extends Controller
         $post->updated_at = date('Y-m-d H:i:s', strtotime(Carbon::now()));
 
         if($request->chapter) {
-            if(!$request->bai) $request->bai = '';
+            if($request->bai === 'null') $request->bai = '';
 
             $profile = \DB::table('profiles')
                 ->where('chapter', $request->chapter)
