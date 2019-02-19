@@ -182,7 +182,7 @@
                             <hr width="100%">
 
                             <div class="form-group" style="width: 100%;">
-                                <label style="vertical-align: top;"><b>knowledge point tổng:</b></label>
+                                <label style="vertical-align: top;"><b>Knowledge point tổng:</b></label>
                                 <div style="display:inline-block; width:80%"></div>
 
                                 @if($post_profile)
@@ -195,7 +195,7 @@
                             <hr width="100%">
 
                             <div class="form-group" style="width: 100%;">
-                                <label style="vertical-align: top;"><b>knowledge point:</b></label>
+                                <label style="vertical-align: top;"><b>Knowledge point:</b></label>
 
                                 <input id="knowledge_point_tree" name="diem_kien_thuc" style="width: 100%;"/>
                             </div>
