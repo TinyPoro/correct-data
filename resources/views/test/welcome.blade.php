@@ -393,7 +393,7 @@
             placeholder: "Chọn tối đa 5 điểm kiến thức",
             checkboxes: true,
             autoClose: false,
-            filter: "contains",
+            // filter: "contains",
             dataSource: dataSource
         });
 
