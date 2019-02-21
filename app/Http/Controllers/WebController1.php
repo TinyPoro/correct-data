@@ -416,6 +416,7 @@ class WebController1 extends Controller
         $post->knowledge_question = $request->knowledge_point;
 
         $post->hard_label = $request->hard_label;
+        $post->knowledge_extra = $request->knowledge_extra;
 
         $post->save();
 

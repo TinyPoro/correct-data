@@ -199,6 +199,14 @@
 
                                 <input id="knowledge_point_tree" name="diem_kien_thuc" style="width: 100%;"/>
                             </div>
+
+                            <hr width="100%">
+
+                            <div class="form-group" style="width: 100%;">
+                                <label style="vertical-align: top;"><b>Knowledge bổ sung:</b></label>
+
+                                <textarea class="form-control" type="text" id="knowledge_extra" name="knowledge_extra" style="width: 100%;">{{$post->knowledge_extra}}</textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -593,6 +601,7 @@
         else chapter = $('select[name="chapter"]').val();
         let bai = $('select[name="bai"]').val();
         let total_knowledge_point = $('textarea[name="total_knowledge_point"]').val();
+        let knowledge_extra = $('textarea[name="knowledge_extra"]').val();
 
         let knowledge_point = [];
         $.each($(".k-multiselect-wrap > ul > li > span:first-child"), function(){
@@ -661,6 +670,7 @@
             total_knowledge_point: total_knowledge_point,
             knowledge_point: knowledge_point,
             hard_label: hard_label,
+            knowledge_extra: knowledge_extra
         };
 
         let post_id = $("#post-id").val();
