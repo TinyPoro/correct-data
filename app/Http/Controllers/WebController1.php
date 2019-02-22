@@ -275,15 +275,11 @@ class WebController1 extends Controller
     {
         $next_guid = str_random(9).uniqid('', true);
 
-        $classes = \DB::table('classes')->get();
-        $subjects = \DB::table('subjects')->get();
-        $categories = \DB::table('categories')->get();
+        $profiles = \DB::table('profiles')->where('lesson', '<>', '')->get();
 
         return view('test.create', [
             "guid" => str_pad($next_guid,32,"0",STR_PAD_LEFT),
-            'classes' => $classes,
-            'subjects' => $subjects,
-            'categories' => $categories,
+            'profiles' => $profiles
         ]);
     }
 
@@ -300,6 +296,31 @@ class WebController1 extends Controller
         $manualPost->data = '';
         $manualPost->save();
 
+        if($request->chapter) {
+            if($request->bai === 'null') $request->bai = '';
+
+            $profile = \DB::table('profiles')
+                ->where('chapter', $request->chapter)
+                ->where('lesson', $request->bai)->first();
+
+            if(!$profile) {
+                \DB::table('profiles')->insert([
+                    'type' => $request->type,
+                    'chapter' => $request->chapter,
+                    'lesson' => $request->bai
+                ]);
+
+                $profile = \DB::table('profiles')
+                    ->where('chapter', $request->chapter)
+                    ->where('lesson', $request->bai)->first();
+
+            }
+
+            $profile_id = $profile->id;
+        }else{
+            $profile_id = null;
+        }
+
         \DB::table('all_posts')->insert([
             'hoi_dap_id' => $request->hoi_dap_id,
             'tieu_de' => $request->tieu_de,
@@ -309,29 +330,11 @@ class WebController1 extends Controller
             'ten_nguon' => 'manual',
             'duong_dan_hoi' => 'media/'.$request->hoi_dap_id.'-CH-01.jpg',
             'duong_dan_tra_loi' => 'media/'.$request->hoi_dap_id.'-DA-01-D.jpg',
+            'profile_id' => $profile_id,
+            'knowledge_question' => $request->knowledge_point,
+            'hard_label' => $request->hard_label,
+            'knowledge_extra' => $request->knowledge_extra
         ]);
-
-        \DB::table('data_profiles')->insert([
-            'data_hoi_dap_id' => $request->hoi_dap_id,
-            'class' => $request->class_name,
-            'subject' => $request->subject,
-            'category' => $request->category,
-            'tap' => $request->tap,
-            'chuong' => $request->chuong,
-            'bai' => $request->bai,
-            'diem_kien_thuc' => $request->diem_kien_thuc,
-        ]);
-
-        $diem_kien_thucs = array_filter(explode(';', $request->diem_kien_thuc));
-
-        foreach ($diem_kien_thucs as $diem_kien_thuc){
-            $label = \DB::table('labels')->where('name', $diem_kien_thuc)->first();
-
-            \DB::table('raw_label_items')->insert([
-                'hoi_dap_id' => $request->hoi_dap_id,
-                'label_id' => $label->id,
-            ]);
-        }
 
         return ['message' => 'success'];
 

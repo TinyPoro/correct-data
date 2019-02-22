@@ -17,7 +17,7 @@
             margin-left: 21rem!important;
         }
         .select2-container{
-            width: 10rem!important;
+            width: 100%!important;
         }
         .tab{
             position: relative;
@@ -45,6 +45,15 @@
             padding-right: 0!important;
             padding-left: 0!important;
         }
+        .mb-4{
+            margin-bottom: .4rem!important;
+        }
+        label {
+            margin-bottom: .5rem!important;
+        }
+        .form-group {
+            margin-bottom: .4rem!important;
+        }
     </style>
 
     <?php
@@ -56,164 +65,147 @@
         }
     ?>
 
-<div class="container">
-    <div class="table-wrapper">
-        <div class="card-body">
+    <div class="container">
+        <div class="table-wrapper">
+            <div class="card-body">
                 <div class="col-md-8"><h3>Tạo câu hỏi đáp</h3></div>
-        </div>
-        <input type="hidden" id="post-hoi-dap-id" value="{{$guid}}">
-        <div class="card-body" style="padding-bottom: 0px">
-            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px 20px">
-                <div class="form-group" style="width: 100%;">
-                    <label style="width: 15%"><b>ItemID:</b></label>
-                    <label><b>{{$guid}}</b></label>
-                </div>
-                <hr width="100%">
-
-                <div class="row col-md-12">
-                    <div class="col-md-5">
-                        <div class="form-group" style="width: 100%;">
-                            <label style="vertical-align: top;"><b>Tiêu đề:</b></label>
-                            <div style="display:inline-block; width:80%"></div>
-
-                            <input class="form-control" type="text" name="tieu_de" id="title" value="">
-                            <div style="height:6px"></div>
-                        </div>
-                        <hr width="100%">
-                        <div class="form-group" style="width: 100%;">
-                            <label style="vertical-align: top;"><b>Đường dẫn câu hỏi:</b></label>
-
-                            <input disabled class="form-control" type="text" name="duong_dan_hoi">
-                            <div style="height:7px"></div>
-                        </div>
-                        <hr width="100%">
-                        <div class="form-group" style="width: 100%;">
-                            <label style="vertical-align: top;"><b>Đường dẫn câu trả lời:</b></label>
-
-                            <input disabled class="form-control" type="text" name="duong_dan_tra_loi">
-                        </div>
+            </div>
+            <input type="hidden" id="post-hoi-dap-id" value="{{$guid}}">
+            <div class="card-body" style="padding-bottom: 0px">
+                <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px 20px">
+                    <div class="form-group" style="width: 100%;">
+                        <label style="width: 15%"><b>ItemID:</b></label>
+                        <label><b>{{$guid}}</b></label>
                     </div>
-                    <div class="col-md-1" id="vertical-line">
-
+                    <hr width="100%">
+                    <div class="form-group" style="width: 100%;">
+                        <input type="checkbox" class="" id="hard_label" name="hard_label">
+                        <label class="" for="hard_label">Loại khó gán nhãn</label>
                     </div>
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="form-inline" style="width: 100%;">
-                                <div class="form-group mb-4">
-                                    <label style="vertical-align: top;"><b>Lớp:</b></label>
-                                    <div style="display:inline-block; width:80%"></div>
+                    <hr width="100%">
 
-                                    <select class="class_input" name="class" disabled>
-                                        @foreach($classes as $class)
-                                            <option value="{{$class->name}}">{{$class->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group mb-4" style="position: relative;left: 7%;">
-                                    <label style="vertical-align: top;"><b>Môn:</b></label>
-                                    <div style="display:inline-block; width:80%"></div>
-
-                                    <select class="subject_input" name="subject" disabled>
-                                        @foreach($subjects as $subject)
-                                            <option value="{{$subject->name}}">{{$subject->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <hr width="100%">
-
-                            <div class="form-inline" style="width: 100%;">
-                                <div class="form-group mb-4">
-                                    <label style="vertical-align: top;"><b>Loại sách:</b></label>
-                                    <div style="display:inline-block; width:80%"></div>
-
-                                    <select class="category_input" name="category">
-                                        <option value=""> </option>
-                                        @foreach($categories as $category)
-                                            <option value="{{$category->name}}">{{$category->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group mb-4">
-                                    <label style="vertical-align: top;"><b>Tập:</b></label>
-                                    <div style="display:inline-block; width:80%"></div>
-
-                                    <select class="tap_input" name="tap">
-                                        <?php
-                                        $taps = [
-                                            '1',
-                                            '2',
-                                            '3',
-                                            '4',
-                                            '5',
-                                        ]
-                                        ?>
-                                        @foreach($taps as $tap)
-                                            <option value="{{$tap}}">{{$tap}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <hr width="100%">
-
+                    <div class="row col-md-12">
+                        <div class="col-md-5">
                             <div class="form-group" style="width: 100%;">
-                                <label style="vertical-align: top;"><b>Chương:</b></label>
+                                <label style="vertical-align: top;"><b>Tiêu đề:</b></label>
                                 <div style="display:inline-block; width:80%"></div>
 
-                                <input class="form-control" type="text" name="chuong">
-
+                                <input class="form-control" type="text" name="tieu_de" id="title" value="">
+                                <div style="height:6px"></div>
                             </div>
                             <hr width="100%">
-
                             <div class="form-group" style="width: 100%;">
-                                <label style="vertical-align: top;"><b>Bài:</b></label>
-                                <div style="display:inline-block; width:80%"></div>
+                                <label style="vertical-align: top;"><b>Đường dẫn câu hỏi:</b></label>
 
-                                <input class="form-control" type="number" name="bai" min="0" max="99999999999999999999">
-
+                                <input disabled class="form-control" type="text" name="duong_dan_hoi">
+                                <div style="height:7px"></div>
                             </div>
                             <hr width="100%">
-
                             <div class="form-group" style="width: 100%;">
-                                <label style="vertical-align: top;"><b>Điểm kiến thức:</b></label>
+                                <label style="vertical-align: top;"><b>Đường dẫn câu trả lời:</b></label>
 
-                                <input id="diem_kien_thuc_tree" name="diem_kien_thuc" style="width: 100%;" />
+                                <input disabled class="form-control" type="text" name="duong_dan_tra_loi">
+                            </div>
+                        </div>
+                        <div class="col-md-1" id="vertical-line">
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="form-inline" style="width: 100%;">
+                                    <div class="form-group mb-4">
+                                        <label style="vertical-align: top;"><b>Mã sách:</b></label>
+
+                                        <input class="form-control" id="ma_sach" name="ma_sach" style="width: 100%;" value="VNTK000000000107" disabled/>
+                                    </div>
+                                    <div class="form-group mb-4" style="position: relative;left: 7%;">
+                                        <label style="vertical-align: top;"><b>Loại:</b></label>
+
+                                        <input class="form-control" type="text" name="type" style="width: 100%;" value="" disabled>
+
+                                    </div>
+                                </div>
+                                <hr width="100%">
+
+                                <div class="form-group" style="width: 100%;">
+                                    <label style="vertical-align: top;"><b>Chương:</b></label>
+
+                                    <div class="chapter_area">
+                                        <input class="form-control" type="text" name="chapter" style="width: 100%;" value="" disabled>
+
+                                    </div>
+                                </div>
+                                <hr width="100%">
+
+                                <div class="form-group" style="width: 100%;">
+                                    <label style="vertical-align: top;"><b>Bài:</b></label>
+                                    <div style="display:inline-block; width:80%"></div>
+
+                                    <select class="bai_input" name="bai">
+                                        <option value=""></option>
+                                        <option value="null">Không xác định</option>
+                                        @foreach($profiles as $profile)
+                                            <option value="{{$profile->lesson}}">{{$profile->lesson}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <hr width="100%">
+
+                                <div class="form-group" style="width: 100%;">
+                                    <label style="vertical-align: top;"><b>Knowledge point tổng:</b></label>
+                                    <div style="display:inline-block; width:80%"></div>
+
+                                    <textarea class="form-control" type="text" name="total_knowledge_point" style="width: 100%;" disabled></textarea>
+                                </div>
+                                <hr width="100%">
+
+                                <div class="form-group" style="width: 100%;">
+                                    <label style="vertical-align: top;"><b>Knowledge point:</b></label>
+
+                                    <input id="knowledge_point_tree" name="diem_kien_thuc" style="width: 100%;"/>
+                                </div>
+
+                                <hr width="100%">
+
+                                <div class="form-group" style="width: 100%;">
+                                    <label style="vertical-align: top;"><b>Knowledge bổ sung:</b></label>
+
+                                    <textarea class="form-control" type="text" id="knowledge_extra" name="knowledge_extra" style="width: 100%;"></textarea>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <hr width="100%">
+                    <hr width="100%">
 
-                <div class="form-group" style="width: 100%;">
-                    <label style="vertical-align: top; width: 15%"><b>Đề bài:</b></label>
-                    <div style="display:inline-block; width:101%">
+                    <div class="form-group" style="width: 100%;">
+                        <label style="vertical-align: top; width: 15%"><b>Đề bài:</b></label>
+                        <div style="display:inline-block; width:101%">
 
                     <textarea class="form-control" style="width:100%" id="postquestion" rows="7"
-                        placeholder="Post's question in HTML"></textarea>
-                    <p style="margin-top:20px; width: 100%" id="postquestion-display">
-                    </p>
+                              placeholder="Post's question in HTML"></textarea>
+                            <p style="margin-top:20px; width: 100%" id="postquestion-display">
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group" style="width: 100%;">
-                    <label style="vertical-align: top; width: 15%"><b>Đáp án:</b></label>
-                    <div style="display:inline-block; width:101%">
+                    <div class="form-group" style="width: 100%;">
+                        <label style="vertical-align: top; width: 15%"><b>Đáp án:</b></label>
+                        <div style="display:inline-block; width:101%">
                     <textarea class="form-control" style="width:100%" id="postanswer" rows="7"
-                        placeholder="Post's answer"></textarea>
-                    <p style="margin-top:20px; width: 100%" id="postanswer-display">
-                    </p>
+                              placeholder="Post's answer"></textarea>
+                            <p style="margin-top:20px; width: 100%" id="postanswer-display">
+                            </p>
+                        </div>
                     </div>
+
+                    <hr width="100%">
+
+                    <button class="btn btn-success" style="width: 30%; margin: 10px; padding: 15px;" id="btn-create">Lưu
+                    </button>
                 </div>
-
-                <hr width="100%">
-
-                <button class="btn btn-success" style="width: 30%; margin: 10px; padding: 15px;" id="btn-create">Lưu
-                </button>
             </div>
-        </div>  
+        </div>
     </div>
-</div>
 @endsection
 @push('scripts')
 <script src="{{url('/assets/ckeditor/ckeditor.js')}}" charset="utf-8"></script>
@@ -227,105 +219,143 @@
         "preventDuplicates": true,
         "preventOpenDuplicates": true
     };
-    
-    $(document).ready(function() {
-        $('.class_input').select2();
-        $('.subject_input').select2();
-        $('.category_input').select2();
-        $('.tap_input').select2();
 
-        $("#diem_kien_thuc_tree").kendoDropDownTree({
-            placeholder: "Chọn tối đa 5 điểm kiến thức",
-            checkboxes: true,
-            autoClose: false,
-            filter: "contains",
-            dataSource: [
-                {
-                    text: "Không xác định",
-                },
-                {
-                    text: "Hình học - Hình trụ, hình nón, hình cầu", expanded: true, items: [
-                        { text: "hình trụ" },
-                        { text: "hình nón" },
-                        { text: "hình nón cụt" },
-                        { text: "hình cầu" },
-                        { text: "diện tích xung quanh" },
-                        { text: "thể tích" }
-                    ]
-                },
-                {
-                    text: "Hình học - Hệ thức lượng tam giác vuông", items: [
-                        { text: "đường trung tuyến" },
-                        { text: "đường cao" },
-                        { text: "đường phân giác" },
-                        { text: "cạnh góc vuông" },
-                        { text: "hình chiếu" },
-                        { text: "tam giác đồng dạng" },
-                        { text: "tam giác đều" },
-                        { text: "tam giác cân" },
-                        { text: "tam giác vuông" },
-                        { text: "tam giác" },
-                        { text: "lượng giác, sin, cos, tg, cotg." }
-                    ]
-                },
-                {
-                    text: "Hình học - đường tròn", items: [
-                        { text: "bán kính" },
-                        { text: "đường kính" },
-                        { text: "dây của đường tròn" },
-                        { text: "cung của đường tròn" },
-                        { text: "chu vi" },
-                        { text: "khoảng cách từ tâm đến dây và cung" },
-                        { text: "độ dài đường tròn" },
-                        { text: "cung tròn" },
-                        { text: "hình quạt" },
-                        { text: "diện tích" },
-                        { text: "đường tròn nội tiếp" },
-                        { text: "đường tròn ngoại tiếp" },
-                        { text: "tam giác nội tiếp" },
-                        { text: "tam giác ngoại tiếp" },
-                        { text: "đa gia giác nội tiếp (tứ giác, lục giác)" },
-                        { text: "đa giác ngoại tiếp" },
-                        { text: "tâm đối xứng" },
-                        { text: "trục đối xứng" },
-                        { text: "tiếp tuyến đường tròn" },
-                        { text: "vị trí tương đối của hai đường tròn" },
-                        { text: "góc tâm" },
-                        { text: "góc nội tiếp." },
-                    ]
-                },
-                {
-                    text: "Đại số - Căn thức", items: [
-                        { text: "căn bậc hai" },
-                        { text: "khai phương" },
-                        { text: "bài toán rút gọn và tính biểu thức (chứa căn thức)" },
-                        { text: "căn bậc ba" },
-                        { text: "lập phương." },
-                    ]
-                },
-                {
-                    text: "Đại số - Hàm số bậc nhất", items: [
-                        { text: "hàm đồng biến" },
-                        { text: "hàm nghịch biến" },
-                        { text: "đường thẳng." },
-                    ]
-                },
-                {
-                    text: "Đại số - Hàm số bậc hai một ẩn", items: [
-                        { text: "vẽ đồ thị - parabol" },
-                        { text: "phương trình bậc hai" },
-                        { text: "phương trình trùng phương" },
-                        { text: "phương trình chứa ẩn mẫu thức" },
-                    ]
-                },
-                {
-                    text: "Đại số - Hệ hai phương trình bậc nhất hai ẩn", items: [
-                        { text: "tìm tọa độ mặt phẳng" },
-                        { text: "tìm đường thẳng" },
-                    ]
-                },
-            ]
+    $(document).ready(function() {
+        let chapter_is_input = true;
+
+        $('.bai_input').select2();
+
+        let profiles = {!! $profiles !!};
+
+        let enable_select_chapter = function(){
+            let chapter_option_html = '<option value=""></option>';
+
+            let inserted_chapter = [];
+
+            profiles.forEach(function(profile){
+                if(inserted_chapter.indexOf(profile.chapter) === -1){
+                    chapter_option_html += '<option value="'+profile.chapter+'">'+profile.chapter+'</option>';
+
+                    inserted_chapter.push(profile.chapter);
+                }
+            });
+
+            $('.chapter_area').html('<select class="chapter_input" name="chapter">'+chapter_option_html+'<select/>')
+            $('.chapter_input').select2();
+
+            chapter_is_input = false;
+
+            $('select[name="chapter"]').change(function(){
+                let value = $(this).val();
+
+                profiles.forEach(function(profile){
+                    if(profile.chapter === value) {
+                        $('input[name="type"]').val(profile.type);
+                    }
+                });
+            });
+        };
+
+        $('.bai_input').change(function(){
+            let value = $(this).val();
+
+            if(value === ''){
+                $('input[name="type"]').val('');
+
+                chapter_is_input = true;
+
+                $('.chapter_area').html('<input class="form-control" type="text" name="chapter" style="width: 100%;" value="" disabled>')
+                $('input[name="chapter"]').prop('disabled', true);
+
+                $('textarea[name="total_knowledge_point"]').val('');
+
+                reset_knowledge_point_tree([]);
+
+            }else if(value === 'null'){
+                $('input[name="type"]').val('');
+
+                // $('input[name="chapter"]').val('');
+                enable_select_chapter();
+
+                $('textarea[name="total_knowledge_point"]').val('');
+
+                $('input[name="chapter"]').prop('disabled', false);
+
+                reset_knowledge_point_tree([]);
+            }else{
+                chapter_is_input = true;
+
+                $('.chapter_area').html('<input class="form-control" type="text" name="chapter" style="width: 100%;" value="" disabled>')
+                $('input[name="chapter"]').prop('disabled', true);
+
+                profiles.forEach(function(profile){
+                    if(profile.lesson === value) {
+                        $('input[name="type"]').val(profile.type);
+                        $('input[name="chapter"]').val(profile.chapter);
+                        $('textarea[name="total_knowledge_point"]').val(profile.knowledge_point);
+
+                        let knowledge_point = profile.knowledge_point;
+                        knowledge_point = knowledge_point.replace(/"/g, '');
+                        let knowledge_point_arr = knowledge_point.split("|");
+                        let total_knowledge_point_html = [];
+
+                        knowledge_point_arr.forEach(function(knowledge_point_value){
+                            total_knowledge_point_html.push({
+                                text: knowledge_point_value.trim(),
+                            });
+                        });
+
+                        reset_knowledge_point_tree(total_knowledge_point_html);
+
+                    }
+                });
+            }
         });
+
+        let check_count = 0;
+
+        let isCheck = function(ele){
+            return ele.is(':checked');
+        };
+
+        let uncheck = function(ele){
+            return ele.next().click();
+        };
+
+        let reset_knowledge_point_tree = function(dataSource){
+            $('.k-widget.k-dropdowntree.k-dropdowntree-clearable').replaceWith('<input id="knowledge_point_tree" name="diem_kien_thuc" style="width: 100%;"/>');
+
+            $("#knowledge_point_tree").kendoDropDownTree({
+                placeholder: "Chọn tối đa 5 điểm kiến thức",
+                checkboxes: true,
+                autoClose: false,
+                // filter: "contains",
+                dataSource: dataSource
+            });
+
+            check_count = 0;
+
+            $(".k-checkbox").change(function(){
+                let check = isCheck($(this));
+
+                check_count = $(".k-multiselect-wrap > ul > li > span:first-child").length;
+                if(check === true){
+
+                    if(check_count >= 5){
+
+                        toastr.error("Bạn chỉ được chọn tối đa 5 điểm kiến thức!");
+                        uncheck($(this));
+                    }
+                }
+
+                check_count = $(".k-multiselect-wrap > ul > li > span:first-child").length;
+
+            });
+
+            $(".k-in").click(function () {
+                return false;
+            });
+        };
 
         CKEDITOR.replace('postquestion', { extraPlugins: 'mathjax, eqneditor', height: '250px', allowedContent: true});
         CKEDITOR.replace('postanswer', { extraPlugins: 'mathjax, eqneditor', height: '250px', allowedContent: true});
@@ -402,148 +432,49 @@
             return text;
         };
 
-        let findText = function(ele){
-            return ele.parent().next().text();
-        };
-
-        let isCheck = function(ele){
-            return ele.is(':checked');
-        };
-
-        let uncheck = function(ele){
-            return ele.next().click();
-        };
-
-        let disable_value = ['Hình học - Hình trụ, hình nón, hình cầu','Hình học - Hệ thức lượng tam giác vuông','Hình học - đường tròn','Đại số - Căn thức','Đại số - Hàm số bậc nhất','Đại số - Hàm số bậc hai một ẩn','Đại số - Hệ hai phương trình bậc nhất hai ẩn'];
-
-        $.each($(".k-checkbox"), function(){
-            if(disable_value.indexOf(findText($(this))) !== -1) {
-                $(this).prop('disabled', true);
-            }
-        });
-
-        let check_count = 0;
-
-        $(".k-checkbox").change(function(){
-            let check = isCheck($(this));
-            let value = findText($(this));
-
-            check_count = $(".k-multiselect-wrap > ul > li > span:first-child").length;
-
-            if(value === 'Không xác định'){
-                if(check === true){
-                    $.each($(".k-checkbox"), function(){
-                        if(findText($(this)) !== 'Không xác định' && isCheck($(this))) {
-                            uncheck($(this));
-                        }
-                    });
-
-                    if(!isCheck($(this))) $(this).click();
-
-                }
-            }else{
-                $.each($(".k-checkbox"), function(){
-                    if(findText($(this)) === 'Không xác định') {
-                        if(isCheck($(this)) === true) {
-                            uncheck($(this));
-                        }
-                    }
-                });
-
-                if(check === true){
-
-                    if(check_count >= 5){
-                        
-                        toastr.error("Bạn chỉ được chọn tối đa 5 điểm kiến thức!");
-                        uncheck($(this));
-                    }
-                }
-            }
-
-            check_count = $(".k-multiselect-wrap > ul > li > span:first-child").length;
-        });
-
-        $(".k-in").click(function () {
-            return false;
-        });
-        $('input[name="bai"]').keydown(function(e){
-            if(!((e.keyCode > 95 && e.keyCode < 106)
-                || (e.keyCode > 47 && e.keyCode < 58)
-                || e.keyCode === 8)) {
-                return false;
-            }
-        });
         $("#btn-create").click(function(){
-            
+            let hard_label = $('input[name="hard_label"]:checked').length;
 
             let de_bai = trim(qeditor.getData());
             let dap_an = trim(aeditor.getData());
             let tieu_de = $('input[name="tieu_de"]').val();
-            let class_name = $('select[name="class"]').val();
-            let subject = $('select[name="subject"]').val();
-            let category = $('select[name="category"]').val();
-            let tap = $('select[name="tap"]').val();
-            let chuong = $('input[name="chuong"]').val();
-            let bai = $('input[name="bai"]').val();
-            let diem_kien_thuc = [];
+
+            let ma_sach = $('input[name="ma_sach"]').val();
+            let type = $('input[name="type"]').val();
+            let chapter = '';
+            if(chapter_is_input) chapter = $('input[name="chapter"]').val();
+            else chapter = $('select[name="chapter"]').val();
+            let bai = $('select[name="bai"]').val();
+            let total_knowledge_point = $('textarea[name="total_knowledge_point"]').val();
+            let knowledge_extra = $('textarea[name="knowledge_extra"]').val();
+
+            let knowledge_point = [];
             $.each($(".k-multiselect-wrap > ul > li > span:first-child"), function(){
-                diem_kien_thuc.push($(this).text());
+                knowledge_point.push($(this).text().trim());
             });
-            diem_kien_thuc = diem_kien_thuc.join(";");
+            knowledge_point = knowledge_point.join("|");
 
             let err = false;
 
-            if(tap < 0){
-                
-                toastr.error("Tập không thể là 1 số âm!");
-                if(!err) $('input[name="tap"]').focus();
-                $('input[name="tap"]').addClass('error');
-                err = true;
-            }
-
-            if(tap > 99999999999999999999){
-                
-                toastr.error("Tập không được vượt quá 20 kí tự");
-                if(!err) $('input[name="tap"]').focus();
-                $('input[name="tap"]').addClass('error');
-                err = true;
-            }
-
-            if(bai < 0){
-                
-                toastr.error("Bài không thể là 1 số âm!");
-                if(!err) $('input[name="bai"]').focus();
-                $('input[name="bai"]').addClass('error');
-                err = true;
-            }
-
-            if(bai > 99999999999999999999){
-                
-                toastr.error("Bài không được vượt quá 20 kí tự");
-                if(!err) $('input[name="bai"]').focus();
-                $('input[name="bai"]').addClass('error');
-                err = true;
-            }
-
-            if(dap_an.trim() == "")
+            if(dap_an.trim() === "")
             {
-                
+
                 toastr.error("Thiếu thông tin đáp án");
                 if(!err) aeditor.focus();
                 err = true;
             }
 
-            if(de_bai.trim() == "")
+            if(de_bai.trim() === "")
             {
-                
+
                 toastr.error("Thiếu thông tin đề bài");
                 if(!err) qeditor.focus();
                 err = true;
             }
 
-            if(tieu_de.trim() == "")
+            if(tieu_de.trim() === "")
             {
-                
+
                 toastr.error("Thiếu thông tin tiêu đề");
                 if(!err) $('input[name="tieu_de"]').focus();
                 $('input[name="tieu_de"]').addClass('error');
@@ -558,22 +489,22 @@
                 de_bai: de_bai,
                 dap_an: dap_an,
                 tieu_de: tieu_de,
-                class_name: class_name,
-                subject: subject,
-                category: category,
-                tap: tap,
-                chuong: chuong,
+                ma_sach: ma_sach,
+                type: type,
+                chapter: chapter,
                 bai: bai,
-                diem_kien_thuc: diem_kien_thuc,
+                total_knowledge_point: total_knowledge_point,
+                knowledge_point: knowledge_point,
+                hard_label: hard_label,
+                knowledge_extra: knowledge_extra,
                 hoi_dap_id: '{{$guid}}'
-            }
+            };
 
             $.ajax({
                 method: 'POST',
                 url: "{{url('/api/post1')}}",
                 data: data,
                 success: function(result){
-                    
                     toastr.success("Tạo thành công");
                     setTimeout(function() {
                         window.location.reload();
@@ -581,7 +512,7 @@
                 },
                 error: function (jqXHR, exception) {
                     console.log(jqXHR.responseText);
-                    
+
                     toastr.error("Có lỗi xảy ra. Vui lòng thử lại sau");
                 }
             });
