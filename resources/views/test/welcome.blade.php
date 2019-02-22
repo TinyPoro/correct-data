@@ -372,14 +372,6 @@
         }
     });
 
-    $('input[name="trang"]').keydown(function(e){
-        if(!((e.keyCode > 95 && e.keyCode < 106)
-            || (e.keyCode > 47 && e.keyCode < 58)
-            || e.keyCode === 8)) {
-            return false;
-        }
-    });
-
     let check_count = 0;
 
     let findText = function(ele){
@@ -699,23 +691,6 @@
         $(this).removeClass('error');
     });
 
-    function rependl(str){
-        str = str.replace('\nolimits', '\zolimits');
-        str = str.replace('\notin', '\zotin');
-        str = str.replace('\nleq', '\zleq');
-        str = str.replace('\ngeq', '\zgeq');
-        str = str.replace('\neq', '\zeq');
-        str = str.replace('\ne', '\ze');
-        str = str.replace('\n', '<br/>');
-        str = str.replace('\zolimits', '\nolimits');
-        str = str.replace('\zotin', '\notin');
-        str = str.replace('\zleq', '\nleq');
-        str = str.replace('\zgeq', '\ngeq');
-        str = str.replace('\zeq', '\neq');
-        str = str.replace('\ze', '\ne');
-        return str;
-    }
-
     function addSpan(str)
     {
         let out = '';
@@ -738,8 +713,6 @@
         return out;
     }
 
-    var x;
-    var y;
     function rollback(historyId){
         let history = histories.find(x => x.id == historyId);
         de_bai = history.de_bai;
