@@ -500,11 +500,15 @@
                 hoi_dap_id: '{{$guid}}'
             };
 
+            let url = '{{route('post.store')}}';
+
             $.ajax({
                 method: 'POST',
-                url: "{{url('/api/post1')}}",
+                url: url,
                 data: data,
                 success: function(result){
+                    console.log(result);
+
                     toastr.success("Tạo thành công");
                     setTimeout(function() {
                         window.location.reload();
@@ -521,45 +525,6 @@
         $('input').keyup(function(){
            $(this).removeClass('error');
         });
-
-        function rependl(str){
-            str = str.replace('\nolimits', '\zolimits');
-            str = str.replace('\notin', '\zotin');
-            str = str.replace('\nleq', '\zleq');
-            str = str.replace('\ngeq', '\zgeq');
-            str = str.replace('\neq', '\zeq');
-            str = str.replace('\ne', '\ze');
-            str = str.replace('\n', '<br/>');
-            str = str.replace('\zolimits', '\nolimits');
-            str = str.replace('\zotin', '\notin');
-            str = str.replace('\zleq', '\nleq');
-            str = str.replace('\zgeq', '\ngeq');
-            str = str.replace('\zeq', '\neq');
-            str = str.replace('\ze', '\ne');
-            return str;
-        }
-
-        function addSpan(str)
-        {
-            let out = '';
-
-            for(i=0;i<str.length;++i){
-                if(str[i] == '\\' && str[i+1] == '(') {
-                    out = out + '<span class="math-tex">\\(';
-                    i+=1;
-                }
-                else {
-                    if(str[i] == '\\' && str[i+1] == ')'){
-                        out = out + '\\)</span>';
-                        i+=1;
-                    }
-                    else
-                        out+=str[i];
-                }
-            }
-            console.log(out);
-            return out;
-        }
     });
 </script>
 @endpush

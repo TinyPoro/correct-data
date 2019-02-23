@@ -11,7 +11,7 @@ use App\ManualPost;
 
 class ToolController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         return view('welcome');
     }
@@ -74,7 +74,6 @@ class ToolController extends Controller
         return ['message' => 'success'];
     }
 
-
     public function editLabelPost($postId)
     {
         $post = DB::table('all_posts')->where('id', 'LIKE BINARY', $postId)->first();
@@ -105,13 +104,77 @@ class ToolController extends Controller
         ]);
     }
 
-    public function createPost(Request $request)
+    public function updateLabelPost($postId, Request $request)
+    {
+        $post = Post::find($postId);
+
+        if(!$post) return ['message' => 'Invalid post id!'];
+
+        $request->de_bai = $this->reverse($request->de_bai);
+        $request->dap_an = $this->reverse($request->dap_an);
+
+        $count = PostHistory::where('post_id', $postId)->count();
+        if ($count == 6) {
+            $h = PostHistory::where('post_id', $postId)->orderBy('created_at', 'asc')->first();
+            $h->delete();
+        }
+        $history = new PostHistory();
+        $history->post_id = $post->id;
+        // $history->de_bai = str_replace('\r', '', $post->de_bai);
+        // $history->dap_an = str_replace('\r', '', $post->dap_an);
+        $history->de_bai = $post->de_bai;
+        $history->dap_an = $post->dap_an;
+        $history->content = json_encode($post, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $history->save();
+
+        $post->de_bai = $request->de_bai;
+        $post->dap_an = $request->dap_an;
+        $post->tieu_de = $request->tieu_de;
+        $post->duong_dan_hoi = $request->duong_dan_hoi;
+        $post->duong_dan_tra_loi = $request->duong_dan_tra_loi;
+        $post->updated_at = date('Y-m-d H:i:s', strtotime(Carbon::now()));
+
+        if($request->chapter) {
+            if($request->bai === 'null') $request->bai = '';
+
+            $profile = \DB::table('profiles')
+                ->where('chapter', $request->chapter)
+                ->where('lesson', $request->bai)->first();
+
+            if(!$profile) {
+                \DB::table('profiles')->insert([
+                    'type' => $request->type,
+                    'chapter' => $request->chapter,
+                    'lesson' => $request->bai
+                ]);
+
+                $profile = \DB::table('profiles')
+                    ->where('chapter', $request->chapter)
+                    ->where('lesson', $request->bai)->first();
+
+            }
+
+            $post->profile_id = $profile->id;
+
+        }
+
+        $post->knowledge_question = $request->knowledge_point;
+
+        $post->hard_label = $request->hard_label;
+        $post->knowledge_extra = $request->knowledge_extra;
+
+        $post->save();
+
+        return ['message' => 'success'];
+    }
+
+    public function createPost()
     {
         $next_guid = str_random(9).uniqid('', true);
 
         $profiles = \DB::table('profiles')->where('lesson', '<>', '')->get();
 
-        return view('test.create', [
+        return view('create', [
             "guid" => str_pad($next_guid,32,"0",STR_PAD_LEFT),
             'profiles' => $profiles
         ]);
@@ -195,71 +258,6 @@ class ToolController extends Controller
         $data['histories_json'] = json_encode($data['histories']);
         return view('test.raw', $data);
     }
-
-    public function updateLabelPost($postId, Request $request)
-    {
-        $post = Post::find($postId);
-
-        if(!$post) return ['message' => 'Invalid post id!'];
-
-        $request->de_bai = $this->reverse($request->de_bai);
-        $request->dap_an = $this->reverse($request->dap_an);
-
-        $count = PostHistory::where('post_id', $postId)->count();
-        if ($count == 6) {
-            $h = PostHistory::where('post_id', $postId)->orderBy('created_at', 'asc')->first();
-            $h->delete();
-        }
-        $history = new PostHistory();
-        $history->post_id = $post->id;
-        // $history->de_bai = str_replace('\r', '', $post->de_bai);
-        // $history->dap_an = str_replace('\r', '', $post->dap_an);
-        $history->de_bai = $post->de_bai;
-        $history->dap_an = $post->dap_an;
-        $history->content = json_encode($post, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        $history->save();
-
-        $post->de_bai = $request->de_bai;
-        $post->dap_an = $request->dap_an;
-        $post->tieu_de = $request->tieu_de;
-        $post->duong_dan_hoi = $request->duong_dan_hoi;
-        $post->duong_dan_tra_loi = $request->duong_dan_tra_loi;
-        $post->updated_at = date('Y-m-d H:i:s', strtotime(Carbon::now()));
-
-        if($request->chapter) {
-            if($request->bai === 'null') $request->bai = '';
-
-            $profile = \DB::table('profiles')
-                ->where('chapter', $request->chapter)
-                ->where('lesson', $request->bai)->first();
-
-            if(!$profile) {
-                \DB::table('profiles')->insert([
-                    'type' => $request->type,
-                    'chapter' => $request->chapter,
-                    'lesson' => $request->bai
-                ]);
-
-                $profile = \DB::table('profiles')
-                    ->where('chapter', $request->chapter)
-                    ->where('lesson', $request->bai)->first();
-
-            }
-
-            $post->profile_id = $profile->id;
-
-        }
-
-        $post->knowledge_question = $request->knowledge_point;
-
-        $post->hard_label = $request->hard_label;
-        $post->knowledge_extra = $request->knowledge_extra;
-
-        $post->save();
-
-        return ['message' => 'success'];
-    }
-
 
     public function reverse($text)
     {
