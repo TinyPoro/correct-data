@@ -288,12 +288,10 @@
 
     $('#postquestion').bind('input propertychange', function() {
         $("#postquestion-display")[0].innerHTML = qeditor.getData();
-        // renderMathJax();
     });
 
     $('#postanswer').bind('input propertychange', function() {
         $("#postanswer-display")[0].innerHTML = aeditor.getData();
-        // renderMathJax();
     });
 
     let trim = function(text){

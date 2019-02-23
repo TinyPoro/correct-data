@@ -85,21 +85,12 @@ class ToolController extends Controller
         $post->de_bai = $this->endlToBr($post->de_bai);
         $post->dap_an = $this->endlToBr($post->dap_an);
 
-        $data['post'] = $post;
-        $data['histories'] = PostHistory::where('post_id', $post->id)->orderBy('created_at', 'desc')->get()->map(function ($history) {
-            $history->de_bai = $this->endlToBr(json_decode($history->content)->de_bai);
-            $history->dap_an = $this->endlToBr(json_decode($history->content)->dap_an);
-            $history->created = date('H:i d-m-Y', strtotime($history->created_at));
-            return $history;
-        });
-
-        $profiles = \DB::table('profiles')->where('lesson', '<>', '')->get();
+        $profiles = \DB::table('profiles')->where('book_id', 'VNTK000000000107 ')->where('lesson', '<>', '')->get();
         $post_profile = \DB::table('profiles')->where('id', $post->profile_id)->first();
 
-        return view('test.edit', [
+        return view('label', [
             'post' => $post,
             'post_profile' => $post_profile,
-            'histories' => $data['histories'],
             'profiles' => $profiles
         ]);
     }
@@ -110,28 +101,6 @@ class ToolController extends Controller
 
         if(!$post) return ['message' => 'Invalid post id!'];
 
-        $request->de_bai = $this->reverse($request->de_bai);
-        $request->dap_an = $this->reverse($request->dap_an);
-
-        $count = PostHistory::where('post_id', $postId)->count();
-        if ($count == 6) {
-            $h = PostHistory::where('post_id', $postId)->orderBy('created_at', 'asc')->first();
-            $h->delete();
-        }
-        $history = new PostHistory();
-        $history->post_id = $post->id;
-        // $history->de_bai = str_replace('\r', '', $post->de_bai);
-        // $history->dap_an = str_replace('\r', '', $post->dap_an);
-        $history->de_bai = $post->de_bai;
-        $history->dap_an = $post->dap_an;
-        $history->content = json_encode($post, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        $history->save();
-
-        $post->de_bai = $request->de_bai;
-        $post->dap_an = $request->dap_an;
-        $post->tieu_de = $request->tieu_de;
-        $post->duong_dan_hoi = $request->duong_dan_hoi;
-        $post->duong_dan_tra_loi = $request->duong_dan_tra_loi;
         $post->updated_at = date('Y-m-d H:i:s', strtotime(Carbon::now()));
 
         if($request->chapter) {
