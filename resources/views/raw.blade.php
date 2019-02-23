@@ -73,7 +73,7 @@
                 toastr.error("Tìm kiếm bằng ID: ID không được để trống và phải là số nguyên dương");
                 return;
             }
-            window.location = "{{url('/post')}}/" + post_id + "/raw";
+            window.location = "{{url('/post1')}}/" + post_id + "/raw";
         }
     });
 
@@ -90,7 +90,7 @@
                 toastr.error("Tìm kiếm bằng ItemId: ItemID không được để trống");
                 return;
             }
-            window.location = "{{url('/post')}}/" + post_id + "/raw";
+            window.location = "{{url('/post1')}}/" + post_id + "/raw";
         }
     });
 

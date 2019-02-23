@@ -22,31 +22,32 @@
 
 </head>
 <body>
-    <div>
-        <!-- <nav class="navbar navbar-expand-md navbar-light navbar-laravel navbar-fixed-top" style="-webkit-box-shadow: 0 8px 6px -6px #999;">
-            <div class="container">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<div id="app">
+    <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url('/') }}">
+                Data Team Tool
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                                <a class="nav-link" href="#">Sửa câu hỏi đáp</a>
-                            </li>
-                        </ul>
-                    <ul class="navbar-nav ml-auto">
-                        
-                    </ul>
-                </div>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- Left Side Of Navbar -->
+                <ul class="navbar-nav mr-auto">
+                    <a class="nav-link" href="{{route('post.edit', ['id' => 1])}}">Sửa câu hỏi đáp</a>
+                    <a class="nav-link" href="{{route('post.edit_label', ['id' => 1])}}">Gán nhãn câu hỏi đáp</a>
+                    <a class="nav-link" href="{{route('post.create')}}">Tạo câu hỏi đáp</a>
+                </ul>
+
             </div>
-        </nav> -->
-        
-        <main class="py-4">
-            @yield('content')
-        </main>
+        </div>
+    </nav>
 
-    </div>
+    <main class="py-4">
+        @yield('content')
+    </main>
+</div>
 
 </body>
 <script src="{{url('/assets/js/jquery-3.2.1.min.js')}}" type="text/javascript"></script>

@@ -9,15 +9,264 @@ use App\PostHistory;
 use Carbon\Carbon;
 use App\ManualPost;
 
-class WebController1 extends Controller
+class ToolController extends Controller
 {
+    public function index(Request $request)
+    {
+        return view('welcome');
+    }
+
+    public function editPost($postId)
+    {
+        $post = DB::table('all_posts')->where('id', 'LIKE BINARY', $postId)->first();
+        if (!$post) {
+            $post = DB::table('all_posts')->where('hoi_dap_id', $postId)->first();
+
+            if (!$post) return view('404');
+        }
+        $post->de_bai = $this->endlToBr($post->de_bai);
+        $post->dap_an = $this->endlToBr($post->dap_an);
+
+        $data['post'] = $post;
+        $data['histories'] = PostHistory::where('post_id', $post->id)->orderBy('created_at', 'desc')->get()->map(function ($history) {
+            $history->de_bai = $this->endlToBr(json_decode($history->content)->de_bai);
+            $history->dap_an = $this->endlToBr(json_decode($history->content)->dap_an);
+            $history->created = date('H:i d-m-Y', strtotime($history->created_at));
+            return $history;
+        });
+
+        return view('edit', [
+            'post' => $post,
+            'histories' => $data['histories'],
+        ]);
+    }
+
+    public function updatePost($postId, Request $request)
+    {
+        $post = Post::find($postId);
+
+        if(!$post) return ['message' => 'Invalid post id!'];
+
+        $request->de_bai = $this->reverse($request->de_bai);
+        $request->dap_an = $this->reverse($request->dap_an);
+
+        $count = PostHistory::where('post_id', $postId)->count();
+        if ($count == 6) {
+            $h = PostHistory::where('post_id', $postId)->orderBy('created_at', 'asc')->first();
+            $h->delete();
+        }
+        $history = new PostHistory();
+        $history->post_id = $post->id;
+        $history->de_bai = $post->de_bai;
+        $history->dap_an = $post->dap_an;
+        $history->content = json_encode($post, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $history->save();
+
+        $post->de_bai = $request->de_bai;
+        $post->dap_an = $request->dap_an;
+        $post->tieu_de = $request->tieu_de;
+        $post->duong_dan_hoi = $request->duong_dan_hoi;
+        $post->duong_dan_tra_loi = $request->duong_dan_tra_loi;
+        $post->updated_at = date('Y-m-d H:i:s', strtotime(Carbon::now()));
+
+        $post->save();
+
+        return ['message' => 'success'];
+    }
+
+
+    public function editLabelPost($postId)
+    {
+        $post = DB::table('all_posts')->where('id', 'LIKE BINARY', $postId)->first();
+        if (!$post) {
+            $post = DB::table('all_posts')->where('hoi_dap_id', $postId)->first();
+
+            if (!$post) return view('404');
+        }
+        $post->de_bai = $this->endlToBr($post->de_bai);
+        $post->dap_an = $this->endlToBr($post->dap_an);
+
+        $data['post'] = $post;
+        $data['histories'] = PostHistory::where('post_id', $post->id)->orderBy('created_at', 'desc')->get()->map(function ($history) {
+            $history->de_bai = $this->endlToBr(json_decode($history->content)->de_bai);
+            $history->dap_an = $this->endlToBr(json_decode($history->content)->dap_an);
+            $history->created = date('H:i d-m-Y', strtotime($history->created_at));
+            return $history;
+        });
+
+        $profiles = \DB::table('profiles')->where('lesson', '<>', '')->get();
+        $post_profile = \DB::table('profiles')->where('id', $post->profile_id)->first();
+
+        return view('test.edit', [
+            'post' => $post,
+            'post_profile' => $post_profile,
+            'histories' => $data['histories'],
+            'profiles' => $profiles
+        ]);
+    }
+
+    public function createPost(Request $request)
+    {
+        $next_guid = str_random(9).uniqid('', true);
+
+        $profiles = \DB::table('profiles')->where('lesson', '<>', '')->get();
+
+        return view('test.create', [
+            "guid" => str_pad($next_guid,32,"0",STR_PAD_LEFT),
+            'profiles' => $profiles
+        ]);
+    }
+
+    public function storePost(Request $request) {
+        $request->de_bai = $this->reverse($request->de_bai);
+        $request->dap_an = $this->reverse($request->dap_an);
+        $manualPost = new ManualPost();
+        $manualPost->title = $request->tieu_de;
+        $manualPost->url = $request->hoi_dap_id;
+        $manualPost->subject_html = $request->de_bai;
+        $manualPost->content_html = $request->dap_an;
+        $manualPost->hoi_dap_id = $request->hoi_dap_id;
+        $manualPost->crawler = 'manual';
+        $manualPost->data = '';
+        $manualPost->save();
+
+        if($request->chapter) {
+            if($request->bai === 'null') $request->bai = '';
+
+            $profile = \DB::table('profiles')
+                ->where('chapter', $request->chapter)
+                ->where('lesson', $request->bai)->first();
+
+            if(!$profile) {
+                \DB::table('profiles')->insert([
+                    'type' => $request->type,
+                    'chapter' => $request->chapter,
+                    'lesson' => $request->bai
+                ]);
+
+                $profile = \DB::table('profiles')
+                    ->where('chapter', $request->chapter)
+                    ->where('lesson', $request->bai)->first();
+
+            }
+
+            $profile_id = $profile->id;
+        }else{
+            $profile_id = null;
+        }
+
+        \DB::table('all_posts')->insert([
+            'hoi_dap_id' => $request->hoi_dap_id,
+            'tieu_de' => $request->tieu_de,
+            'url' => '',
+            'de_bai' => $request->de_bai,
+            'dap_an' => $request->dap_an,
+            'ten_nguon' => 'manual',
+            'duong_dan_hoi' => 'media/'.$request->hoi_dap_id.'-CH-01.jpg',
+            'duong_dan_tra_loi' => 'media/'.$request->hoi_dap_id.'-DA-01-D.jpg',
+            'profile_id' => $profile_id,
+            'knowledge_question' => $request->knowledge_point,
+            'hard_label' => $request->hard_label,
+            'knowledge_extra' => $request->knowledge_extra
+        ]);
+
+        return ['message' => 'success'];
+
+    }
+
+    public function rawHistory($postId, Request $request)
+    {
+        $post = DB::table('all_posts')->where('id', $postId)->first();
+        if ($post == null) {
+            $post = DB::table('all_posts')->where('hoi_dap_id', $postId)->first();
+            if ($post == null)
+                return view('404');
+        }
+        $post->de_bai = $this->endlToBr($post->de_bai);
+        $post->dap_an = $this->endlToBr($post->dap_an);
+
+        $data['post'] = $post;
+        $data['histories'] = PostHistory::where('post_id', $postId)->orderBy('created_at', 'desc')->get()->map(function ($history) {
+            $history->de_bai = json_decode($history->content)->de_bai;
+            $history->dap_an = json_decode($history->content)->dap_an;
+            $history->created = date('H:i d-m-Y', strtotime($history->created_at));
+            return $history;
+        });
+        $data['histories_json'] = json_encode($data['histories']);
+        return view('test.raw', $data);
+    }
+
+    public function updateLabelPost($postId, Request $request)
+    {
+        $post = Post::find($postId);
+
+        if(!$post) return ['message' => 'Invalid post id!'];
+
+        $request->de_bai = $this->reverse($request->de_bai);
+        $request->dap_an = $this->reverse($request->dap_an);
+
+        $count = PostHistory::where('post_id', $postId)->count();
+        if ($count == 6) {
+            $h = PostHistory::where('post_id', $postId)->orderBy('created_at', 'asc')->first();
+            $h->delete();
+        }
+        $history = new PostHistory();
+        $history->post_id = $post->id;
+        // $history->de_bai = str_replace('\r', '', $post->de_bai);
+        // $history->dap_an = str_replace('\r', '', $post->dap_an);
+        $history->de_bai = $post->de_bai;
+        $history->dap_an = $post->dap_an;
+        $history->content = json_encode($post, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $history->save();
+
+        $post->de_bai = $request->de_bai;
+        $post->dap_an = $request->dap_an;
+        $post->tieu_de = $request->tieu_de;
+        $post->duong_dan_hoi = $request->duong_dan_hoi;
+        $post->duong_dan_tra_loi = $request->duong_dan_tra_loi;
+        $post->updated_at = date('Y-m-d H:i:s', strtotime(Carbon::now()));
+
+        if($request->chapter) {
+            if($request->bai === 'null') $request->bai = '';
+
+            $profile = \DB::table('profiles')
+                ->where('chapter', $request->chapter)
+                ->where('lesson', $request->bai)->first();
+
+            if(!$profile) {
+                \DB::table('profiles')->insert([
+                    'type' => $request->type,
+                    'chapter' => $request->chapter,
+                    'lesson' => $request->bai
+                ]);
+
+                $profile = \DB::table('profiles')
+                    ->where('chapter', $request->chapter)
+                    ->where('lesson', $request->bai)->first();
+
+            }
+
+            $post->profile_id = $profile->id;
+
+        }
+
+        $post->knowledge_question = $request->knowledge_point;
+
+        $post->hard_label = $request->hard_label;
+        $post->knowledge_extra = $request->knowledge_extra;
+
+        $post->save();
+
+        return ['message' => 'success'];
+    }
+
+
     public function reverse($text)
     {
         $text = str_replace("\r", ' ', $text);
         $text = str_replace("\t", ' ', $text);
         $text = str_replace(' ', ' ', $text);
-//        $text = str_replace('
-//', ' ', $text);
+
         $text = str_replace("\xc2\xa0", ' ', $text);
         $text = str_replace("&#13;", ' ', $text);
 
@@ -148,17 +397,6 @@ class WebController1 extends Controller
 
         return $text;
     }
-
-    public function removeEndl($text)
-    {
-        if (preg_match_all('/<p>(&nbsp;)*<\/p>\n( )*(\n)*( )*/', $text, $matches)) {
-            foreach ($matches[0] as $space_text) {
-                $text = str_ireplace($space_text, '', $text);
-            }
-        }
-        return $text;
-    }
-
     public function brToEndlLatex($text)
     {
         $ok = 0;
@@ -177,7 +415,6 @@ class WebController1 extends Controller
         }
         return $ntext;
     }
-
     public function endlToBr($text)
     {
         $text = str_replace('\nolimits', '\zolimits', $text);
@@ -232,200 +469,6 @@ class WebController1 extends Controller
         }
         return $text;
     }
-
-    public function index(Request $request)
-    {
-        $post = DB::table('all_posts')->first();
-        if ($post == null)
-            return view('404');
-        return redirect('/' . 'post' . '/' . $post->id . '/edit');
-    }
-
-    public function editPost($postId, Request $request)
-    {
-        $post = DB::table('all_posts')->where('id', 'LIKE BINARY', $postId)->first();
-        if (!$post) {
-            $post = DB::table('all_posts')->where('hoi_dap_id', $postId)->first();
-
-            if (!$post) return view('404');
-        }
-        $post->de_bai = $this->endlToBr($post->de_bai);
-        $post->dap_an = $this->endlToBr($post->dap_an);
-
-        $data['post'] = $post;
-        $data['histories'] = PostHistory::where('post_id', $post->id)->orderBy('created_at', 'desc')->get()->map(function ($history) {
-            $history->de_bai = $this->endlToBr(json_decode($history->content)->de_bai);
-            $history->dap_an = $this->endlToBr(json_decode($history->content)->dap_an);
-            $history->created = date('H:i d-m-Y', strtotime($history->created_at));
-            return $history;
-        });
-
-        $profiles = \DB::table('profiles')->where('lesson', '<>', '')->get();
-        $post_profile = \DB::table('profiles')->where('id', $post->profile_id)->first();
-
-        return view('test.welcome', [
-            'post' => $post,
-            'post_profile' => $post_profile,
-            'histories' => $data['histories'],
-            'profiles' => $profiles
-        ]);
-    }
-
-    public function createPost(Request $request)
-    {
-        $next_guid = str_random(9).uniqid('', true);
-
-        $profiles = \DB::table('profiles')->where('lesson', '<>', '')->get();
-
-        return view('test.create', [
-            "guid" => str_pad($next_guid,32,"0",STR_PAD_LEFT),
-            'profiles' => $profiles
-        ]);
-    }
-
-    public function createPostApi(Request $request) {
-        $request->de_bai = $this->reverse($request->de_bai);
-        $request->dap_an = $this->reverse($request->dap_an);
-        $manualPost = new ManualPost();
-        $manualPost->title = $request->tieu_de;
-        $manualPost->url = $request->hoi_dap_id;
-        $manualPost->subject_html = $request->de_bai;
-        $manualPost->content_html = $request->dap_an;
-        $manualPost->hoi_dap_id = $request->hoi_dap_id;
-        $manualPost->crawler = 'manual';
-        $manualPost->data = '';
-        $manualPost->save();
-
-        if($request->chapter) {
-            if($request->bai === 'null') $request->bai = '';
-
-            $profile = \DB::table('profiles')
-                ->where('chapter', $request->chapter)
-                ->where('lesson', $request->bai)->first();
-
-            if(!$profile) {
-                \DB::table('profiles')->insert([
-                    'type' => $request->type,
-                    'chapter' => $request->chapter,
-                    'lesson' => $request->bai
-                ]);
-
-                $profile = \DB::table('profiles')
-                    ->where('chapter', $request->chapter)
-                    ->where('lesson', $request->bai)->first();
-
-            }
-
-            $profile_id = $profile->id;
-        }else{
-            $profile_id = null;
-        }
-
-        \DB::table('all_posts')->insert([
-            'hoi_dap_id' => $request->hoi_dap_id,
-            'tieu_de' => $request->tieu_de,
-            'url' => '',
-            'de_bai' => $request->de_bai,
-            'dap_an' => $request->dap_an,
-            'ten_nguon' => 'manual',
-            'duong_dan_hoi' => 'media/'.$request->hoi_dap_id.'-CH-01.jpg',
-            'duong_dan_tra_loi' => 'media/'.$request->hoi_dap_id.'-DA-01-D.jpg',
-            'profile_id' => $profile_id,
-            'knowledge_question' => $request->knowledge_point,
-            'hard_label' => $request->hard_label,
-            'knowledge_extra' => $request->knowledge_extra
-        ]);
-
-        return ['message' => 'success'];
-
-    }
-
-    public function rawHistory($postId, Request $request)
-    {
-        $post = DB::table('all_posts')->where('id', $postId)->first();
-        if ($post == null) {
-            $post = DB::table('all_posts')->where('hoi_dap_id', $postId)->first();
-            if ($post == null)
-                return view('404');
-        }
-        $post->de_bai = $this->endlToBr($post->de_bai);
-        $post->dap_an = $this->endlToBr($post->dap_an);
-
-        $data['post'] = $post;
-        $data['histories'] = PostHistory::where('post_id', $postId)->orderBy('created_at', 'desc')->get()->map(function ($history) {
-            $history->de_bai = json_decode($history->content)->de_bai;
-            $history->dap_an = json_decode($history->content)->dap_an;
-            $history->created = date('H:i d-m-Y', strtotime($history->created_at));
-            return $history;
-        });
-        $data['histories_json'] = json_encode($data['histories']);
-        return view('test.raw', $data);
-    }
-
-    public function editPostApi($postId, Request $request)
-    {
-        $post = Post::find($postId);
-
-        if(!$post) return ['message' => 'Invalid post id!'];
-
-        $request->de_bai = $this->reverse($request->de_bai);
-        $request->dap_an = $this->reverse($request->dap_an);
-
-        $count = PostHistory::where('post_id', $postId)->count();
-        if ($count == 6) {
-            $h = PostHistory::where('post_id', $postId)->orderBy('created_at', 'asc')->first();
-            $h->delete();
-        }
-        $history = new PostHistory();
-        $history->post_id = $post->id;
-        // $history->de_bai = str_replace('\r', '', $post->de_bai);
-        // $history->dap_an = str_replace('\r', '', $post->dap_an);
-        $history->de_bai = $post->de_bai;
-        $history->dap_an = $post->dap_an;
-        $history->content = json_encode($post, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        $history->save();
-
-        $post->de_bai = $request->de_bai;
-        $post->dap_an = $request->dap_an;
-        $post->tieu_de = $request->tieu_de;
-        $post->duong_dan_hoi = $request->duong_dan_hoi;
-        $post->duong_dan_tra_loi = $request->duong_dan_tra_loi;
-        $post->updated_at = date('Y-m-d H:i:s', strtotime(Carbon::now()));
-
-        if($request->chapter) {
-            if($request->bai === 'null') $request->bai = '';
-
-            $profile = \DB::table('profiles')
-                ->where('chapter', $request->chapter)
-                ->where('lesson', $request->bai)->first();
-
-            if(!$profile) {
-                \DB::table('profiles')->insert([
-                    'type' => $request->type,
-                    'chapter' => $request->chapter,
-                    'lesson' => $request->bai
-                ]);
-
-                $profile = \DB::table('profiles')
-                    ->where('chapter', $request->chapter)
-                    ->where('lesson', $request->bai)->first();
-
-            }
-
-            $post->profile_id = $profile->id;
-
-        }
-
-        $post->knowledge_question = $request->knowledge_point;
-
-        $post->hard_label = $request->hard_label;
-        $post->knowledge_extra = $request->knowledge_extra;
-
-        $post->save();
-
-        return ['message' => 'success'];
-    }
-
     public function escapeSlash($text)
     {
         $next = '';

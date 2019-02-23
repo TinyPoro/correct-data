@@ -10,29 +10,17 @@
 |
  */
 
-Route::get('/', 'WebController@index');
+Route::get('/', 'ToolController@index');
 
-Route::get('/post/{postId}/edit', 'WebController@editPost');
+// sửa
+Route::get('/post/{postId}/edit', 'ToolController@editPost')->name('post.edit');
+Route::get('/raw_history/{postId}', 'ToolController@rawHistory')->name('raw_history');;
+Route::post('/post/{postId}', 'ToolController@updatePost')->name('post.update');
 
-Route::get('/post/create', 'WebController@createPost');
+//gán nhãn
+Route::get('/post/{postId}/label', 'ToolController@editLabelPost')->name('post.edit_label');
+Route::post('/post_label/{postId}', 'ToolController@updateLabelPost')->name('post.update_label');
 
-Route::get('/post/{postId}/raw', 'WebController@rawHistory');
-
-Route::put('/api/post/{postId}', 'WebController@editPostApi')->name('edit.post');
-
-Route::post('/api/post', 'WebController@createPostApi')->name('create.post');
-
-Route::get('/api/test', 'WebController@test');
-
-
-//test
-
-Route::get('/post1/{postId}/edit', 'WebController1@editPost');
-
-Route::get('/post1/create', 'WebController1@createPost');
-
-Route::get('/post1/{postId}/raw', 'WebController1@rawHistory');
-
-Route::put('/api/post1/{postId}', 'WebController1@editPostApi')->name('edit.post1');
-
-Route::post('/api/post1', 'WebController1@createPostApi')->name('create.post1');
+//tạo mới
+Route::get('/post/create', 'ToolController@createPost')->name('post.create');;
+Route::post('/post', 'ToolController@storePost')->name('post.store');
