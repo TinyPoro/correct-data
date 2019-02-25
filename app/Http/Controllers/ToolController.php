@@ -162,31 +162,6 @@ class ToolController extends Controller
         $manualPost->data = '';
         $manualPost->save();
 
-        if($request->chapter) {
-            if($request->bai === 'null') $request->bai = '';
-
-            $profile = \DB::table('profiles')
-                ->where('chapter', $request->chapter)
-                ->where('lesson', $request->bai)->first();
-
-            if(!$profile) {
-                \DB::table('profiles')->insert([
-                    'type' => $request->type,
-                    'chapter' => $request->chapter,
-                    'lesson' => $request->bai
-                ]);
-
-                $profile = \DB::table('profiles')
-                    ->where('chapter', $request->chapter)
-                    ->where('lesson', $request->bai)->first();
-
-            }
-
-            $profile_id = $profile->id;
-        }else{
-            $profile_id = null;
-        }
-
         \DB::table('all_posts')->insert([
             'hoi_dap_id' => $request->hoi_dap_id,
             'tieu_de' => $request->tieu_de,
@@ -196,10 +171,6 @@ class ToolController extends Controller
             'ten_nguon' => 'manual',
             'duong_dan_hoi' => 'media/'.$request->hoi_dap_id.'-CH-01.jpg',
             'duong_dan_tra_loi' => 'media/'.$request->hoi_dap_id.'-DA-01-D.jpg',
-            'profile_id' => $profile_id,
-            'knowledge_question' => $request->knowledge_point,
-            'hard_label' => $request->hard_label,
-            'knowledge_extra' => $request->knowledge_extra
         ]);
 
         return ['message' => 'success'];
