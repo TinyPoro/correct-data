@@ -35,9 +35,9 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
-                    <a class="nav-link" href="{{route('post.edit', ['id' => 1])}}">Sửa câu hỏi đáp</a>
-                    <a class="nav-link" href="{{route('post.edit_label', ['id' => 1])}}">Gán nhãn câu hỏi đáp</a>
-                    <a class="nav-link" href="{{route('post.create')}}">Tạo câu hỏi đáp</a>
+                    {{--<a class="nav-link" href="{{route('post.edit', ['id' => 1])}}">Sửa câu hỏi đáp</a>--}}
+                    {{--<a class="nav-link" href="{{route('post.edit_label', ['id' => 1])}}">Gán nhãn câu hỏi đáp</a>--}}
+                    {{--<a class="nav-link" href="{{route('post.create')}}">Tạo câu hỏi đáp</a>--}}
                 </ul>
 
             </div>
