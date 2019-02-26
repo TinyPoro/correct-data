@@ -34,7 +34,7 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
-                <ul class="navbar-nav mr-auto">
+                <ul class="navbar-nav mr-auto" style="margin-top: 9px; font-weight: 700;">
                     <a class="nav-link" href="">Sửa câu hỏi đáp</a>
                     <a class="nav-link" href="">Gán nhãn câu hỏi đáp</a>
                     <a class="nav-link" href="">Tạo câu hỏi đáp</a>
