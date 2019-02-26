@@ -25,7 +25,7 @@
 <div id="app">
     <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}">
+            <a class="navbar-brand" href="{{ url('/') }}" style="font-weight: 500; font-size: 27px;">
                 Data Team Tool
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -35,9 +35,9 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
-                    {{--<a class="nav-link" href="{{route('post.edit', ['id' => 1])}}">Sửa câu hỏi đáp</a>--}}
-                    {{--<a class="nav-link" href="{{route('post.edit_label', ['id' => 1])}}">Gán nhãn câu hỏi đáp</a>--}}
-                    {{--<a class="nav-link" href="{{route('post.create')}}">Tạo câu hỏi đáp</a>--}}
+                    <a class="nav-link" href="">Sửa câu hỏi đáp</a>
+                    <a class="nav-link" href="">Gán nhãn câu hỏi đáp</a>
+                    <a class="nav-link" href="">Tạo câu hỏi đáp</a>
                 </ul>
 
             </div>

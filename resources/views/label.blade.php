@@ -103,7 +103,7 @@
                     <label class="" for="hard_label">Loại khó gán nhãn</label>
                 </div>
                 <hr width="100%">
-                <div class="row col-md-12">
+                <div class="row col-md-12" style="margin-left: ">
                     <div class="row">
                         <div class="form-inline" style="width: 100%;">
                             <div class="form-group mb-4">
