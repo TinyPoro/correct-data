@@ -24,6 +24,9 @@ class ToolController extends Controller
 
             if (!$post) return view('404');
         }
+
+        if($post->level == 'L8') return view('404');
+
         $post->de_bai = $this->endlToBr($post->de_bai);
         $post->dap_an = $this->endlToBr($post->dap_an);
 
@@ -82,6 +85,9 @@ class ToolController extends Controller
 
             if (!$post) return view('404');
         }
+
+        if($post->level != 'L8') return view('404');
+
         $post->de_bai = $this->endlToBr($post->de_bai);
         $post->dap_an = $this->endlToBr($post->dap_an);
 
