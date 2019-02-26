@@ -137,15 +137,18 @@ class ToolController extends Controller
         return ['message' => 'success'];
     }
 
-    public function createPost()
+    public function createPost(Request $request)
     {
         $next_guid = str_random(9).uniqid('', true);
 
         $profiles = \DB::table('profiles')->where('lesson', '<>', '')->get();
 
+        $src = $request->has('src') ? $request->get('src') : 'manual';
+
         return view('create', [
             "guid" => str_pad($next_guid,32,"0",STR_PAD_LEFT),
-            'profiles' => $profiles
+            'profiles' => $profiles,
+            'src' => $src
         ]);
     }
 
@@ -158,7 +161,7 @@ class ToolController extends Controller
         $manualPost->subject_html = $request->de_bai;
         $manualPost->content_html = $request->dap_an;
         $manualPost->hoi_dap_id = $request->hoi_dap_id;
-        $manualPost->crawler = 'manual';
+        $manualPost->crawler = $request->ten_nguon;
         $manualPost->data = '';
         $manualPost->save();
 

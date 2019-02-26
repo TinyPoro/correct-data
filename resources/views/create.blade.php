@@ -262,6 +262,7 @@
                 de_bai: de_bai,
                 dap_an: dap_an,
                 tieu_de: tieu_de,
+                ten_nguon: '{{$src}}',
                 hoi_dap_id: '{{$guid}}'
             };
 
