@@ -82,14 +82,14 @@
                 <div class="form-group" style="width: 100%;">
                     <label style="width: 15%"><b>ID:</b></label>
                     <input class="form-control" style="display: inline-block; width:35%" id="post-id" min="0" type="html"
-                        placeholder="Post's id" value="{{$post->id}}" maxlength="8"/>
+                        placeholder="Post's id" value="{{$post->id}}" maxlength="10"/>
                     &nbsp;
                     <button class="btn btn-success" style="display: inline-block;" id="btn-change-id">Tìm kiếm</button>
                 </div>
                 <div class="form-group" style="width: 100%;">
                     <label style="width: 15%"><b>ItemID:</b></label>
                     <input class="form-control" style="display: inline-block; width:35%" id="post-itemid" type="text"
-                        placeholder="Post's itemID" value="{{$post->hoi_dap_id}}" maxlength="50"/>
+                        placeholder="Post's itemID" value="{{$post->hoi_dap_id}}" maxlength="32"/>
                     &nbsp;
                     <button class="btn btn-success" style="display: inline-block;" id="btn-change-itemid">Tìm kiếm</button>
                 </div>
@@ -182,7 +182,7 @@
                         <div class="form-group" style="width: 100%;">
                             <label style="vertical-align: top;"><b>Knowledge bổ sung:</b></label>
 
-                            <textarea class="form-control" type="text" id="knowledge_extra" name="knowledge_extra" style="width: 100%;">{{$post->knowledge_extra}}</textarea>
+                            <textarea maxlength="200" class="form-control" type="text" id="knowledge_extra" name="knowledge_extra" style="width: 100%;">{{$post->knowledge_extra}}</textarea>
                         </div>
                     </div>
                 </div>
