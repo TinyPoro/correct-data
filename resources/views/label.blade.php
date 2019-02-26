@@ -81,7 +81,7 @@
             <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px 20px">
                 <div class="form-group" style="width: 100%;">
                     <label style="width: 15%"><b>ID:</b></label>
-                    <input class="form-control" style="display: inline-block; width:35%" id="post-id" min="0" type="html"
+                    <input class="form-control" style="display: inline-block; width:35%" id="post-id" min="0" type="text"
                         placeholder="Post's id" value="{{$post->id}}" maxlength="10"/>
                     &nbsp;
                     <button class="btn btn-success" style="display: inline-block;" id="btn-change-id">Tìm kiếm</button>
@@ -441,6 +441,12 @@
             return;
         }
 
+        if(post_id.length > 10){
+
+            toastr.error("Trường ID chỉ được phép tối đa 10 kí tự!");
+            return;
+        }
+
         let url = '{{route('post.edit_label', ['postId' => ':postId'])}}';
         url = url.replace(':postId', post_id);
         window.location = url;
@@ -453,6 +459,12 @@
             if(post_id === "" || isNaN(post_id) || Number(post_id) <= 0 || Number.isInteger(Number(post_id)) === false){
 
                 toastr.error("Tìm kiếm bằng ID: ID không được để trống và phải là số nguyên dương");
+                return;
+            }
+
+            if(post_id.length > 10){
+
+                toastr.error("Trường ID chỉ được phép tối đa 10 kí tự!");
                 return;
             }
 
@@ -474,6 +486,12 @@
             if(post_id === ""){
 
                 toastr.error("Tìm kiếm bằng ItemId: ItemID không được để trống");
+                return;
+            }
+
+            if(post_id.length > 32){
+
+                toastr.error("Trường ItemID chỉ được phép tối đa 32 kí tự!");
                 return;
             }
 
@@ -548,6 +566,15 @@
             toastr.error("Bạn phải giữ nguyên trường Item ID để thay đổi!");
             if(!err) $("#post-itemid").focus();
             $("#post-itemid").addClass('error');
+            err = true;
+        }
+
+        if(knowledge_extra.length > 200)
+        {
+
+            toastr.error("Trường Knowledge bổ sung chỉ được tối đa 200 kí tự!");
+            if(!err) $('textarea[name="knowledge_extra"]').focus();
+            $('textarea[name="knowledge_extra"]').addClass('error');
             err = true;
         }
 
