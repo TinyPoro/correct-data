@@ -85,7 +85,7 @@ class ToolController extends Controller
         $post->de_bai = $this->endlToBr($post->de_bai);
         $post->dap_an = $this->endlToBr($post->dap_an);
 
-        $profiles = \DB::table('profiles')->where('book_id', 'VNTK000000000107 ')->where('lesson', '<>', '')->get();
+        $profiles = \DB::table('profiles')->where('book_id', 'VNTK000000000107')->where('lesson', '<>', '')->get();
         $post_profile = \DB::table('profiles')->where('id', $post->profile_id)->first();
 
         return view('label', [
@@ -103,23 +103,63 @@ class ToolController extends Controller
 
         $post->updated_at = date('Y-m-d H:i:s', strtotime(Carbon::now()));
 
-        if($request->chapter) {
+        if($request->chapter && $request->ma_sach) {
             if($request->bai === 'null') $request->bai = '';
 
             $profile = \DB::table('profiles')
+                ->where('book_id', $request->ma_sach)
                 ->where('chapter', $request->chapter)
                 ->where('lesson', $request->bai)->first();
 
             if(!$profile) {
+                $book = \DB::table('pdf_book')->where('book_code', $request->ma_sach)->first();
+
+                if(!$book){
+                    $book_class = null;
+                    $book_category = null;
+                    $book_tap = null;
+                    $book_inserted_by = null;
+                    $book_inserted_date = null;
+                    $book_modified_by = null;
+                    $book_modified_date = null;
+                }else{
+                    $user = \DB::table('users')->where('id', $book->created_by)->first();
+                    $book_name = $book->book_name;
+
+                    if(preg_match('/(?<=tập)[\s\d]+/', $book_name, $matches)){
+                        $book_tap = array_get($matches, 0, null);
+                    }else{
+                        $book_tap = null;
+                    }
+
+                    $book_class = 'lop_9';
+                    $book_category = 'SBT';
+                    $book_inserted_by = $user->name;
+                    $book_inserted_date = $book->created_at;
+                    $book_modified_by = $user->name;
+                    $book_modified_date = $book->updated_at;
+                }
+
                 \DB::table('profiles')->insert([
+                    'book_id' => $request->ma_sach,
+                    'book_class' => $book_class,
+                    'book_category' => $book_category,
+                    'book_tap' => $book_tap,
+                    'book_inserted_by' => $book_inserted_by,
+                    'book_inserted_date' => $book_inserted_date,
+                    'book_modified_by' => $book_modified_by,
+                    'book_modified_date' => $book_modified_date,
                     'type' => $request->type,
                     'chapter' => $request->chapter,
-                    'lesson' => $request->bai
+                    'lesson' => $request->bai,
+                    'knowledge_point' => $request->knowledge_point,
                 ]);
 
                 $profile = \DB::table('profiles')
+                    ->where('lesson', $request->bai)
                     ->where('chapter', $request->chapter)
-                    ->where('lesson', $request->bai)->first();
+                    ->where('book_id', $request->ma_sach)
+                    ->first();
 
             }
 

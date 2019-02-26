@@ -109,7 +109,11 @@
                             <div class="form-group mb-4">
                                 <label style="vertical-align: top;"><b>Mã sách:</b></label>
 
-                                <input class="form-control" id="ma_sach" name="ma_sach" style="width: 100%;" value="VNTK000000000107" disabled/>
+                                @if($post_profile)
+                                    <input class="form-control" id="ma_sach" name="ma_sach" style="width: 100%;" value="{{$post_profile->book_id}}"/>
+                                @else
+                                    <input class="form-control" id="ma_sach" name="ma_sach" style="width: 100%;" value=""/>
+                                @endif
                             </div>
                             <div class="form-group mb-4" style="position: relative;left: 7%;">
                                 <label style="vertical-align: top;"><b>Loại:</b></label>
@@ -566,6 +570,14 @@
             toastr.error("Bạn phải giữ nguyên trường Item ID để thay đổi!");
             if(!err) $("#post-itemid").focus();
             $("#post-itemid").addClass('error');
+            err = true;
+        }
+
+        if(trim(ma_sach) === "")
+        {
+            toastr.error("Mã sách không được để trống!");
+            if(!err) $('input[name="ma_sach"]').focus();
+            $('input[name="ma_sach"]').addClass('error');
             err = true;
         }
 
