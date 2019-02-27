@@ -183,6 +183,8 @@ class ToolController extends Controller
         return ['message' => 'success'];
     }
 
+    private $white_lists = ['DeThi', 'SachThuong', 'Chuyen', 'VoBaiTap', 'TimKiem'];
+
     public function createPost(Request $request)
     {
         $next_guid = str_random(9).uniqid('', true);
@@ -190,6 +192,12 @@ class ToolController extends Controller
         $profiles = \DB::table('profiles')->where('lesson', '<>', '')->get();
 
         $src = $request->has('src') ? $request->get('src') : 'manual';
+
+        if(!in_array($src, $this->white_lists)){
+            return view('404', [
+                'msg' => 'Tên nguồn không hợp lệ!'
+            ]);
+        }
 
         return view('create', [
             "guid" => str_pad($next_guid,32,"0",STR_PAD_LEFT),
@@ -199,6 +207,12 @@ class ToolController extends Controller
     }
 
     public function storePost(Request $request) {
+        if(!in_array($request->ten_nguon, $this->white_lists)){
+            return view('404', [
+                'msg' => 'Tên nguồn không hợp lệ!'
+            ]);
+        }
+
         $request->de_bai = $this->reverse($request->de_bai);
         $request->dap_an = $this->reverse($request->dap_an);
         $manualPost = new ManualPost();

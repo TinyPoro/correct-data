@@ -462,12 +462,18 @@
             <div class="w-full md:w-1/2 bg-white flex items-center justify-center">
                 <div class="max-w-sm m-8">
                     <div class="text-black text-2xl md:text-3xl font-black">
-                        Item không tồn tại                    </div>
+                        Có lỗi xảy ra                    </div>
 
                     <div class="w-16 h-1 bg-purple-light my-3 md:my-6"></div>
 
-                    <p class="text-grey-darker text-2xl md:text-3xl font-light mb-8 leading-normal">
-                        Chúng tôi không tìm thấy bất cứ item nào thỏa mãn id hoặc item id bạn nhập được phép hiển thị.                    </p>
+                    @if(isset($msg))
+                        <p class="text-grey-darker text-2xl md:text-3xl font-light mb-8 leading-normal">
+                            {{$msg}}                    </p>
+                    @else
+                        <p class="text-grey-darker text-2xl md:text-3xl font-light mb-8 leading-normal">
+                            Chúng tôi không tìm thấy bất cứ item nào thỏa mãn id hoặc item id bạn nhập được phép hiển thị.                    </p>
+                    @endif
+
 
                     <a href="http://dev.data.giaingay.io/correct-data/public">
                         <button class="bg-transparent text-grey-darkest font-bold uppercase tracking-wide py-3 px-6 border-2 border-grey-light hover:border-grey rounded-lg">
