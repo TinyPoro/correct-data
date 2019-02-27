@@ -183,7 +183,7 @@ class ToolController extends Controller
         return ['message' => 'success'];
     }
 
-    private $white_lists = ['DeThi', 'SachThuong', 'Chuyen', 'VoBaiTap', 'TimKiem', 'manual'];
+    private $white_lists = ['DeThi', 'SachThuong', 'Chuyen', 'VoBaiTap', 'TimKiem'];
 
     public function createPost(Request $request)
     {
