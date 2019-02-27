@@ -217,7 +217,7 @@ class ToolController extends Controller
             'url' => '',
             'de_bai' => $request->de_bai,
             'dap_an' => $request->dap_an,
-            'ten_nguon' => 'manual',
+            'ten_nguon' => $request->ten_nguon,
             'duong_dan_hoi' => 'media/'.$request->hoi_dap_id.'-CH-01.jpg',
             'duong_dan_tra_loi' => 'media/'.$request->hoi_dap_id.'-DA-01-D.jpg',
         ]);
