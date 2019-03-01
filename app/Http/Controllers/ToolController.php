@@ -158,7 +158,7 @@ class ToolController extends Controller
                     'type' => $request->type,
                     'chapter' => $request->chapter,
                     'lesson' => $request->bai,
-                    'knowledge_point' => $request->knowledge_point,
+                    'knowledge_point' => $request->total_knowledge_point,
                 ]);
 
                 $profile = \DB::table('profiles')
