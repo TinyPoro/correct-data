@@ -189,10 +189,26 @@
                                 <label style="vertical-align: top;"><b>Độ khó:</b></label>
                                 <div style="display:inline-block; width:80%"></div>
 
+                                <?php
+                                $do_khos = [
+                                    'Dễ',
+                                    'Trung bình',
+                                    'Khó',
+                                ];
+                                ?>
+
                                 <select class="do_kho_input" name="do_kho">
-                                    <option value="Dễ">Dễ</option>
-                                    <option value="Trung bình">Trung bình</option>
-                                    <option value="Khó">Khó</option>
+                                    @foreach($do_khos as $do_kho)
+                                        @if($post)
+                                            @if($do_kho === $post->do_kho)
+                                                <option value="{{$do_kho}}" selected>{{$do_kho}}</option>
+                                            @else
+                                                <option value="{{$do_kho}}">{{$do_kho}}</option>
+                                            @endif
+                                        @else
+                                            <option value="{{$do_kho}}">{{$do_kho}}</option>
+                                        @endif
+                                    @endforeach
                                 </select>
                             </div>
 
@@ -202,10 +218,26 @@
                                 <label style="vertical-align: top;"><b>Giao ở đâu:</b></label>
                                 <div style="display:inline-block; width:80%"></div>
 
+                                <?php
+                                    $giaos = [
+                                        'Giao trên lớp',
+                                        'Lớp học thêm',
+                                        'Bài về nhà',
+                                    ];
+                                ?>
+
                                 <select class="giao_input" name="giao">
-                                    <option value="Giao trên lớp">Giao trên lớp</option>
-                                    <option value="Lớp học thêm">Lớp học thêm</option>
-                                    <option value="Bài về nhà">Bài về nhà</option>
+                                    @foreach($giaos as $giao)
+                                        @if($post)
+                                            @if($giao === $post->giao)
+                                                <option value="{{$giao}}" selected>{{$giao}}</option>
+                                            @else
+                                                <option value="{{$giao}}">{{$giao}}</option>
+                                            @endif
+                                        @else
+                                            <option value="{{$giao}}">{{$giao}}</option>
+                                        @endif
+                                    @endforeach
                                 </select>
                             </div>
 
@@ -215,10 +247,26 @@
                                 <label style="vertical-align: top;"><b>Kiểm tra:</b></label>
                                 <div style="display:inline-block; width:80%"></div>
 
+                                <?php
+                                $kiem_tras = [
+                                    'Kiểm tra 15p',
+                                    'Kiểm tra 45p',
+                                    'Không kiểm tra',
+                                ];
+                                ?>
+
                                 <select class="kiem_tra_input" name="kiem_tra">
-                                    <option value="Kiểm tra 15p">Kiểm tra 15p</option>
-                                    <option value="Kiểm tra 45p">Kiểm tra 45p</option>
-                                    <option value="Không kiểm tra">Không kiểm tra</option>
+                                    @foreach($kiem_tras as $kiem_tra)
+                                        @if($post)
+                                            @if($kiem_tra === $post->kiem_tra)
+                                                <option value="{{$kiem_tra}}" selected>{{$kiem_tra}}</option>
+                                            @else
+                                                <option value="{{$kiem_tra}}">{{$kiem_tra}}</option>
+                                            @endif
+                                        @else
+                                            <option value="{{$kiem_tra}}">{{$kiem_tra}}</option>
+                                        @endif
+                                    @endforeach
                                 </select>
                             </div>
 
@@ -228,9 +276,25 @@
                                 <label style="vertical-align: top;"><b>Mục tiêu:</b></label>
                                 <div style="display:inline-block; width:80%"></div>
 
+                                <?php
+                                $muc_tieus = [
+                                    'Bài tập luyện tập',
+                                    'Bài tập ví dụ',
+                                ];
+                                ?>
+
                                 <select class="muc_tieu_input" name="muc_tieu">
-                                    <option value="Bài tập luyện tập">Bài tập luyện tập</option>
-                                    <option value="Bài tập ví dụ">Bài tập ví dụ</option>
+                                    @foreach($muc_tieus as $muc_tieu)
+                                        @if($post)
+                                            @if($muc_tieu === $post->muc_tieu)
+                                                <option value="{{$muc_tieu}}" selected>{{$muc_tieu}}</option>
+                                            @else
+                                                <option value="{{$muc_tieu}}">{{$muc_tieu}}</option>
+                                            @endif
+                                        @else
+                                            <option value="{{$muc_tieu}}">{{$muc_tieu}}</option>
+                                        @endif
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -301,6 +365,8 @@
         let prev_itemid = "{{$post->hoi_dap_id}}";
 
         let profiles = {!! $profiles  !!};
+        let post_profile = '<?php echo json_encode($post_profile); ?>';
+        post_profile = JSON.parse(post_profile);
 
         let isCheck = function(ele){
             return ele.is(':checked');
@@ -309,6 +375,12 @@
         let uncheck = function(ele){
             return ele.next().click();
         };
+
+        let findText = function(ele){
+            return ele.parent().next().text();
+        };
+
+        let check_count = 0;
 
         let reset_knowledge_point_tree = function(dataSource){
             $('.k-widget.k-dropdowntree.k-dropdowntree-clearable').replaceWith('<input id="knowledge_point_tree" name="diem_kien_thuc" style="width: 100%;"/>');
@@ -320,7 +392,7 @@
                 dataSource: dataSource
             });
 
-            let check_count = 0;
+            check_count = 0;
 
             $(".k-checkbox").change(function(){
                 let check = isCheck($(this));
@@ -364,7 +436,8 @@
 
 
             datas.forEach(function(data){
-                khu_vuc_input.append("<option value='"+data+"'>"+data+"</option>")
+                if(post_profile && post_profile.khu_vuc === data) khu_vuc_input.append("<option value='"+data+"' selected>"+data+"</option>");
+                else khu_vuc_input.append("<option value='"+data+"'>"+data+"</option>");
             });
         };
 
@@ -386,7 +459,8 @@
 
 
             datas.forEach(function(data){
-                dang_bai_input.append("<option value='"+data+"'>"+data+"</option>")
+                if(post_profile && post_profile.dang_bai === data) dang_bai_input.append("<option value='"+data+"' selected>"+data+"</option>");
+                else dang_bai_input.append("<option value='"+data+"'>"+data+"</option>");
             });
         };
 
@@ -447,6 +521,19 @@
         update_khu_vuc_input();
         update_dang_bai_input();
         update_knowledpoint_input();
+
+        if(post_profile){
+            let old_knowledge_point = '{!! $post->knowledge_question !!}';
+            old_knowledge_point = old_knowledge_point.split('|');
+
+            check_count = old_knowledge_point.length;
+
+            $.each($(".k-checkbox"), function(){
+                if(old_knowledge_point.indexOf(findText($(this))) !== -1) {
+                    $(this).next().click();
+                }
+            });
+        }
 
 
         CKEDITOR.replace('postquestion', { extraPlugins: 'mathjax, eqneditor', height: '250px', allowedContent: true});
