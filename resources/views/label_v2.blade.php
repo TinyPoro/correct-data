@@ -576,7 +576,7 @@
                 return;
             }
 
-            let url = '{{route('post.edit_label', ['postId' => ':postId'])}}';
+            let url = '{{route('post.edit_label_v2', ['postId' => ':postId'])}}';
             url = url.replace(':postId', post_id);
             window.location = url;
         });
@@ -597,7 +597,7 @@
                     return;
                 }
 
-                let url = '{{route('post.edit_label', ['postId' => ':postId'])}}';
+                let url = '{{route('post.edit_label_v2', ['postId' => ':postId'])}}';
                 url = url.replace(':postId', post_id);
                 window.location = url;
             }
@@ -624,7 +624,7 @@
                     return;
                 }
 
-                let url = '{{route('post.edit_label', ['postId' => ':postId'])}}';
+                let url = '{{route('post.edit_label_v2', ['postId' => ':postId'])}}';
                 url = url.replace(':postId', post_id);
                 window.location = url;
             }
