@@ -10,26 +10,21 @@
 |
  */
 
-Route::get('/login', '\App\Http\Controllers\Auth\LoginController@showLoginForm')->name('login');
-Route::post('/login', '\App\Http\Controllers\Auth\LoginController@login');
-Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
-
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-Route::group(['middleware' => ['auth']], function () {
-    Route::get('/', 'ToolController@index');
+Route::get('/', 'ToolController@index');
 
 // sửa
-    Route::get('/post/{postId}/edit', 'ToolController@editPost')->name('post.edit');
-    Route::get('/raw_history/{postId}', 'ToolController@rawHistory')->name('raw_history');;
-    Route::post('/post/{postId}', 'ToolController@updatePost')->name('post.update');
+Route::get('/post/{postId}/edit', 'ToolController@editPost')->name('post.edit');
+Route::get('/raw_history/{postId}', 'ToolController@rawHistory')->name('raw_history');;
+Route::post('/post/{postId}', 'ToolController@updatePost')->name('post.update');
 
 //gán nhãn
-    Route::get('/post/{postId}/label', 'ToolController@editLabelPost')->name('post.edit_label');
-    Route::post('/post_label/{postId}', 'ToolController@updateLabelPost')->name('post.update_label');
+Route::get('/post/{postId}/label', 'ToolController@editLabelPost')->name('post.edit_label');
+Route::post('/post_label/{postId}', 'ToolController@updateLabelPost')->name('post.update_label');
+
+//gán nhãn version 2
+Route::get('/post/{postId}/label_v2', 'ToolController@editLabelPostV2')->name('post.edit_label_v2');
+Route::post('/post_label_v2/{postId}', 'ToolController@updateLabelPostV2')->name('post.update_label_v2');
 
 //tạo mới
-    Route::get('/post/create', 'ToolController@createPost')->name('post.create');;
-    Route::post('/post', 'ToolController@storePost')->name('post.store');
-});
+Route::get('/post/create', 'ToolController@createPost')->name('post.create');;
+Route::post('/post', 'ToolController@storePost')->name('post.store');

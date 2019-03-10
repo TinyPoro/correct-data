@@ -88,6 +88,10 @@ class ToolController extends Controller
 
         if($post->level != 'L8') return view('404');
 
+        if($post->profile_v2_id) return view('404', [
+            'msg' => 'Item đã được gán profile loại 2!'
+        ]);
+
         $post->de_bai = $this->endlToBr($post->de_bai);
         $post->dap_an = $this->endlToBr($post->dap_an);
 
@@ -98,6 +102,41 @@ class ToolController extends Controller
             'post' => $post,
             'post_profile' => $post_profile,
             'profiles' => $profiles
+        ]);
+    }
+
+    public function editLabelPostV2($postId)
+    {
+        $post = DB::table('all_posts')->where('id', 'LIKE BINARY', $postId)->first();
+        if (!$post) {
+            $post = DB::table('all_posts')->where('hoi_dap_id', $postId)->first();
+
+            if (!$post) return view('404');
+        }
+
+        if($post->level != 'L8') return view('404');
+
+        if($post->profile_id) return view('404', [
+            'msg' => 'Item đã được gán profile loại 1!'
+        ]);
+
+        $post->de_bai = $this->endlToBr($post->de_bai);
+        $post->dap_an = $this->endlToBr($post->dap_an);
+
+        $profiles = \DB::table('profiles_v2')->where('book_id', 'VNTK000000000107')->get();
+        $post_profile = \DB::table('profiles_v2')->where('id', $post->profile_v2_id)->first();
+
+        $loais = [];
+        foreach($profiles as $profile){
+            $loais[] = $profile->loai;
+        }
+        $loais = array_unique($loais);
+
+        return view('label_v2', [
+            'post' => $post,
+            'post_profile' => $post_profile,
+            'profiles' => $profiles,
+            'loais' => $loais
         ]);
     }
 
@@ -177,6 +216,93 @@ class ToolController extends Controller
 
         $post->hard_label = $request->hard_label;
         $post->knowledge_extra = $request->knowledge_extra;
+
+        $post->save();
+
+        return ['message' => 'success'];
+    }
+
+    public function updateLabelPostV2($postId, Request $request)
+    {
+        $post = Post::find($postId);
+
+        if(!$post) return ['message' => 'Invalid post id!'];
+
+        $post->updated_at = date('Y-m-d H:i:s', strtotime(Carbon::now()));
+
+        if($request->dang_bai && $request->ma_sach) {
+            $profile = \DB::table('profiles_v2')
+                ->where('book_id', $request->ma_sach)
+                ->where('dang_bai', $request->dang_bai)
+                ->where('khu_vuc', $request->khu_vuc)
+                ->where('loai', $request->loai)
+                ->first();
+
+            if(!$profile) {
+                $book = \DB::table('pdf_book')->where('book_code', $request->ma_sach)->first();
+
+                if(!$book){
+                    $book_class = null;
+                    $book_category = null;
+                    $book_tap = null;
+                    $book_inserted_by = null;
+                    $book_inserted_date = null;
+                    $book_modified_by = null;
+                    $book_modified_date = null;
+                }else{
+                    $user = \DB::table('users')->where('id', $book->created_by)->first();
+                    $book_name = $book->book_name;
+
+                    if(preg_match('/(?<=tập)[\s\d]+/', $book_name, $matches)){
+                        $book_tap = array_get($matches, 0, null);
+                    }else{
+                        $book_tap = null;
+                    }
+
+                    $book_class = 'lop_9';
+                    $book_category = 'SBT';
+                    $book_inserted_by = $user->name;
+                    $book_inserted_date = $book->created_at;
+                    $book_modified_by = $user->name;
+                    $book_modified_date = $book->updated_at;
+                }
+
+                \DB::table('profiles_v2')->insert([
+                    'book_id' => $request->ma_sach,
+                    'book_class' => $book_class,
+                    'book_category' => $book_category,
+                    'book_tap' => $book_tap,
+                    'book_inserted_by' => $book_inserted_by,
+                    'book_inserted_date' => $book_inserted_date,
+                    'book_modified_by' => $book_modified_by,
+                    'book_modified_date' => $book_modified_date,
+                    'loai' => $request->loai,
+                    'khu_vuc' => $request->khu_vuc,
+                    'dang_bai' => $request->dang_bai,
+                    'knowledge_point' => $request->total_knowledge_point,
+                ]);
+
+                $profile = \DB::table('profiles_v2')
+                    ->where('dang_bai', $request->dang_bai)
+                    ->where('khu_vuc', $request->khu_vuc)
+                    ->where('loai', $request->loai)
+                    ->where('book_id', $request->ma_sach)
+                    ->first();
+
+            }
+
+            $post->profile_v2_id = $profile->id;
+
+        }
+
+        $post->knowledge_question = $request->knowledge_point;
+
+        $post->hard_label = $request->hard_label;
+        $post->knowledge_extra = $request->knowledge_extra;
+        $post->do_kho = $request->do_kho;
+        $post->giao = $request->giao;
+        $post->kiem_tra = $request->kiem_tra;
+        $post->muc_tieu = $request->muc_tieu;
 
         $post->save();
 
