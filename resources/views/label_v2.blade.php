@@ -198,6 +198,7 @@
                                 ?>
 
                                 <select class="do_kho_input" name="do_kho">
+                                    <option value="">Chưa xác định</option>
                                     @foreach($do_khos as $do_kho)
                                         @if($post)
                                             @if($do_kho === $post->do_kho)
@@ -227,6 +228,7 @@
                                 ?>
 
                                 <select class="giao_input" name="giao">
+                                    <option value="">Chưa xác định</option>
                                     @foreach($giaos as $giao)
                                         @if($post)
                                             @if($giao === $post->giao)
@@ -256,6 +258,7 @@
                                 ?>
 
                                 <select class="kiem_tra_input" name="kiem_tra">
+                                    <option value="">Chưa xác định</option>
                                     @foreach($kiem_tras as $kiem_tra)
                                         @if($post)
                                             @if($kiem_tra === $post->kiem_tra)
@@ -284,6 +287,7 @@
                                 ?>
 
                                 <select class="muc_tieu_input" name="muc_tieu">
+                                    <option value="">Chưa xác định</option>
                                     @foreach($muc_tieus as $muc_tieu)
                                         @if($post)
                                             @if($muc_tieu === $post->muc_tieu)
@@ -714,6 +718,38 @@
                 toastr.error("Bạn phải chọn dạng bài!!");
                 if(!err) dang_bai_input.focus();
                 dang_bai_input.addClass('error');
+                err = true;
+            }
+
+            if(trim(do_kho) === "")
+            {
+                toastr.error("Bạn phải chọn độ khó!!");
+                if(!err) do_kho_input.focus();
+                do_kho_input.addClass('error');
+                err = true;
+            }
+
+            if(trim(giao) === "")
+            {
+                toastr.error("Bạn phải chọn giao ở đâu!!");
+                if(!err) giao.focus();
+                giao_input.addClass('error');
+                err = true;
+            }
+
+            if(trim(kiem_tra) === "")
+            {
+                toastr.error("Bạn phải chọn kiểm tra!!");
+                if(!err) kiem_tra_input.focus();
+                kiem_tra_input.addClass('error');
+                err = true;
+            }
+
+            if(trim(muc_tieu) === "")
+            {
+                toastr.error("Bạn phải chọn mục tiêu!!");
+                if(!err) muc_tieu_input.focus();
+                muc_tieu_input.addClass('error');
                 err = true;
             }
 
