@@ -705,13 +705,13 @@
                 err = true;
             }
 
-            if(trim(ma_sach) === "")
-            {
-                toastr.error("Mã sách không được để trống!");
-                if(!err) ma_sach_input.focus();
-                ma_sach_input.addClass('error');
-                err = true;
-            }
+            // if(trim(ma_sach) === "")
+            // {
+            //     toastr.error("Mã sách không được để trống!");
+            //     if(!err) ma_sach_input.focus();
+            //     ma_sach_input.addClass('error');
+            //     err = true;
+            // }
 
             if(trim(dang_bai) === "")
             {
