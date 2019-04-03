@@ -86,7 +86,7 @@ class ToolController extends Controller
             if (!$post) return view('404');
         }
 
-        if($post->level != 'L8') return view('404');
+        if($post->level != 'L8' && $post->level != 'L7') return view('404');
 
         if($post->profile_v2_id) return view('404', [
             'msg' => 'Item đã được gán profile loại 2!'
@@ -114,7 +114,7 @@ class ToolController extends Controller
             if (!$post) return view('404');
         }
 
-        if($post->level != 'L8') return view('404');
+        if($post->level != 'L8' && $post->level != 'L7') return view('404');
 
         if($post->profile_id) return view('404', [
             'msg' => 'Item đã được gán profile loại 1!'
