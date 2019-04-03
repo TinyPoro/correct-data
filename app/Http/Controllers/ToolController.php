@@ -230,7 +230,7 @@ class ToolController extends Controller
 
         $post->updated_at = date('Y-m-d H:i:s', strtotime(Carbon::now()));
 
-        if($request->dang_bai && $request->ma_sach) {
+        if($request->dang_bai) {
             $profile = \DB::table('profiles_v2')
                 ->where('book_id', $request->ma_sach)
                 ->where('dang_bai', $request->dang_bai)
