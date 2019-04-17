@@ -114,25 +114,44 @@
                     </div>
                 </div>
                 <hr width="100%">
-                <div class="form-group" style="width: 100%;">
-                    <label style="vertical-align: top; width: 15%"><b>Đề bài:</b></label>
-                    <div style="display:inline-block; width:101%">
+                <div class="row" style="margin: 0!important;">
+                    <div class="col-md-6">
+                        <div class="form-group" style="width: 100%;">
+                            <label style="vertical-align: top; width: 15%"><b>Đề bài:</b></label>
 
-                    <textarea class="form-control" style="width:100%" id="postquestion" rows="7"
-                        placeholder="Post's question in HTML"><?php echo standardCkeditor($post->de_bai); ?></textarea>
-                    <p style="margin-top:20px; width: 100%" id="postquestion-display">
-                    </p>
+                            <div style="display:inline-block; width:101%">
+                                <textarea class="form-control" style="width:100%" id="postquestion" rows="7"
+                                  placeholder="Post's question in HTML"><?php echo standardCkeditor($post->de_bai); ?></textarea>
+
+                                <p style="margin-top:20px; width: 100%" id="postquestion-display"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="width: 100%;">
+                            <label style="vertical-align: top; width: 15%"><b>Đáp án:</b></label>
+                            <div style="display:inline-block; width:101%">
+
+                                <textarea class="form-control" style="width:100%" id="postanswer" rows="7"
+                                  placeholder="Post's answer"><?php echo standardCkeditor($post->dap_an); ?></textarea>
+
+                                <p style="margin-top:20px; width: 100%" id="postanswer-display"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1"></div>
+
+                    <div class="col-md-4">
+                        <div class="form-group" style="width: 100%;">
+                            <label style="vertical-align: top;"><b>Ảnh gốc:</b></label>
+
+                            @foreach($images as $image)
+                                <p><img src="{{$image}}" style="max-width: 100%"></p>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
-                <div class="form-group" style="width: 100%;">
-                    <label style="vertical-align: top; width: 15%"><b>Đáp án:</b></label>
-                    <div style="display:inline-block; width:101%">
-                    <textarea class="form-control" style="width:100%" id="postanswer" rows="7"
-                        placeholder="Post's answer"><?php echo standardCkeditor($post->dap_an); ?></textarea>
-                    <p style="margin-top:20px; width: 100%" id="postanswer-display">
-                    </p>
-                    </div>
-                </div>
+
                 <hr width="100%">
 
                 <button class="btn btn-success" style="width: 30%; margin: 10px; padding: 15px;" id="btn-edit">Lưu

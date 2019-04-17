@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Post;
@@ -38,9 +40,76 @@ class ToolController extends Controller
             return $history;
         });
 
+        $images = [];
+
+        if($post->ten_nguon == 'TimKiem') {
+            $tutorLink = $post->url;
+
+            if(preg_match('/\d+$/', $tutorLink, $matches)) {
+                $tutorId = $matches[0];
+
+                $tutorGetImageApiUrl = "http://apidemo.onlinenow.space/api/v2/sources/$tutorId/image";
+
+                $client = new Client();
+                try{
+                    $response = $client->request('GET', $tutorGetImageApiUrl);
+                    $res = json_decode($response->getBody()->getContents());
+
+                    $tutorImage = $res->data->url;
+
+                    if(!preg_match('/http:\/\//', $tutorImage)) {
+                        $tutorImage = "http://".$tutorImage;
+                    }
+
+                    $images[] = $tutorImage;
+                } catch (GuzzleException $e) {
+                    \Log::error($e->getMessage());
+                } catch (\Exception $e){
+                    \Log::inerrorfo($e->getMessage());
+                }
+            }
+        }
+
+        if($post->ten_nguon == 'SachThuong' or $post->ten_nguon == 'pdf') {
+            $hoidap = \DB::table('hoi_dap')->where('hoi_dap_id', $post->hoi_dap_id)->first();
+
+            if($hoidap) {
+                $book_code = $hoidap->book_code;
+                $extra_info = $hoidap->extra_info;
+
+                if(preg_match_all('/(?<=trang)[\s\d-,_]+/ui', $extra_info, $matches)){
+                    $page_numbers = $matches[0];
+
+                    $page_numbers = array_map(function($page_number){
+                        $del = ['-', ',', '_'];
+
+                        $page_number = preg_replace('/\s/', '', $page_number);
+                        $page_number = explode( $del[0], str_replace($del, $del[0], $page_number) );
+                        $page_number = array_filter($page_number);
+
+                        return $page_number;
+                    }, $page_numbers);
+
+                    $numbers = [];
+                    foreach ($page_numbers as $page_number){
+                        $numbers = array_merge($numbers, $page_number);
+                    }
+                    $page_numbers = $numbers;
+
+                    $page_numbers = array_unique($page_numbers);
+
+                    foreach ($page_numbers as $page_number){
+                        $page_number = str_pad($page_number,4,"0",STR_PAD_LEFT);
+                        $images[] = "http://dev.data.giaingay.io/anh-pdf/$book_code/$book_code%20-%20$page_number.jpg";
+                    }
+                }
+            }
+        }
+
         return view('edit', [
             'post' => $post,
             'histories' => $data['histories'],
+            'images' => $images
         ]);
     }
 
