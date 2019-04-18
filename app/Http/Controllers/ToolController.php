@@ -71,11 +71,10 @@ class ToolController extends Controller
         }
 
         if($post->ten_nguon == 'SachThuong' or $post->ten_nguon == 'pdf') {
-            $hoidap = \DB::table('hoi_dap')->where('hoi_dap_id', $post->hoi_dap_id)->first();
+            $extra_info = $post->tieu_de;
 
-            if($hoidap) {
-                $book_code = $hoidap->book_code;
-                $extra_info = $hoidap->extra_info;
+            if(preg_match('/([A-Z]{4})([0-9]{12})/', $extra_info, $book_code_matches)) {
+                $book_code = $book_code_matches[0];
 
                 if(preg_match_all('/(?<=trang)[\s\d-,_]+/ui', $extra_info, $matches)){
                     $page_numbers = $matches[0];
