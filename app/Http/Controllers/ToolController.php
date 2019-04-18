@@ -29,13 +29,15 @@ class ToolController extends Controller
 
         if($post->level == 'L8') return view('404');
 
-        $post->de_bai = $this->endlToBr($post->de_bai);
-        $post->dap_an = $this->endlToBr($post->dap_an);
+        $server = ($post->ten_nguon === 'Hackathon') ? 's3' : 'dev';
+
+        $post->de_bai = $this->endlToBr($post->de_bai, $server);
+        $post->dap_an = $this->endlToBr($post->dap_an, $server);
 
         $data['post'] = $post;
         $data['histories'] = PostHistory::where('post_id', $post->id)->orderBy('created_at', 'desc')->get()->map(function ($history) {
-            $history->de_bai = $this->endlToBr(json_decode($history->content)->de_bai);
-            $history->dap_an = $this->endlToBr(json_decode($history->content)->dap_an);
+            $history->de_bai = $this->endlToBr(json_decode($history->content)->de_bai, $server);
+            $history->dap_an = $this->endlToBr(json_decode($history->content)->dap_an, $server);
             $history->created = date('H:i d-m-Y', strtotime($history->created_at));
             return $history;
         });
@@ -170,8 +172,10 @@ class ToolController extends Controller
             'msg' => 'Item đã được gán profile loại 2!'
         ]);
 
-        $post->de_bai = $this->endlToBr($post->de_bai);
-        $post->dap_an = $this->endlToBr($post->dap_an);
+        $server = ($post->ten_nguon === 'Hackathon') ? 's3' : 'dev';
+
+        $post->de_bai = $this->endlToBr($post->de_bai, $server);
+        $post->dap_an = $this->endlToBr($post->dap_an, $server);
 
         $profiles = \DB::table('profiles')->where('book_id', 'VNTK000000000107')->where('lesson', '<>', '')->get();
         $post_profile = \DB::table('profiles')->where('id', $post->profile_id)->first();
@@ -198,8 +202,10 @@ class ToolController extends Controller
             'msg' => 'Item đã được gán profile loại 1!'
         ]);
 
-        $post->de_bai = $this->endlToBr($post->de_bai);
-        $post->dap_an = $this->endlToBr($post->dap_an);
+        $server = ($post->ten_nguon === 'Hackathon') ? 's3' : 'dev';
+
+        $post->de_bai = $this->endlToBr($post->de_bai, $server);
+        $post->dap_an = $this->endlToBr($post->dap_an, $server);
 
         $profiles = \DB::table('profiles_v2')->where('book_id', 'VNTK000000000107')->get();
         $post_profile = \DB::table('profiles_v2')->where('id', $post->profile_v2_id)->first();
@@ -453,8 +459,11 @@ class ToolController extends Controller
             if ($post == null)
                 return view('404');
         }
-        $post->de_bai = $this->endlToBr($post->de_bai);
-        $post->dap_an = $this->endlToBr($post->dap_an);
+
+        $server = ($post->ten_nguon === 'Hackathon') ? 's3' : 'dev';
+
+        $post->de_bai = $this->endlToBr($post->de_bai, $server);
+        $post->dap_an = $this->endlToBr($post->dap_an, $server);
 
         $data['post'] = $post;
         $data['histories'] = PostHistory::where('post_id', $postId)->orderBy('created_at', 'desc')->get()->map(function ($history) {
@@ -621,7 +630,7 @@ class ToolController extends Controller
         }
         return $ntext;
     }
-    public function endlToBr($text)
+    public function endlToBr($text, $server = 'dev')
     {
         $text = str_replace('\nolimits', '\zolimits', $text);
         $text = str_replace('\notin', '\zotin', $text);
@@ -639,7 +648,13 @@ class ToolController extends Controller
 
 
 
-        $text = str_replace('media/', 'http://dev.data.giaingay.io/TestProject/public/media/', $text);
+        if($server === 's3') {
+            $text = str_replace('media/', 'https://s3-ap-southeast-1.amazonaws.com/sk100eco/data/format2/media/', $text);
+            $text = str_replace('Problems/', 'Problems/problem_id_', $text);
+            $text = str_replace('Solutions/', 'Solutions/solution_id_', $text);
+        }else{
+            $text = str_replace('media/', 'http://dev.data.giaingay.io/TestProject/public/media/', $text);
+        }
 
         // parse markdown table to html
         $parser = new \cebe\markdown\MarkdownExtra();
