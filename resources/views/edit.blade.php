@@ -116,7 +116,7 @@
                 <hr width="100%">
                 <div class="row" style="margin: 0!important;">
                     <div class="col-md-6">
-                        <div class="form-group" style="width: 100%;">
+                        <div class="form-group" style="width: 100%; max-width: 545px;">
                             <label style="vertical-align: top; width: 15%"><b>Đề bài:</b></label>
 
                             <div style="display:inline-block; width:101%">
@@ -127,7 +127,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group" style="width: 100%;">
+                        <div class="form-group" style="width: 100%; max-width: 545px;">
                             <label style="vertical-align: top; width: 15%"><b>Đáp án:</b></label>
                             <div style="display:inline-block; width:101%">
 
