@@ -65,7 +65,7 @@ class ToolController extends Controller
                 } catch (GuzzleException $e) {
                     \Log::error($e->getMessage());
                 } catch (\Exception $e){
-                    \Log::inerrorfo($e->getMessage());
+                    \Log::error($e->getMessage());
                 }
             }
         }
@@ -102,6 +102,16 @@ class ToolController extends Controller
                         $images[] = "http://dev.data.giaingay.io/anh-pdf/$book_code/$book_code%20-%20$page_number.jpg";
                     }
                 }
+            }
+        }
+
+        if($post->ten_nguon == 'Hackathon') {
+            $urls = $post->url;
+
+            try{
+                $images = explode(',', $urls);
+            } catch (\Exception $e){
+                \Log::error($e->getMessage());
             }
         }
 
