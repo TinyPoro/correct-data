@@ -595,9 +595,10 @@ class ToolController extends Controller
             $text = str_replace('https://s3-ap-southeast-1.amazonaws.com/sk100eco/data/format2/media/', 'media/', $text);
             $text = str_replace('Problems/problem_id_', 'Problems/', $text);
             $text = str_replace('Solutions/solution_id_', 'Solutions/', $text);
-        }else{
-            $text = str_replace('http://dev.data.giaingay.io/TestProject/public/media/', 'media/', $text);
         }
+
+        $text = str_replace('http://dev.data.giaingay.io/TestProject/public/media/', 'media/', $text);
+
 
         //loại \n đầu câu
         while (true) {
