@@ -130,8 +130,8 @@ class ToolController extends Controller
 
         if(!$post) return ['message' => 'Invalid post id!'];
 
-        $request->de_bai = $this->reverse($request->de_bai);
-        $request->dap_an = $this->reverse($request->dap_an);
+        $request->de_bai = $this->reverse($request->de_bai, $post->ten_nguon);
+        $request->dap_an = $this->reverse($request->dap_an, $post->ten_nguon);
 
         $count = PostHistory::where('post_id', $postId)->count();
         if ($count == 6) {
@@ -476,7 +476,7 @@ class ToolController extends Controller
         return view('test.raw', $data);
     }
 
-    public function reverse($text)
+    public function reverse($text, $ten_nguon = null)
     {
         $text = str_replace("\r", ' ', $text);
         $text = str_replace("\t", ' ', $text);
@@ -590,7 +590,14 @@ class ToolController extends Controller
         $text = preg_replace("/\s{2,}/", ' ', $text);
         $text = str_ireplace("&nbsp;", ' ', $text);
 
-        $text = str_replace('http://dev.data.giaingay.io/TestProject/public/media/', 'media/', $text);
+
+        if($ten_nguon === 'Hackathon'){
+            $text = str_replace('https://s3-ap-southeast-1.amazonaws.com/sk100eco/data/format2/media/', 'media/', $text);
+            $text = str_replace('Problems/problem_id_', 'Problems/', $text);
+            $text = str_replace('Solutions/solution_id_', 'Solutions/', $text);
+        }else{
+            $text = str_replace('http://dev.data.giaingay.io/TestProject/public/media/', 'media/', $text);
+        }
 
         //loại \n đầu câu
         while (true) {
