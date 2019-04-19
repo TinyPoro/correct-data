@@ -35,7 +35,7 @@ class ToolController extends Controller
         $post->dap_an = $this->endlToBr($post->dap_an, $server);
 
         $data['post'] = $post;
-        $data['histories'] = PostHistory::where('post_id', $post->id)->orderBy('created_at', 'desc')->get()->map(function ($history) {
+        $data['histories'] = PostHistory::where('post_id', $post->id)->orderBy('created_at', 'desc')->get()->map(function ($history, $server) {
             $history->de_bai = $this->endlToBr(json_decode($history->content)->de_bai, $server);
             $history->dap_an = $this->endlToBr(json_decode($history->content)->dap_an, $server);
             $history->created = date('H:i d-m-Y', strtotime($history->created_at));
