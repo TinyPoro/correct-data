@@ -654,15 +654,53 @@ class ToolController extends Controller
         $text = str_replace('\zeq', '\neq', $text);
         $text = str_replace('\ze', '\ne', $text);
 
+        // Xử lý ảnh
+        if(preg_match_all('/<img[^>]*>/', $text, $matches)){
 
+            foreach ($matches[0] as $img_html){
+                if(preg_match('/src="[^"]+"/', $img_html, $matches)){
+                    $src_html = $matches[0];
 
-        if($server === 's3') {
-            $text = str_replace('media/', 'https://s3-ap-southeast-1.amazonaws.com/sk100eco/data/format2/media/', $text);
-            $text = str_replace('Problems/', 'Problems/problem_id_', $text);
-            $text = str_replace('Solutions/', 'Solutions/solution_id_', $text);
-        }else{
-            $text = str_replace('media/', 'http://dev.data.giaingay.io/TestProject/public/media/', $text);
+                    if(strpos($src_html, '.css') !== false
+                        or strpos($src_html, '.js') !== false ){
+                    }else{
+                        if(preg_match('/(?<=src=").*(?=")/', $src_html, $matches)){
+                            $src = $matches[0];
+
+                            $new_src = str_replace('media/', 'https://s3-ap-southeast-1.amazonaws.com/sk100eco/data/format2/media/', $src);
+                            $new_src = str_replace('Problems/', 'Problems/problem_id_', $new_src);
+                            $new_src = str_replace('Solutions/', 'Solutions/solution_id_', $new_src);
+
+                            $handle = curl_init($new_src);
+                            curl_setopt($handle,  CURLOPT_RETURNTRANSFER, TRUE);
+
+                            /* Get the HTML or whatever is linked in $url. */
+                            curl_exec($handle);
+
+                            /* Check for 404 (file not found). */
+                            $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+                            if($httpCode == 404) {
+                                $new_src = str_replace('media/', 'http://dev.data.giaingay.io/TestProject/public/media/', $src);
+                            }
+
+                            curl_close($handle);
+
+                            $text = str_replace($src, $new_src, $text);
+
+                        }
+                    }
+
+                }
+            }
         }
+
+//        if($server === 's3') {
+//            $text = str_replace('media/', 'https://s3-ap-southeast-1.amazonaws.com/sk100eco/data/format2/media/', $text);
+//            $text = str_replace('Problems/', 'Problems/problem_id_', $text);
+//            $text = str_replace('Solutions/', 'Solutions/solution_id_', $text);
+//        }else{
+//            $text = str_replace('media/', 'http://dev.data.giaingay.io/TestProject/public/media/', $text);
+//        }
 
         // parse markdown table to html
         $parser = new \cebe\markdown\MarkdownExtra();
