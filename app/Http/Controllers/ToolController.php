@@ -50,7 +50,7 @@ class ToolController extends Controller
             if(preg_match('/\d+$/', $tutorLink, $matches)) {
                 $tutorId = $matches[0];
 
-                $tutorGetImageApiUrl = "http://apidemo.onlinenow.space/api/v2/sources/$tutorId/image";
+                $tutorGetImageApiUrl = "http://apis.giaingay.io/giaingay/api/v2/sources/$tutorId/image";
 
                 $client = new Client();
                 try{
@@ -58,10 +58,6 @@ class ToolController extends Controller
                     $res = json_decode($response->getBody()->getContents());
 
                     $tutorImage = $res->data->url;
-
-                    if(!preg_match('/http:\/\//', $tutorImage)) {
-                        $tutorImage = "http://".$tutorImage;
-                    }
 
                     $images[] = $tutorImage;
                 } catch (GuzzleException $e) {
