@@ -29,89 +29,79 @@ class ToolController extends Controller
 
         if($post->level == 'L8') return view('404');
 
-        $server = ($post->ten_nguon === 'Hackathon') ? 's3' : 'dev';
-
-        $post->de_bai = $this->endlToBr($post->de_bai, $server);
-        $post->dap_an = $this->endlToBr($post->dap_an, $server);
+        $post->de_bai = $this->endlToBr($post->de_bai);
+        $post->dap_an = $this->endlToBr($post->dap_an);
 
         $data['post'] = $post;
-        $data['histories'] = PostHistory::where('post_id', $post->id)->orderBy('created_at', 'desc')->get()->map(function ($history, $server) {
-            $history->de_bai = $this->endlToBr(json_decode($history->content)->de_bai, $server);
-            $history->dap_an = $this->endlToBr(json_decode($history->content)->dap_an, $server);
+        $data['histories'] = PostHistory::where('post_id', $post->id)->orderBy('created_at', 'desc')->get()->map(function ($history) {
+            $history->de_bai = $this->endlToBr(json_decode($history->content)->de_bai);
+            $history->dap_an = $this->endlToBr(json_decode($history->content)->dap_an);
             $history->created = date('H:i d-m-Y', strtotime($history->created_at));
             return $history;
         });
 
         $images = [];
 
-        if($post->ten_nguon == 'TimKiem') {
-            $tutorLink = $post->url;
+//        if($post->ten_nguon == 'TimKiem') {
+//            $tutorLink = $post->url;
+//
+//            if(preg_match('/\d+$/', $tutorLink, $matches)) {
+//                $tutorId = $matches[0];
+//
+//                $tutorGetImageApiUrl = "http://apis.giaingay.io/giaingay/api/v2/sources/$tutorId/image";
+//
+//                $client = new Client();
+//                try{
+//                    $response = $client->request('GET', $tutorGetImageApiUrl);
+//                    $res = json_decode($response->getBody()->getContents());
+//
+//                    $tutorImage = $res->data->url;
+//
+//                    $images[] = $tutorImage;
+//                } catch (GuzzleException $e) {
+//                    \Log::error($e->getMessage());
+//                } catch (\Exception $e){
+//                    \Log::error($e->getMessage());
+//                }
+//            }
+//        }
 
-            if(preg_match('/\d+$/', $tutorLink, $matches)) {
-                $tutorId = $matches[0];
+//        if($post->ten_nguon == 'SachThuong' or $post->ten_nguon == 'pdf') {
+//            $extra_info = $post->tieu_de;
+//
+//            if(preg_match('/([A-Z]{4})([0-9]{12})/', $extra_info, $book_code_matches)) {
+//                $book_code = $book_code_matches[0];
+//
+//                if(preg_match_all('/(?<=trang)[\s\d-,_]+/ui', $extra_info, $matches)){
+//                    $page_numbers = $matches[0];
+//
+//                    $page_numbers = array_map(function($page_number){
+//                        $del = ['-', ',', '_'];
+//
+//                        $page_number = preg_replace('/\s/', '', $page_number);
+//                        $page_number = explode( $del[0], str_replace($del, $del[0], $page_number) );
+//                        $page_number = array_filter($page_number);
+//
+//                        return $page_number;
+//                    }, $page_numbers);
+//
+//                    $numbers = [];
+//                    foreach ($page_numbers as $page_number){
+//                        $numbers = array_merge($numbers, $page_number);
+//                    }
+//                    $page_numbers = $numbers;
+//
+//                    $page_numbers = array_unique($page_numbers);
+//
+//                    foreach ($page_numbers as $page_number){
+//                        $page_number = str_pad($page_number,4,"0",STR_PAD_LEFT);
+//                        $images[] = "http://dev.data.giaingay.io/anh-pdf/$book_code/$book_code%20-%20$page_number.jpg";
+//                    }
+//                }
+//            }
+//        }
 
-                $tutorGetImageApiUrl = "http://apis.giaingay.io/giaingay/api/v2/sources/$tutorId/image";
-
-                $client = new Client();
-                try{
-                    $response = $client->request('GET', $tutorGetImageApiUrl);
-                    $res = json_decode($response->getBody()->getContents());
-
-                    $tutorImage = $res->data->url;
-
-                    $images[] = $tutorImage;
-                } catch (GuzzleException $e) {
-                    \Log::error($e->getMessage());
-                } catch (\Exception $e){
-                    \Log::error($e->getMessage());
-                }
-            }
-        }
-
-        if($post->ten_nguon == 'SachThuong' or $post->ten_nguon == 'pdf') {
-            $extra_info = $post->tieu_de;
-
-            if(preg_match('/([A-Z]{4})([0-9]{12})/', $extra_info, $book_code_matches)) {
-                $book_code = $book_code_matches[0];
-
-                if(preg_match_all('/(?<=trang)[\s\d-,_]+/ui', $extra_info, $matches)){
-                    $page_numbers = $matches[0];
-
-                    $page_numbers = array_map(function($page_number){
-                        $del = ['-', ',', '_'];
-
-                        $page_number = preg_replace('/\s/', '', $page_number);
-                        $page_number = explode( $del[0], str_replace($del, $del[0], $page_number) );
-                        $page_number = array_filter($page_number);
-
-                        return $page_number;
-                    }, $page_numbers);
-
-                    $numbers = [];
-                    foreach ($page_numbers as $page_number){
-                        $numbers = array_merge($numbers, $page_number);
-                    }
-                    $page_numbers = $numbers;
-
-                    $page_numbers = array_unique($page_numbers);
-
-                    foreach ($page_numbers as $page_number){
-                        $page_number = str_pad($page_number,4,"0",STR_PAD_LEFT);
-                        $images[] = "http://dev.data.giaingay.io/anh-pdf/$book_code/$book_code%20-%20$page_number.jpg";
-                    }
-                }
-            }
-        }
-
-        if($post->ten_nguon == 'Hackathon') {
-            $urls = $post->url;
-
-            try{
-                $images = explode(',', $urls);
-            } catch (\Exception $e){
-                \Log::error($e->getMessage());
-            }
-        }
+        $images = explode(',', $post->url);
 
         return view('edit', [
             'post' => $post,
@@ -168,10 +158,8 @@ class ToolController extends Controller
             'msg' => 'Item đã được gán profile loại 2!'
         ]);
 
-        $server = ($post->ten_nguon === 'Hackathon') ? 's3' : 'dev';
-
-        $post->de_bai = $this->endlToBr($post->de_bai, $server);
-        $post->dap_an = $this->endlToBr($post->dap_an, $server);
+        $post->de_bai = $this->endlToBr($post->de_bai);
+        $post->dap_an = $this->endlToBr($post->dap_an);
 
         $profiles = \DB::table('profiles')->where('book_id', 'VNTK000000000107')->where('lesson', '<>', '')->get();
         $post_profile = \DB::table('profiles')->where('id', $post->profile_id)->first();
@@ -198,10 +186,8 @@ class ToolController extends Controller
             'msg' => 'Item đã được gán profile loại 1!'
         ]);
 
-        $server = ($post->ten_nguon === 'Hackathon') ? 's3' : 'dev';
-
-        $post->de_bai = $this->endlToBr($post->de_bai, $server);
-        $post->dap_an = $this->endlToBr($post->dap_an, $server);
+        $post->de_bai = $this->endlToBr($post->de_bai);
+        $post->dap_an = $this->endlToBr($post->dap_an);
 
         $profiles = \DB::table('profiles_v2')->where('book_id', 'VNTK000000000107')->get();
         $post_profile = \DB::table('profiles_v2')->where('id', $post->profile_v2_id)->first();
@@ -456,10 +442,8 @@ class ToolController extends Controller
                 return view('404');
         }
 
-        $server = ($post->ten_nguon === 'Hackathon') ? 's3' : 'dev';
-
-        $post->de_bai = $this->endlToBr($post->de_bai, $server);
-        $post->dap_an = $this->endlToBr($post->dap_an, $server);
+        $post->de_bai = $this->endlToBr($post->de_bai);
+        $post->dap_an = $this->endlToBr($post->dap_an);
 
         $data['post'] = $post;
         $data['histories'] = PostHistory::where('post_id', $postId)->orderBy('created_at', 'desc')->get()->map(function ($history) {
@@ -472,7 +456,7 @@ class ToolController extends Controller
         return view('test.raw', $data);
     }
 
-    public function reverse($text, $ten_nguon = null)
+    public function reverse($text)
     {
         $text = str_replace("\r", ' ', $text);
         $text = str_replace("\t", ' ', $text);
@@ -586,15 +570,15 @@ class ToolController extends Controller
         $text = preg_replace("/\s{2,}/", ' ', $text);
         $text = str_ireplace("&nbsp;", ' ', $text);
 
+        //Xử lý link ảnh
+        $bucket = config('filesystems.disks.s3.bucket');
+        $region = config('filesystems.disks.s3.region');
 
-        if($ten_nguon === 'Hackathon'){
-            $text = str_replace('https://s3-ap-southeast-1.amazonaws.com/sk100eco/data/format2/media/', 'media/', $text);
-            $text = str_replace('Problems/problem_id_', 'Problems/', $text);
-            $text = str_replace('Solutions/solution_id_', 'Solutions/', $text);
-        }
+        $text = str_replace('https://s3-' . $region . '.amazonaws.com/' . $bucket . '/data/format2/media/', 'media/', $text);
+        $text = str_replace('Problems/problem_id_', 'Problems/', $text);
+        $text = str_replace('Solutions/solution_id_', 'Solutions/', $text);
 
         $text = str_replace('http://dev.data.giaingay.io/TestProject/public/media/', 'media/', $text);
-
 
         //loại \n đầu câu
         while (true) {
@@ -634,7 +618,7 @@ class ToolController extends Controller
         }
         return $ntext;
     }
-    public function endlToBr($text, $server = 'dev')
+    public function endlToBr($text)
     {
         $text = str_replace('\nolimits', '\zolimits', $text);
         $text = str_replace('\notin', '\zotin', $text);
@@ -663,7 +647,10 @@ class ToolController extends Controller
                         if(preg_match('/(?<=src=").*(?=")/', $src_html, $matches)){
                             $src = $matches[0];
 
-                            $new_src = str_replace('media/', 'https://s3-ap-southeast-1.amazonaws.com/sk100eco/data/format2/media/', $src);
+                            $bucket = config('filesystems.disks.s3.bucket');
+                            $region = config('filesystems.disks.s3.region');
+
+                            $new_src = str_replace('media/', 'https://s3-' . $region . '.amazonaws.com/' . $bucket . '/data/format2/media/', $src);
                             $new_src = str_replace('Problems/', 'Problems/problem_id_', $new_src);
                             $new_src = str_replace('Solutions/', 'Solutions/solution_id_', $new_src);
 
@@ -689,14 +676,6 @@ class ToolController extends Controller
                 }
             }
         }
-
-//        if($server === 's3') {
-//            $text = str_replace('media/', 'https://s3-ap-southeast-1.amazonaws.com/sk100eco/data/format2/media/', $text);
-//            $text = str_replace('Problems/', 'Problems/problem_id_', $text);
-//            $text = str_replace('Solutions/', 'Solutions/solution_id_', $text);
-//        }else{
-//            $text = str_replace('media/', 'http://dev.data.giaingay.io/TestProject/public/media/', $text);
-//        }
 
         // parse markdown table to html
         $parser = new \cebe\markdown\MarkdownExtra();
@@ -794,5 +773,139 @@ class ToolController extends Controller
             return $table;
         }
         return '';
+    }
+
+    public function uploadFileItem(Request $request)
+    {
+        $data = $request->all();
+
+        // Item id and item type
+        $item_id = $data['id'];
+        $typeItem = $data['type'];
+
+        // Get image input
+        $image = $request->file('upload');
+
+        $image_dir = storage_path();
+        $input_path = $this->newTmp(file_get_contents($image), $image_dir);
+        $input_path = $this->renameImage($input_path);
+        $input_path = $this->convertImage($input_path);
+
+        try {
+            // Config S3 to upload image
+            $bucket = config('filesystems.disks.s3.bucket');
+            $region = config('filesystems.disks.s3.region');
+            $url = 'https://s3-' . $region . '.amazonaws.com/' . $bucket;
+
+            // Image file name
+            $imageFileName = basename($input_path);
+
+            // Config disk
+            $s3 = \Storage::disk('s3');
+
+            $subTypeItemFolder = $typeItem == 'Solutions' ? 'solution_id_' : 'problem_id_';
+
+            // File path store
+            $filePath = '/data/format2/media/' . $typeItem . '/' . $subTypeItemFolder . $item_id . '/' . $imageFileName;
+
+            $s3->put($filePath, file_get_contents($input_path), 'public');
+            $url .= $filePath;
+            return response()->json([
+                "uploaded" => 1,
+                "fileName" => $imageFileName,
+                "url" => $url,
+                "item_id" => $item_id,
+                "type_item" => $typeItem
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                "uploaded" => 0,
+                "error" => [
+                    "message" => $e->getMessage()
+                ]
+            ]);
+        } finally {
+            unlink($input_path);
+        }
+    }
+
+    function renameImage($originalImage)
+    {
+        $image_type = getimagesize($originalImage)['mime'];
+
+        if ($image_type === 'image/jpeg')
+            $new_name = "$originalImage.jpg";
+        else if ($image_type === 'image/png')
+            $new_name = "$originalImage.png";
+        else if ($image_type === 'image/gif')
+            $new_name = "$originalImage.gif";
+        else if ($image_type === 'image/bmp')
+            $new_name = "$originalImage.bmp";
+        else
+            $new_name = $originalImage;
+
+        rename($originalImage, $new_name);
+
+        return $new_name;
+    }
+
+
+    protected function newTmp($input = null, $dir, $is_content = true, $wm = 'w+'){
+
+        $filename = tempnam($dir, 'Saven');
+
+        if($input != null){
+            if(is_resource($input)){
+                $ft = fopen($filename, $wm);
+                while($block = fread($input, 4096)){
+                    fwrite($ft, $block);
+                }
+                fclose($ft);
+            }elseif($is_content){
+                file_put_contents($filename, $input);
+            }else{
+                $fi = fopen($input, 'rb');
+                $ft = fopen($filename, 'wb');
+                while($block = fread($fi, 4096)){
+                    fwrite($ft, $block);
+                }
+                fclose($fi);
+                fclose($ft);
+            }
+        }
+        return $filename;
+    }
+
+    function convertImage($originalImage, $quality = 100)
+    {
+        $ext = exif_imagetype($originalImage);
+
+        if ($ext === IMAGETYPE_JPEG) {
+            $imageTmp=imagecreatefromjpeg($originalImage);
+            $outputImage = str_replace('.jpeg', '.jpg', $originalImage);
+        }
+        else if ($ext === IMAGETYPE_PNG) {
+            $imageTmp=imagecreatefrompng($originalImage);
+            $outputImage = str_replace('.png', '.jpg', $originalImage);
+
+        }
+        else if ($ext === IMAGETYPE_GIF) {
+            $imageTmp=imagecreatefromgif($originalImage);
+            $outputImage = str_replace('.gif', '.jpg', $originalImage);
+
+        }
+        else if ($ext === IMAGETYPE_BMP) {
+            $imageTmp=imagecreatefrombmp($originalImage);
+            $outputImage = str_replace('.bmp', '.jpg', $originalImage);
+
+        }
+        else
+            return $originalImage;
+
+        // quality is a value from 0 (worst) to 100 (best)
+        imagejpeg($imageTmp, $outputImage, $quality);
+        imagedestroy($imageTmp);
+
+        return $outputImage;
     }
 }
