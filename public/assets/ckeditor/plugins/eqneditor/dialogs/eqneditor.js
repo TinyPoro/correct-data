@@ -70,20 +70,20 @@ CKEDITOR.dialog.add( 'eqneditorDialog', function(editor)
 			dialog.setupContent( dialog.image );
 		},
 		
-		onOk : function() {
-			var eqn = editor.document.createElement( 'img' );
-			eqn.setAttribute( 'alt', EqEditor.getTextArea().getLaTeX());
-			eqn.setAttribute( 'src', EqEditor.getTextArea().exportEquation('urlencoded'));
-			var eqn = editor.document.createElement( 'span' );
-			eqn.setAttribute( 'class', 'math-tex');
-			eqn.setText('\\(' + EqEditor.getTextArea().getLaTeX() + '\\)');
+		onOk : async function() {
+            let img_eqn = await editor.document.createElement( 'img' );
+            await img_eqn.setAttribute( 'alt', EqEditor.getTextArea().getLaTeX());
+            await img_eqn.setAttribute( 'src', EqEditor.getTextArea().exportEquation('urlencoded'));
+            let span_eqn = await editor.document.createElement( 'span' );
+            await span_eqn.setAttribute( 'class', 'math-tex');
+            await span_eqn.setText('\\(' + EqEditor.getTextArea().getLaTeX() + '\\)');
 			
-			editor.insertElement(eqn);
+			editor.insertElement(span_eqn);
 
-			let de_bai = CKEDITOR.instances.postquestion.getData();
-        	let dap_an = CKEDITOR.instances.postanswer.getData();
-			CKEDITOR.instances.postquestion.setData(de_bai);
-			CKEDITOR.instances.postanswer.setData(dap_an);
+			let de_bai = await CKEDITOR.instances.postquestion.getData();
+        	let dap_an = await CKEDITOR.instances.postanswer.getData();
+            await CKEDITOR.instances.postquestion.setData(de_bai);
+            await CKEDITOR.instances.postanswer.setData(dap_an);
 
 		}
 	};

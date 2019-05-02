@@ -207,6 +207,12 @@
             renderMathJax();
         });
 
+        setInterval(function(){
+            $("#postquestion-display")[0].innerHTML = qeditor.getData();
+            $("#postanswer-display")[0].innerHTML = aeditor.getData();
+            renderMathJax();
+        }, 1000);
+
         $('#postquestion').bind('input propertychange', function() {
             $("#postquestion-display")[0].innerHTML = qeditor.getData();
             // renderMathJax();

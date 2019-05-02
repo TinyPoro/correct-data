@@ -28,3 +28,6 @@ Route::post('/post_label_v2/{postId}', 'ToolController@updateLabelPostV2')->name
 //tạo mới
 Route::get('/post/create', 'ToolController@createPost')->name('post.create');;
 Route::post('/post', 'ToolController@storePost')->name('post.store');
+
+//up file
+Route::post('/uploadfile', 'ToolController@uploadFileItem');
