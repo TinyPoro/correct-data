@@ -54,7 +54,7 @@
         .form-group {
             margin-bottom: .4rem!important;
         }
-        .content img, .cke_editable img {
+        .container img, .cke_editable img {
             max-width: 100%!important;
             height: auto;
         }
