@@ -825,7 +825,7 @@ class ToolController extends Controller
                 ]
             ]);
         } finally {
-            unlink($input_path);
+//            unlink($input_path);
         }
     }
 
