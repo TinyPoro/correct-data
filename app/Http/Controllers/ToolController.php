@@ -906,7 +906,7 @@ class ToolController extends Controller
         imagejpeg($imageTmp, $outputImage, $quality);
         imagedestroy($imageTmp);
 
-        unlink($originalImage);
+        if($originalImage != $outputImage) unlink($originalImage);
 
         return $outputImage;
     }
