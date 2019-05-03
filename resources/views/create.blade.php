@@ -200,18 +200,24 @@
         qeditor.on('change', function(){
             $("#postquestion-display")[0].innerHTML = qeditor.getData();
             renderMathJax();
+
+            setInterval(function(){
+                $("#postquestion-display")[0].innerHTML = qeditor.getData();
+                $("#postanswer-display")[0].innerHTML = aeditor.getData();
+                renderMathJax();
+            }, 2000);
         });
 
         aeditor.on('change', function(){
             $("#postanswer-display")[0].innerHTML = aeditor.getData();
             renderMathJax();
-        });
 
-        setInterval(function(){
-            $("#postquestion-display")[0].innerHTML = qeditor.getData();
-            $("#postanswer-display")[0].innerHTML = aeditor.getData();
-            renderMathJax();
-        }, 1000);
+            setInterval(function(){
+                $("#postquestion-display")[0].innerHTML = qeditor.getData();
+                $("#postanswer-display")[0].innerHTML = aeditor.getData();
+                renderMathJax();
+            }, 2000);
+        });
 
         $('#postquestion').bind('input propertychange', function() {
             $("#postquestion-display")[0].innerHTML = qeditor.getData();
