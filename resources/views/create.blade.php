@@ -58,18 +58,15 @@
             max-width: 100%!important;
             height: auto;
         }
-        #postquestion-display, #postanswer-display{
-            border-right: 1px dashed red;
-        }
     </style>
 
     <?php
-    function standardCkeditor($text){
-        $text = str_replace("\(", '<span class="math-tex">\(', $text);
-        $text = str_replace("\)", '\)</span>', $text);
+        function standardCkeditor($text){
+            $text = str_replace("\(", '<span class="math-tex">\(', $text);
+            $text = str_replace("\)", '\)</span>', $text);
 
-        return $text;
-    }
+            return $text;
+        }
     ?>
 
     <div class="container">
@@ -113,20 +110,20 @@
 
                     <div class="form-group" style="width: 100%;">
                         <label style="vertical-align: top; width: 15%"><b>Đề bài:</b></label>
-                        <div style="display:inline-block; width:100%">
+                        <div style="display:inline-block; width:101%">
 
                     <textarea class="form-control" style="width:100%" id="postquestion" rows="7"
                               placeholder="Post's question in HTML"></textarea>
-                            <p style="margin-top:20px; width: 1000px" id="postquestion-display">
+                            <p style="margin-top:20px; width: 100%" id="postquestion-display">
                             </p>
                         </div>
                     </div>
                     <div class="form-group" style="width: 100%;">
                         <label style="vertical-align: top; width: 15%"><b>Đáp án:</b></label>
-                        <div style="display:inline-block; width:100%">
+                        <div style="display:inline-block; width:101%">
                     <textarea class="form-control" style="width:100%" id="postanswer" rows="7"
                               placeholder="Post's answer"></textarea>
-                            <p style="margin-top:20px; width: 1000px" id="postanswer-display">
+                            <p style="margin-top:20px; width: 100%" id="postanswer-display">
                             </p>
                         </div>
                     </div>
@@ -141,212 +138,177 @@
     </div>
 @endsection
 @push('scripts')
-    <script src="{{url('/assets/ckeditor/ckeditor.js')}}" charset="utf-8"></script>
-    <script src="{{url('/assets/ckeditor/adapters/jquery.js')}}"></script>
-    <script src="{{url('/js/jquery.min.js')}}"></script>
-    <script src="{{url('/js/select2.min.js')}}"></script>
-    <script src="{{url('/js/kendo.all.min.js')}}"></script>
+<script src="{{url('/assets/ckeditor/ckeditor.js')}}" charset="utf-8"></script>
+<script src="{{url('/assets/ckeditor/adapters/jquery.js')}}"></script>
+<script src="{{url('/js/jquery.min.js')}}"></script>
+<script src="{{url('/js/select2.min.js')}}"></script>
+<script src="{{url('/js/kendo.all.min.js')}}"></script>
 
-    <script>
-        toastr.options = {
-            "preventDuplicates": true,
-            "preventOpenDuplicates": true
-        };
+<script>
+    toastr.options = {
+        "preventDuplicates": true,
+        "preventOpenDuplicates": true
+    };
 
-        $(document).ready(function() {
-            CKEDITOR.replace('postquestion', { extraPlugins: 'mathjax, eqneditor', height: '250px', allowedContent: true});
-            CKEDITOR.replace('postanswer', { extraPlugins: 'mathjax, eqneditor', height: '250px', allowedContent: true});
-            // CKEDITOR.replace('postquestion', { extraPlugins: 'eqneditor', height: '250px', allowedContent: true});
-            // CKEDITOR.replace('postanswer', { extraPlugins: 'eqneditor', height: '250px', allowedContent: true});
+    $(document).ready(function() {
+        CKEDITOR.replace('postquestion', { extraPlugins: 'mathjax, eqneditor', height: '250px', allowedContent: true});
+        CKEDITOR.replace('postanswer', { extraPlugins: 'mathjax, eqneditor', height: '250px', allowedContent: true});
+        // CKEDITOR.replace('postquestion', { extraPlugins: 'eqneditor', height: '250px', allowedContent: true});
+        // CKEDITOR.replace('postanswer', { extraPlugins: 'eqneditor', height: '250px', allowedContent: true});
 
-            let qeditor = CKEDITOR.instances.postquestion;
-            let aeditor = CKEDITOR.instances.postanswer;
-            let question_preview = $("#postquestion-display")[0];
-            let answer_preview = $("#postanswer-display")[0];
+        let qeditor = CKEDITOR.instances.postquestion;
+        let aeditor = CKEDITOR.instances.postanswer;
 
-            let can_save = false;
+        qeditor.on( 'fileUploadRequest', function( evt ) {
+            let post_id = $("#post-hoi-dap-id").val();
 
-            qeditor.on( 'fileUploadRequest', function( evt ) {
-                let post_id = $("#post-hoi-dap-id").val();
+            evt.data.requestData.id = post_id;
+            evt.data.requestData.type = 'Problems';
 
-                evt.data.requestData.id = post_id;
-                evt.data.requestData.type = 'Problems';
+        } );
 
-            } );
+        aeditor.on( 'fileUploadRequest', function( evt ) {
+            let post_id = $("#post-hoi-dap-id").val();
 
-            aeditor.on( 'fileUploadRequest', function( evt ) {
-                let post_id = $("#post-hoi-dap-id").val();
+            evt.data.requestData.id = post_id;
+            evt.data.requestData.type = 'Solutions';
+        } );
 
-                evt.data.requestData.id = post_id;
-                evt.data.requestData.type = 'Solutions';
-            } );
+        function renderMathJax()
+        {
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+        }
 
-            function renderMathJax()
-            {
-                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-            }
-
-            (function($) {
-                $.fn.inputFilter = function(inputFilter) {
-                    return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function() {
-                        if (inputFilter(this.value)) {
-                            this.oldValue = this.value;
-                            this.oldSelectionStart = this.selectionStart;
-                            this.oldSelectionEnd = this.selectionEnd;
-                        } else if (this.hasOwnProperty("oldValue")) {
-                            this.value = this.oldValue;
-                            this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
-                        }
-                    });
-                };
-            }(jQuery));
-
-            question_preview.innerHTML = qeditor.getData();
-            answer_preview.innerHTML = aeditor.getData();
-
-            qeditor.on('change', function(){
-                question_preview.innerHTML = qeditor.getData();
-                renderMathJax();
-
-                if(question_preview.scrollWidth > 1000) {
-                    can_save = false;
-                    toastr.error("Chiều dài câu hỏi đã vượt quá chiều rộng cho phép! Bạn sửa lại nhé!")
-                } else {
-                    can_save = true;
-                }
-            });
-
-            qeditor.on( 'fileUploadResponse', function( evt ) {
-                setTimeout(function(){
-                    question_preview.innerHTML = qeditor.getData();
-                    renderMathJax();
-                }, 1000);
-            } );
-
-            aeditor.on('change', function(){
-                answer_preview.innerHTML = aeditor.getData();
-                renderMathJax();
-
-                if(answer_preview.scrollWidth > 1000) {
-                    can_save = false;
-                    toastr.error("Chiều dài câu trả lời đã vượt quá chiều rộng cho phép! Bạn sửa lại nhé!")
-                } else {
-                    can_save = true;
-                }
-            });
-
-            aeditor.on( 'fileUploadResponse', function( evt ) {
-                setTimeout(function(){
-                    answer_preview.innerHTML = aeditor.getData();
-                    renderMathJax();
-                }, 1000);
-            } );
-
-            $('#postquestion').bind('input propertychange', function() {
-                question_preview.innerHTML = qeditor.getData();
-                // renderMathJax();
-            });
-
-            $('#postanswer').bind('input propertychange', function() {
-                answer_preview.innerHTML = aeditor.getData();
-                // renderMathJax();
-            });
-
-            let trim = function(text){
-                text = text.replace('<span class="math-tex">', "");
-                text = text.replace('</span>', "");
-
-                text = text.replace('http://dev.data.giaingay.io/TestProject/public/media/', "media/");
-
-                return text;
-            };
-
-            $("#btn-create").click(function(){
-                if(can_save === false) {
-                    toastr.error("Chiều dài câu hỏi hoặc câu trả lời đã vượt quá chiều rộng cho phép! Bạn sửa lại nhé!")
-                    return;
-                }
-
-                if(question_preview.scrollWidth > 1000) {
-                    can_save = false;
-                    toastr.error("Chiều dài câu hỏi đã vượt quá chiều rộng cho phép! Bạn sửa lại nhé!")
-                    return;
-                }
-
-                if(answer_preview.scrollWidth > 1000) {
-                    can_save = false;
-                    toastr.error("Chiều dài câu trả lời đã vượt quá chiều rộng cho phép! Bạn sửa lại nhé!")
-                    return;
-                }
-
-                let de_bai = trim(qeditor.getData());
-                let dap_an = trim(aeditor.getData());
-                let tieu_de = $('input[name="tieu_de"]').val();
-
-                let err = false;
-
-                if(dap_an.trim() === "")
-                {
-
-                    toastr.error("Thiếu thông tin đáp án");
-                    if(!err) aeditor.focus();
-                    err = true;
-                }
-
-                if(de_bai.trim() === "")
-                {
-
-                    toastr.error("Thiếu thông tin đề bài");
-                    if(!err) qeditor.focus();
-                    err = true;
-                }
-
-                if(tieu_de.trim() === "")
-                {
-
-                    toastr.error("Thiếu thông tin tiêu đề");
-                    if(!err) $('input[name="tieu_de"]').focus();
-                    $('input[name="tieu_de"]').addClass('error');
-                    err = true;
-                }
-
-                if(err) return;
-
-
-                $("#btn-create").prop('disabled', true);
-                let data = {
-                    de_bai: de_bai,
-                    dap_an: dap_an,
-                    tieu_de: tieu_de,
-                    ten_nguon: '{{$src}}',
-                    hoi_dap_id: '{{$guid}}'
-                };
-
-                let url = '{{route('post.store')}}';
-
-                $.ajax({
-                    method: 'POST',
-                    url: url,
-                    data: data,
-                    success: function(result){
-                        console.log(result);
-
-                        toastr.success("Tạo thành công");
-                        setTimeout(function() {
-                            window.location.reload();
-                        }, 500);
-                    },
-                    error: function (jqXHR, exception) {
-                        console.log(jqXHR.responseText);
-
-                        toastr.error("Có lỗi xảy ra. Vui lòng thử lại sau");
+        (function($) {
+            $.fn.inputFilter = function(inputFilter) {
+                return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function() {
+                    if (inputFilter(this.value)) {
+                        this.oldValue = this.value;
+                        this.oldSelectionStart = this.selectionStart;
+                        this.oldSelectionEnd = this.selectionEnd;
+                    } else if (this.hasOwnProperty("oldValue")) {
+                        this.value = this.oldValue;
+                        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
                     }
                 });
-            });
+            };
+        }(jQuery));
 
-            $('input').keyup(function(){
-                $(this).removeClass('error');
+        $("#postquestion-display")[0].innerHTML = qeditor.getData();
+        $("#postanswer-display")[0].innerHTML = aeditor.getData();
+
+        qeditor.on('change', function(){
+            $("#postquestion-display")[0].innerHTML = qeditor.getData();
+            renderMathJax();
+        });
+
+        qeditor.on( 'fileUploadResponse', function( evt ) {
+            setTimeout(function(){
+                $("#postquestion-display")[0].innerHTML = qeditor.getData();
+                renderMathJax();
+            }, 1000);
+        } );
+
+        aeditor.on('change', function(){
+            $("#postanswer-display")[0].innerHTML = aeditor.getData();
+            renderMathJax();
+        });
+
+        aeditor.on( 'fileUploadResponse', function( evt ) {
+            setTimeout(function(){
+                $("#postanswer-display")[0].innerHTML = aeditor.getData();
+                renderMathJax();
+            }, 1000);
+        } );
+
+        $('#postquestion').bind('input propertychange', function() {
+            $("#postquestion-display")[0].innerHTML = qeditor.getData();
+            // renderMathJax();
+        });
+
+        $('#postanswer').bind('input propertychange', function() {
+            $("#postanswer-display")[0].innerHTML = aeditor.getData();
+            // renderMathJax();
+        });
+
+        let trim = function(text){
+            text = text.replace('<span class="math-tex">', "");
+            text = text.replace('</span>', "");
+
+            text = text.replace('http://dev.data.giaingay.io/TestProject/public/media/', "media/");
+
+            return text;
+        };
+
+        $("#btn-create").click(function(){
+            let de_bai = trim(qeditor.getData());
+            let dap_an = trim(aeditor.getData());
+            let tieu_de = $('input[name="tieu_de"]').val();
+
+            let err = false;
+
+            if(dap_an.trim() === "")
+            {
+
+                toastr.error("Thiếu thông tin đáp án");
+                if(!err) aeditor.focus();
+                err = true;
+            }
+
+            if(de_bai.trim() === "")
+            {
+
+                toastr.error("Thiếu thông tin đề bài");
+                if(!err) qeditor.focus();
+                err = true;
+            }
+
+            if(tieu_de.trim() === "")
+            {
+
+                toastr.error("Thiếu thông tin tiêu đề");
+                if(!err) $('input[name="tieu_de"]').focus();
+                $('input[name="tieu_de"]').addClass('error');
+                err = true;
+            }
+
+            if(err) return;
+
+
+            $("#btn-create").prop('disabled', true);
+            let data = {
+                de_bai: de_bai,
+                dap_an: dap_an,
+                tieu_de: tieu_de,
+                ten_nguon: '{{$src}}',
+                hoi_dap_id: '{{$guid}}'
+            };
+
+            let url = '{{route('post.store')}}';
+
+            $.ajax({
+                method: 'POST',
+                url: url,
+                data: data,
+                success: function(result){
+                    console.log(result);
+
+                    toastr.success("Tạo thành công");
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 500);
+                },
+                error: function (jqXHR, exception) {
+                    console.log(jqXHR.responseText);
+
+                    toastr.error("Có lỗi xảy ra. Vui lòng thử lại sau");
+                }
             });
         });
-    </script>
+
+        $('input').keyup(function(){
+           $(this).removeClass('error');
+        });
+    });
+</script>
 @endpush
