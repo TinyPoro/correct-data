@@ -620,6 +620,8 @@ class ToolController extends Controller
     }
     public function endlToBr($text)
     {
+        $text = preg_replace('/<(?!\s)/', '< ', $text);
+
         $text = str_replace('\nolimits', '\zolimits', $text);
         $text = str_replace('\notin', '\zotin', $text);
         $text = str_replace('\nleq', '\zleq', $text);
