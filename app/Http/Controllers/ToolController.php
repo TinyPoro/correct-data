@@ -710,8 +710,6 @@ class ToolController extends Controller
             }
         }
 
-        $text = preg_replace('/<(?!\s)/', '< ', $text);
-
         return $text;
     }
     public function escapeSlash($text)
