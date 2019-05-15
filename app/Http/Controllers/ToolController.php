@@ -710,6 +710,14 @@ class ToolController extends Controller
             }
         }
 
+        if(preg_match_all('/\\\\\(.+?\\\\\)/', $text, $matches)){
+            foreach ($matches[0] as $match){
+                $replace = preg_replace('/<(?!\s)/', '< ', $match);
+
+                $text = str_replace($match, $replace, $text);
+            }
+        }
+
         return $text;
     }
     public function escapeSlash($text)
