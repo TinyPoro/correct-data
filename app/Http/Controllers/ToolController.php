@@ -103,10 +103,24 @@ class ToolController extends Controller
 
         $images = explode(',', $post->url);
 
+        //Lấy thêm link sách gốc
+        $book_url = '';
+
+        $extra_info = $post->tieu_de;
+
+        if(preg_match('/([A-Z]{4})([0-9]{12})/', $extra_info, $book_code_matches)){
+            $book_code = $book_code_matches[0];
+
+            $pdf_book = \DB::table('pdf_book')->where('book_code', $book_code)->first();
+
+            if($pdf_book) $book_url = $pdf_book->gd_link;
+        }
+
         return view('edit', [
             'post' => $post,
             'histories' => $data['histories'],
-            'images' => $images
+            'images' => $images,
+            'book_url' => $book_url,
         ]);
     }
 

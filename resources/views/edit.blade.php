@@ -116,6 +116,12 @@
 
                         <input class="form-control" type="text" name="duong_dan_tra_loi" value="{{$post->duong_dan_tra_loi}}">
                     </div>
+                    <hr width="100%">
+                    <div class="form-group" style="width: 100%;">
+                        <label><b>Link sách gốc:</b></label>
+
+                        <a href="{{$book_url}}">{{$book_url}}</a>
+                    </div>
                 </div>
                 <hr width="100%">
                 <div class="row" style="margin: 0!important;width: 100%;">
