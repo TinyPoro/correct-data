@@ -61,6 +61,9 @@
             max-width: 100%!important;
             height: auto;
         }
+        #postquestion-display, #postanswer-display{
+            border-right: 1px dashed red;
+        }
     </style>
 
     <?php
@@ -129,22 +132,22 @@
                         <div class="form-group" style="width: 100%; max-width: 545px;">
                             <label style="vertical-align: top; width: 15%"><b>Đề bài:</b></label>
 
-                            <div style="display:inline-block; width:101%">
+                            <div style="display:inline-block; width:100%">
                                 <textarea class="form-control" style="width:100%" id="postquestion" rows="7"
                                   placeholder="Post's question in HTML"><?php echo standardCkeditor($post->de_bai); ?></textarea>
 
-                                <p style="margin-top:20px; width: 100%" id="postquestion-display"></p>
+                                <p style="margin-top:20px; width: 1445px" id="postquestion-display"></p>
                             </div>
                         </div>
 
                         <div class="form-group" style="width: 100%; max-width: 545px;">
                             <label style="vertical-align: top; width: 15%"><b>Đáp án:</b></label>
-                            <div style="display:inline-block; width:101%">
+                            <div style="display:inline-block; width:100%">
 
                                 <textarea class="form-control" style="width:100%" id="postanswer" rows="7"
                                   placeholder="Post's answer"><?php echo standardCkeditor($post->dap_an); ?></textarea>
 
-                                <p style="margin-top:20px; width: 100%" id="postanswer-display"></p>
+                                <p style="margin-top:20px; width: 1445px" id="postanswer-display"></p>
                             </div>
                         </div>
                     </div>
@@ -219,6 +222,10 @@
 
     let qeditor = CKEDITOR.instances.postquestion;
     let aeditor = CKEDITOR.instances.postanswer;
+    let question_preview = $("#postquestion-display")[0];
+    let answer_preview = $("#postanswer-display")[0];
+
+    let can_save = false;
 
     qeditor.on( 'fileUploadRequest', function( evt ) {
         evt.data.requestData.id = $("#post-hoi-dap-id").val();
@@ -302,39 +309,53 @@
         }
     });
 
-    $("#postquestion-display")[0].innerHTML = qeditor.getData();
-    $("#postanswer-display")[0].innerHTML = aeditor.getData();
+    question_preview.innerHTML = qeditor.getData();
+    answer_preview.innerHTML = aeditor.getData();
 
     qeditor.on('change', function(){
-        $("#postquestion-display")[0].innerHTML = qeditor.getData();
+        question_preview.innerHTML = qeditor.getData();
         renderMathJax();
+
+        if(question_preview.scrollWidth > 1445) {
+            can_save = false;
+            toastr.error("Chiều dài câu hỏi đã vượt quá chiều rộng cho phép! Bạn sửa lại nhé!")
+        } else {
+            can_save = true;
+        }
     });
 
     qeditor.on( 'fileUploadResponse', function( evt ) {
         setTimeout(function(){
-            $("#postquestion-display")[0].innerHTML = qeditor.getData();
+            question_preview.innerHTML = qeditor.getData();
             renderMathJax();
         }, 1000);
     } );
 
     aeditor.on('change', function(){
-        $("#postanswer-display")[0].innerHTML = aeditor.getData();
+        answer_preview.innerHTML = aeditor.getData();
         renderMathJax();
+
+        if(answer_preview.scrollWidth > 1445) {
+            can_save = false;
+            toastr.error("Chiều dài câu trả lời đã vượt quá chiều rộng cho phép! Bạn sửa lại nhé!")
+        } else {
+            can_save = true;
+        }
     });
 
     aeditor.on( 'fileUploadResponse', function( evt ) {
         setTimeout(function(){
-            $("#postanswer-display")[0].innerHTML = aeditor.getData();
+            answer_preview.innerHTML = aeditor.getData();
             renderMathJax();
         }, 1000);
     } );
 
     $('#postquestion').bind('input propertychange', function() {
-        $("#postquestion-display")[0].innerHTML = qeditor.getData();
+        question_preview.innerHTML = qeditor.getData();
     });
 
     $('#postanswer').bind('input propertychange', function() {
-        $("#postanswer-display")[0].innerHTML = aeditor.getData();
+        answer_preview.innerHTML = aeditor.getData();
     });
 
     let trim = function(text){
@@ -347,6 +368,23 @@
     };
 
     $("#btn-edit").click(function(){
+        if(can_save === false) {
+            toastr.error("Chiều dài câu hỏi hoặc câu trả lời đã vượt quá chiều rộng cho phép! Bạn sửa lại nhé!")
+            return;
+        }
+
+        if(question_preview.scrollWidth > 1445) {
+            can_save = false;
+            toastr.error("Chiều dài câu hỏi đã vượt quá chiều rộng cho phép! Bạn sửa lại nhé!")
+            return;
+        }
+
+        if(answer_preview.scrollWidth > 1445) {
+            can_save = false;
+            toastr.error("Chiều dài câu trả lời đã vượt quá chiều rộng cho phép! Bạn sửa lại nhé!")
+            return;
+        }
+
         let de_bai = trim(qeditor.getData());
         let dap_an = trim(aeditor.getData());
         let tieu_de = $('input[name="tieu_de"]').val();
