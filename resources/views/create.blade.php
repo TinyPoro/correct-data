@@ -117,7 +117,7 @@
 
                     <textarea class="form-control" style="width:100%" id="postquestion" rows="7"
                               placeholder="Post's question in HTML"></textarea>
-                            <p style="margin-top:20px; width: 1000px" id="postquestion-display">
+                            <p style="margin-top:20px; width: 500px" id="postquestion-display">
                             </p>
                         </div>
                     </div>
@@ -126,7 +126,7 @@
                         <div style="display:inline-block; width:100%">
                     <textarea class="form-control" style="width:100%" id="postanswer" rows="7"
                               placeholder="Post's answer"></textarea>
-                            <p style="margin-top:20px; width: 1000px" id="postanswer-display">
+                            <p style="margin-top:20px; width: 500px" id="postanswer-display">
                             </p>
                         </div>
                     </div>
@@ -208,7 +208,7 @@
                 question_preview.innerHTML = qeditor.getData();
                 renderMathJax();
 
-                if(question_preview.scrollWidth > 1000) {
+                if(question_preview.scrollWidth > 500) {
                     can_save = false;
                     toastr.error("Chiều dài câu hỏi đã vượt quá chiều rộng cho phép! Bạn sửa lại nhé!")
                 } else {
@@ -227,7 +227,7 @@
                 answer_preview.innerHTML = aeditor.getData();
                 renderMathJax();
 
-                if(answer_preview.scrollWidth > 1000) {
+                if(answer_preview.scrollWidth > 500) {
                     can_save = false;
                     toastr.error("Chiều dài câu trả lời đã vượt quá chiều rộng cho phép! Bạn sửa lại nhé!")
                 } else {
@@ -267,13 +267,13 @@
                     return;
                 }
 
-                if(question_preview.scrollWidth > 1000) {
+                if(question_preview.scrollWidth > 500) {
                     can_save = false;
                     toastr.error("Chiều dài câu hỏi đã vượt quá chiều rộng cho phép! Bạn sửa lại nhé!")
                     return;
                 }
 
-                if(answer_preview.scrollWidth > 1000) {
+                if(answer_preview.scrollWidth > 500) {
                     can_save = false;
                     toastr.error("Chiều dài câu trả lời đã vượt quá chiều rộng cho phép! Bạn sửa lại nhé!")
                     return;
