@@ -124,7 +124,7 @@ class ToolController extends Controller
                 $itemCode = str_replace('_', '/', $itemCode);
 
                 $data = \DB::connection('saven_mysql')->table('hackathon_datas_v2')
-                    ->where('question_image_paths', 'like', "$itemCode")->first();
+                    ->where('question_image_paths', 'like', "%$itemCode%")->first();
 
                 if($data){
                     $toa_do1 = $data->question_image_paths;
