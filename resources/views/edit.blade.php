@@ -121,6 +121,8 @@
                         <label><b>Link sách gốc:</b></label>
 
                         <a href="{{$book_url}}">{{$book_url}}</a>
+                        <p>{{$toa_do1}}</p>
+                        <p>{{$toa_do2}}</p>
                     </div>
                 </div>
                 <hr width="100%">

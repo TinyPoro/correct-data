@@ -116,11 +116,30 @@ class ToolController extends Controller
             if($pdf_book) $book_url = $pdf_book->gd_link;
         }
 
+        $toa_do1 = '';
+        $toa_do2 = '';
+        if($post->process == 'M9'){
+            if(preg_match('/[^-\s]+$/', $extra_info, $matches)){
+                $itemCode = $matches[0];
+                $itemCode = str_replace('_', '/', $itemCode);
+
+                $data = \DB::connection('saven_mysql')->table('hackathon_datas_v2')
+                    ->where('question_image_paths', 'like', "$itemCode")->first();
+
+                if($data){
+                    $toa_do1 = $data->question_image_paths;
+                    $toa_do2 = $data->answer_image_paths;
+                }
+            }
+        }
+
         return view('edit', [
             'post' => $post,
             'histories' => $data['histories'],
             'images' => $images,
             'book_url' => $book_url,
+            'toa_do1' => $toa_do1,
+            'toa_do2' => $toa_do2,
         ]);
     }
 
